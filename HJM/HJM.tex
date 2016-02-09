@@ -162,7 +162,7 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
 
 \section{Closed Form Results for Gaussian Models}
 
-  In the above formulation, when $\sigma_f(t,T)$ is a deterministic function, {\it i.e.}, $g(t)$ is a deterministic function,
+  In the above formulation, when $\sigma_f(t,T)$ is a deterministic function,
   the resulting models will be Gaussian, where the distribution of the forward rate, and the short rate, will be Gaussian.
   This leads to simplifications to the modeling and pricing of interest rate derivatives, and even closed form expressions
   for several simple derivatives.
@@ -258,6 +258,41 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
     \end{equation}
  
   \subsection{European Swaption - Jamshidian Decomposition}
+
+  The above results do not require the Markovianity of the short rate process, and can be applied to general models with
+  deterministic forward rate volatility functions. The trick which will be introduced in the following relies on the
+  bond reconstitution formula, Eq. (\ref{reconstitution}).
+
+  Consider a payer swaption expiring at $T_0$, with the underlying swap paying annualized coupon $c$ at times
+  $T_1<T_2<\cdots<T_N$, with $T_1>T_0$. The swaption payout at $T_0$ is
+  \begin{equation}
+    V(T_0) = \left(1-P(T_0,T_N)-c\sum_{i=1}^N\tau_iP(T_0,T_i)\right)^+,
+  \end{equation}
+  where $\tau_i=T_i-T_{i-1}$ is the accrual period. Notice the dependence of the zero coupon bond price on $x$, {\it i.e.},
+  $P(T_0,T_N)\equiv P(T_0,T_N;x(T_0))$, through the bond reconstitution formula, Eq. (\ref{reconstitution}). Define a
+  critical value $x^*$ by setting the value of the swaption at time $T_0$ to exactly zero,
+  \begin{equation}
+    P(T_0,T_N;x^*)+c\sum_{i=1}^N\tau_iP(T_0,T_i;x^*)=1.
+  \end{equation}
+  Also defint the ``strikes" as
+  \begin{equation}
+    K_i=P(T_0,T_i;x^*),
+  \end{equation}
+  then
+  \begin{equation}
+    K_N+c\sum_{i=1}^N\tau_iK_i=1.
+  \end{equation}
+  Notice that $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, we have
+  \begin{eqnarray}
+    V(T_0)&=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)^+\nonumber\\
+          &=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(K_N+c\sum_{i=1}^N\tau_iK_i-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(K_N-P(T_0,T_N;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}
+                    + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(K_N-P(T_0,T_N;x(T_0))\right)^+
+       + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)^+.
+  \end{eqnarray}
+  Then, this can be evaluated with the bond option price formula.
    
 \section{Examples of Classical Gaussian Short Rate Models - One Factor Models}
 
