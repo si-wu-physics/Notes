@@ -285,10 +285,10 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
   Notice that $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, we have
   \begin{eqnarray}
     V(T_0)&=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)^+\nonumber\\
-          &=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
-          &=&\left(K_N+c\sum_{i=1}^N\tau_iK_i-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
-          &=&\left(K_N-P(T_0,T_N;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}
-                    + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)\mathcal{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(K_N+c\sum_{i=1}^N\tau_iK_i-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}\nonumber\\
+          &=&\left(K_N-P(T_0,T_N;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}
+                    + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}\nonumber\\
           &=&\left(K_N-P(T_0,T_N;x(T_0))\right)^+
        + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)^+.
   \end{eqnarray}
