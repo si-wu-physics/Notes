@@ -167,7 +167,7 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
   This leads to simplifications to the modeling and pricing of interest rate derivatives, and even closed form expressions
   for several simple derivatives.
     
-  \subsection{Bond option}
+  \subsection{Zero Coupon Bond Option}
   
     Consider a call option with expiry $T$ and strike $K$ on a zero coupon bond with maturity $T^*$. At expiry, the
     option pays
@@ -259,9 +259,9 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
  
   \subsection{European Swaption - Jamshidian Decomposition}
 
-  The above results do not require the Markovianity of the short rate process, and can be applied to general models with
-  deterministic forward rate volatility functions. The trick which will be introduced in the following relies on the
-  bond reconstitution formula, Eq. (\ref{reconstitution}).
+  The above results do not make any specific assumptions besides of the Gaussianness, and can be applied to general models with
+  deterministic forward rate volatility functions. The trick, Jamshidian decomposition,
+  which will be introduced in the following relies on the monotonicity of the zero coupon bond price on short rate.
 
   Consider a payer swaption expiring at $T_0$, with the underlying swap paying annualized coupon $c$ at times
   $T_1<T_2<\cdots<T_N$, with $T_1>T_0$. The swaption payout at $T_0$ is
@@ -282,7 +282,8 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
   \begin{equation}
     K_N+c\sum_{i=1}^N\tau_iK_i=1.
   \end{equation}
-  Notice that $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, we have
+  Notice that $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, which always holds due to the bond reconstitution
+  formula (\ref{reconstitution}), we have
   \begin{eqnarray}
     V(T_0)&=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)^+\nonumber\\
           &=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}\nonumber\\
@@ -292,7 +293,7 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
           &=&\left(K_N-P(T_0,T_N;x(T_0))\right)^+
        + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)^+.
   \end{eqnarray}
-  Then, this can be evaluated with the bond option price formula.
+  Then, this can be evaluated with the bond option price formula. This trick can also be applied to coupon bond options.
    
 \section{Examples of Classical Gaussian Short Rate Models - One Factor Models}
 
