@@ -182,6 +182,7 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
     \begin{eqnarray}
       V(t) &=& P(t,T)\left[P(t,T,T^*)N(d_+)-KN(d_-)\right] \nonumber\\
            &=& P(t,T^*)N(d_+) - KP(t,T)N(d_-),
+      \label{zcbo}
     \end{eqnarray}
     where
     \begin{equation}
@@ -293,7 +294,8 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
           &=&\left(K_N-P(T_0,T_N;x(T_0))\right)^+
        + c\sum_{i=1}^N\tau_i\left(K_i-P(T_0,T_i;x(T_0))\right)^+.
   \end{eqnarray}
-  Then, this can be evaluated with the bond option price formula. This trick can also be applied to coupon bond options.
+  Then, this can be evaluated with the zero coupon bond option price formula, Eq. (\ref{zcbo}).
+  This trick can also be applied to coupon bond options.
    
 \section{Examples of Classical Gaussian Short Rate Models - One Factor Models}
 
