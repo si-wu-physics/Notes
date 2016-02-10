@@ -269,9 +269,9 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
   \begin{equation}
     V(T_0) = \left(1-P(T_0,T_N)-c\sum_{i=1}^N\tau_iP(T_0,T_i)\right)^+,
   \end{equation}
-  where $\tau_i=T_i-T_{i-1}$ is the accrual period. Notice the dependence of the zero coupon bond price on $x$, {\it i.e.},
-  $P(T_0,T_N)\equiv P(T_0,T_N;x(T_0))$, through the bond reconstitution formula, Eq. (\ref{reconstitution}). Define a
-  critical value $x^*$ by setting the value of the swaption at time $T_0$ to exactly zero,
+  where $\tau_i=T_i-T_{i-1}$ is the accrual period. Notice the dependence of the zero coupon bond price on $x(T_0)$ through short
+  rate $r(T_0)$, {\it i.e.}, $P(T_0,T_N)\equiv P(T_0,T_N;x(T_0))$. Define a
+  critical value $x^*$ by setting the value of the swaption at time $T_0$ to be exactly zero,
   \begin{equation}
     P(T_0,T_N;x^*)+c\sum_{i=1}^N\tau_iP(T_0,T_i;x^*)=1.
   \end{equation}
@@ -283,8 +283,8 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
   \begin{equation}
     K_N+c\sum_{i=1}^N\tau_iK_i=1.
   \end{equation}
-  Notice that $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, which always holds due to the bond reconstitution
-  formula (\ref{reconstitution}), we have
+  Notice that if $P(T_0,T_i;x(T_0))$ is monotonically decreasing in $x(T_0)$, which will hold for Markovian Gaussian short
+  rate models from the bond reconstitution formula (\ref{reconstitution}), then we will have
   \begin{eqnarray}
     V(T_0)&=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)^+\nonumber\\
           &=&\left(1-P(T_0,T_N;x(T_0))-c\sum_{i=1}^N\tau_iP(T_0,T_i;x(T_0))\right)\textbf{1}_{x(T_0)>x^*}\nonumber\\
