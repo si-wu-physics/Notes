@@ -203,7 +203,7 @@ This mainly derives from Andersen and Piterbarg's {\it Interest Rate Modeling}, 
     where $L(T,T+\tau)$ is the LIBOR rates spanning from $T$ to $T+\tau$, and $\tau$
     is the year fraction. The value of the caplet at time $t$ is
     \begin{equation}
-      V(t)=E_t^Q\left[\exp\left(\int_t^{T+\tau}r(s)ds\right)V(T+\tau)\right].
+      V(t)=E_t^Q\left[\exp\left(-\int_t^{T+\tau}r(s)ds\right)V(T+\tau)\right].
     \end{equation}
     Use the tower rule,
     \begin{eqnarray}
