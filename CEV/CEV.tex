@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{amsfonts}
-\usepackage[hscale=0.8,vscale=0.8]{geometry}
+\usepackage[hscale=.8,vscale=.8]{geometry}
 \usepackage{hyperref}
 
 \begin{document}
@@ -57,12 +57,68 @@
   \end{equation}
   Then, the general solution to Eq. (\ref{FP2}) is given by
   \begin{equation}
-    g(\lambda, s)=s^{(1-4\beta)/2}\left[A(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
-                                       +B(\lambda)Y_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\right],
+    g(\lambda, s)=s^{(1-4\beta)/2}\left[A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
+                                       +B_{\nu}(\lambda)Y_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\right],
+    \label{solution}
   \end{equation}
   where $J_{\nu}(x)$ and $Y_{\nu}(x)$ are the Bessel functions of the first and second kind, respectively. To determine the
-  coefficients $A(\lambda)$ and $B(\lambda)$, and subsequently the forward transition density $p(t,s)$, boundary conditions
-  in the $s$ direction is needed.
+  coefficients $A(\lambda)$ and $B(\lambda)$, and subsequently the forward transition density $p(t,s)$, boundary condition
+  at $s=0$ is needed. To this end, we can write down the asymptotic expansion of Eq. (\ref{solution}),
+  \begin{eqnarray}
+    s^{2\beta}g(\lambda,s)&\sim& \left(\left(A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)\right)
+                  \left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{\nu}s\right)\left[\frac{1}{\Gamma(1+\nu)}
+              -\frac{1}{\Gamma(2+\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right]\nonumber\\
+              &&-\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{-\nu}
+              \left[\frac{1}{\Gamma(1-\nu)}
+              -\frac{1}{\Gamma(2-\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right].
+  \end{eqnarray}
+
+  Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current convervation form,
+  \begin{equation}
+    \frac{\partial p(t,s)}{\partial t} + \frac{\partial j(t,s)}{\partial s} = 0,
+  \end{equation}
+  with the current given by
+  \begin{equation}
+    j(t,s) = -\frac{1}{2}\sigma^2\frac{\partial }{\partial s}\left(s^{2\beta}p(t,s)\right).
+  \end{equation}
+  The common choices for the boundary condition can be either absorbing or reflective, with $j(t,s)$ being finite or
+  vanishing, respectively, {\it i.e.},
+  \begin{eqnarray}
+    && s^{2\beta}p(t,s) \sim s,\quad\quad s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
+    && s^{2\beta}p(t,s) \sim {\rm const.},\quad\quad s\rightarrow 0,\quad\quad {\rm reflection \quad boundary \quad condition}.
+  \end{eqnarray}
+  Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
+  have
+  \begin{equation}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2\int f(s)\frac{\partial^2}{\partial s^2}
+    \left(s^{2\beta}p(t,s)\right)ds.
+  \end{equation}
+  Integrating the right hand side by parts twice, we have
+  \begin{eqnarray}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) &=& \frac{1}{2}\sigma^2\int f^{\prime\prime}(s)s^{2\beta}p(t,s)ds\nonumber \\
+          && + \left . \frac{1}{2}\sigma^2\left[f^{\prime}(s)s^{2\beta}p(t,s) - f(s)\frac{\partial}{\partial s}
+                \left(s^{2\beta}p(t,s)\right)\right]\right|_{s=0}.
+    \label{conservation}
+  \end{eqnarray}
+  Let $f(s)\equiv 1$, it can be seen that the right hand side of Eq. (\ref{conservation}) does not vanish for absorbing
+  boundary condition, and is zero for reflection boundary condition. Therefore, the total probability is not conserved for
+  the absorbing boundary condition, and is conserved for the reflection boundary condition. 
+
+  Now consider $f(s)\equiv s$. The right hand side of Eq. (\ref{conservation}) will vanish for absorbing
+  boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflection
+  boundary condition.
+
+  Finally, let us consider the call payoff, $f(s)=(s-K)^+$. Then, Eq. (\ref{conservation}) becomes
+  \begin{equation}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2K^{2\beta}p(t,K),
+  \end{equation}
+  irrespective of the boundary condition, which gives the call option price as
+  \begin{equation}
+    C(t,S_t,T,K) = \int (s-K)^+p(T,s)ds = (S_t-K)^++\frac{1}{2}\sigma^2\int_t^T K^{2\beta}p(u,K)du.
+  \end{equation}
+  However, for the put payoff, there will be an additional boundary term for the reflection boundary condition.
+
+
 
 \section{Absorbing boundary condition}
 
