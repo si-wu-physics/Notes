@@ -26,6 +26,7 @@
   with the initial condition
   \begin{equation}
     p(t_0,S_0;t_0,s) = \delta(s-S_0),
+    \label{initial}
   \end{equation}
   where $\delta(x)$ is the Dirac delta function. In the following, we will write $p(t,s)\equiv p(t_0,S_0;t,s)$.
 
@@ -135,8 +136,8 @@
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda,
   \end{equation}
   where $\gamma$ is chosen to have all of the poles of $g(\lambda,s)$ on the complex plane to the left of the line 
-  $[\gamma-i\infty,\gamma+i\infty]$. Set $t=0$ in the above equation, and take into account of the initial condition,
-  we have
+  $[\gamma-i\infty,\gamma+i\infty]$. Set $t=0$ in the above equation, and take into account of the initial condition
+  (\ref{initial}), we have
   \begin{equation}
     \delta(s-S_0)=\frac{s^{(1-4\beta)/2}}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
