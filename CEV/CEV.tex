@@ -32,7 +32,7 @@
 
   Define the Laplace transform of the forward transition density $p(t,s)$ as
   \begin{equation}
-    g(\lambda, s)=\int_0^{+\infty}e^{-\lambda t}p(t,s)dt,
+    p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda, s)d\lambda,
     \label{Laplace}
   \end{equation}
   the Fokker-Planck equation (\ref{FP}) becomes
@@ -78,7 +78,7 @@
   \begin{equation}
     J_{\nu}(x)=\sum_{m=0}^{+\infty}\frac{(-1)^m}{m!\Gamma(m+\nu+1)}\left(\frac{x}{2}\right)^{2m+\nu},
   \end{equation}
-  and 
+  and
   \begin{equation}
     Y_{\nu}(x)=\frac{J_{\nu}(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)}.
   \end{equation}
@@ -112,7 +112,7 @@
   \end{eqnarray}
   Let $f(s)\equiv 1$, it can be seen that the right hand side of Eq. (\ref{conservation}) does not vanish for absorbing
   boundary condition, and is zero for reflection boundary condition. Therefore, the total probability is not conserved for
-  the absorbing boundary condition, and is conserved for the reflection boundary condition. 
+  the absorbing boundary condition, and is conserved for the reflection boundary condition.
 
   Now consider $f(s)\equiv s$. The right hand side of Eq. (\ref{conservation}) will vanish for absorbing
   boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflection
@@ -139,21 +139,69 @@
   To determine the coefficient $A_{\nu}(\lambda)$, initial condition will be needed. The inverse Laplace transform of Eq.
   (\ref{Laplace}) is given by
   \begin{equation}
-    p(t,s)=\frac{1}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}e^{\lambda t}g(\lambda,s)d\lambda
-          =\frac{s^{(1-4\beta)/2}}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}e^{\lambda t}
-          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda,
-  \end{equation}
-  where $\gamma$ is chosen to have all of the poles of $g(\lambda,s)$ on the complex plane to the left of the line 
-  $[\gamma-i\infty,\gamma+i\infty]$. Set $t=0$ in the above equation, and take into account of the initial condition
-  (\ref{initial}), we have
-  \begin{equation}
-    \delta(s-s_0)=\frac{s^{(1-4\beta)/2}}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}
+    p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda,s)d\lambda
+          =s^{(1-4\beta)/2}\int_0^{+\infty}e^{-\lambda t}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
   \end{equation}
+  Assuming $t_0=0$ for the moment, and set $t=0$ in the above equation, and take into account of the initial condition
+  (\ref{initial}), we have
+  \begin{equation}
+    \delta(s-s_0)=s^{(1-4\beta)/2}\int_0^{+\infty}
+          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
+  \end{equation}
+  Now, multiply both sides by
+  $$
+    \sqrt{s}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right),
+  $$
+  and integrate over $s$, we will have
+  \begin{eqnarray}
+      \sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)
+    &=&  \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+         \int_0^{+\infty}ds s^{1-2\beta}
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}s^{\frac{1}{2\nu}}\right)
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\nonumber\\
+    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+         \int_0^{+\infty}du u
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}u\right)
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}u\right) \nonumber\\
+    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+          \frac{\displaystyle \delta\left(\frac{2\nu\sqrt{2\lambda}}{\sigma} - \frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}\right)}
+            {\displaystyle \frac{2\nu\sqrt{2\lambda}}{\sigma}}\nonumber\\
+    &=& \frac{\sigma^2}{2\nu}\int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+          \delta(\lambda - \lambda^{\prime})\nonumber\\
+    &=& \frac{\sigma^2}{2\nu}A_{\nu}(\lambda).
+  \end{eqnarray}
+  Here, we have used the Hankel transform
+  \begin{equation}
+    \int_0^{+\infty}rJ_{\nu}(kr)J_{\nu}(k^{\prime}r)=\frac{\delta(k-k^{\prime})}{k},
+  \end{equation}
+  and the property of delta function,
+  \begin{equation}
+    \delta\left(f(x)\right)=\frac{\delta(x)}{|f^{\prime}(0)|}.
+  \end{equation}
+  Now, we have
+  $$
+    A_{\nu}(\lambda)=\frac{2\nu}{\sigma^2}\sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right),
+  $$
+  the transition density can be calculated,
+  \begin{eqnarray}
+    p(t,s) &=& \frac{2\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-\lambda t}
+                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
+                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)d\lambda\nonumber\\
+           &=& \frac{4\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-tu^2} u
+                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s^{\frac{1}{2\nu}}u\right)
+                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s_0^{\frac{1}{2\nu}}u\right)du\nonumber\\
+           &=& \frac{2\nu}{\sigma^2t}\left(s_0s^{1-4\beta}\right)^{1/2}
+               \exp\left(-\frac{4\nu^2}{\sigma^2t}\left(s_0^{\frac{1}{2\nu}}+s^{\frac{1}{2\nu}}\right)\right)
+               I_{\nu}\left(\frac{4\nu^2}{\sigma^2t}\left(s_0s\right)^{\frac{1}{2\nu}}\right),
+  \end{eqnarray}
+  where we have used the result
+  \begin{equation}
+    \int_0^{\infty}e^{-tu^2}uJ_{\nu}(au)J_{\nu}(bu)du=\frac{1}{2t}\exp\left(-\frac{a^2+b^2}{4t}\right)I_{\nu}\left(\frac{ab}{2t}\right),
+  \end{equation}
+  and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
 
-  (No idea how to proceed further, but will record known results in the following...)
-
-  The transition density is then given by
+  Finally, the transition density is then given by
   \begin{equation}
     p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
@@ -172,16 +220,16 @@
   \end{equation}
 
 
-\section{European option pricing}
+% \section{European option pricing}
 
 
-\section{SABR}
+% \section{SABR}
 
 
-\section{Free boundary CEV}
+% \section{Free boundary CEV}
 
 
-\section{Free boundary SABR}
+% \section{Free boundary SABR}
 
 
 
