@@ -19,16 +19,16 @@
   \end{equation}
   with $\beta < 1$, the corresponding Fokker-Planck equation is given by
   \begin{equation}
-    -\frac{\partial p(t_0,S_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
-    \left(s^{2\beta}p(t_0,S_0;t,s)\right) = 0,
+    -\frac{\partial p(t_0,s_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
+    \left(s^{2\beta}p(t_0,s_0;t,s)\right) = 0,
     \label{FP}
   \end{equation}
   with the initial condition
   \begin{equation}
-    p(t_0,S_0;t_0,s) = \delta(s-S_0),
+    p(t_0,s_0;t_0,s) = \delta(s-s_0),
     \label{initial}
   \end{equation}
-  where $\delta(x)$ is the Dirac delta function. In the following, we will write $p(t,s)\equiv p(t_0,S_0;t,s)$.
+  where $\delta(x)$ is the Dirac delta function. In the following, we will write $p(t,s)\equiv p(t_0,s_0;t,s)$.
 
   Define the Laplace transform of the forward transition density $p(t,s)$ as
   \begin{equation}
@@ -147,13 +147,29 @@
   $[\gamma-i\infty,\gamma+i\infty]$. Set $t=0$ in the above equation, and take into account of the initial condition
   (\ref{initial}), we have
   \begin{equation}
-    \delta(s-S_0)=\frac{s^{(1-4\beta)/2}}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}
+    \delta(s-s_0)=\frac{s^{(1-4\beta)/2}}{2\pi i}\int_{\gamma-i\infty}^{\gamma+i\infty}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
+  \end{equation}
+
+  (No idea how to proceed further, but will record known results in the following...)
+
+  The transition density is then given by
+  \begin{equation}
+    p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
+    I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
   \end{equation}
 
 
 
 \section{Reflection boundary condition}
+
+  The transition density is then given by
+  \begin{equation}
+    p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
+    I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
+  \end{equation}
 
 
 \section{European option pricing}
