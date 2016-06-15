@@ -94,8 +94,10 @@
   The common choices for the boundary condition can be either absorbing or reflective, with $j(t,s)$ being finite or
   vanishing, respectively, {\it i.e.},
   \begin{eqnarray}
-    s^{2\beta}p(t,s) \sim s, && s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
-    s^{2\beta}p(t,s) \sim {\rm const.}, && s\rightarrow 0,\quad\quad {\rm reflection \quad boundary \quad condition}.
+    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow {\rm const.}, 
+        && s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
+    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow 0, 
+        && s\rightarrow 0,\quad\quad {\rm reflection \quad boundary \quad condition}.
   \end{eqnarray}
   Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
   have
@@ -201,11 +203,12 @@
   \end{equation}
   and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
 
-  Finally, the transition density is then given by
+  Finally, the transition density is given by
   \begin{equation}
     p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
     I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
+    \label{density1}
   \end{equation}
 
 
@@ -223,7 +226,64 @@
 % \section{European option pricing}
 
 
-% \section{Integral representation of European call option price}
+\section{Integral representation of European call option price}
+
+  To preclude arbitrage opportunity, we are going to consider the European call option price under the absorbing boundary condition.
+  The price for a European call option with expiry $T$, forward $S$, and strike $K$ is given by
+  \begin{equation}
+    C(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp(0,S;\tau,K)d\tau,
+    \label{callprice}
+  \end{equation}
+  with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
+  Bessel function \cite{DLMF2},
+  \begin{equation}
+    I_{\nu}(z) = \frac{1}{\pi}\int_0^{\pi}e^{z\cos\theta}\cos(\nu\theta)d\theta
+                - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}e^{-z\cosh t - \nu t}dt
+  \end{equation}
+  Define
+  \begin{equation}
+    q_S=\frac{S^{1-\beta}}{1-\beta}, \quad q_K=\frac{K^{1-\beta}}{1-\beta},
+  \end{equation}
+  the integration term of Eq. (\ref{callprice}) becomes
+  \begin{eqnarray}
+    && \nu\sqrt{SK}\int_0^T\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\sigma^2\tau}\right)
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\sigma^2\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh t}{\sigma^2\tau}\right)e^{-\nu t}dt\Bigg)\nonumber\\
+    = && \nu\sqrt{SK}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh t}{\tau}\right)e^{-\nu t}dt\Bigg).
+  \end{eqnarray}
+  Now, consider the first integration of the above expression. Change the variable $y=q_Kq_S/\tau$, define
+  $b=(q_K^2+q_S^2)/2q_Kq_S$, and integrate by parts, we have
+  \begin{eqnarray}
+    && \frac{\nu\sqrt{SK}}{\pi}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
+       \int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{dy}{y}
+       \int_0^{\pi}e^{-(b-\cos\theta)y}d\sin(\nu\theta)\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}dy
+         \left[\left.\frac{\sin(\nu\theta)}{y}e^{-(b-\cos\theta)y}\right|_0^{\pi}
+              +\int_0^{\pi}\sin\theta\sin(\nu\theta)e^{-(b-\cos\theta)y}d\theta\right]\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}}{\pi}\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta.
+  \end{eqnarray}
+  Similarly, the second integration can be manipulated to give
+  \begin{eqnarray}
+    && -\frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}\sin(\nu\pi)}{\pi}\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt.
+  \end{eqnarray}
+  Finally, the call option price is
+  \begin{eqnarray}
+    C(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt\Bigg).
+  \end{eqnarray}
+
 
 
 % \section{SABR}
@@ -244,6 +304,9 @@
 
   \bibitem{DLMF1}
     See \url{http://dlmf.nist.gov/10.22.E67}.
+
+  \bibitem{DLMF2}
+    See \url{http://dlmf.nist.gov/10.32.E4}.
 \end{thebibliography}
 
 
