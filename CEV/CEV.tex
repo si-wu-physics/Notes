@@ -246,7 +246,7 @@
   To preclude arbitrage opportunity, we are going to consider the European call option price under the absorbing boundary condition.
   The price for a European call option with expiry $T$, forward $S$, and strike $K$ is given by
   \begin{equation}
-    C(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp(0,S;\tau,K)d\tau,
+    C_A(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp(0,S;\tau,K)d\tau,
     \label{callprice}
   \end{equation}
   with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
@@ -292,12 +292,22 @@
   \end{eqnarray}
   Finally, the call option price is
   \begin{eqnarray}
-    C(T,S,K) &=& (S-K)^+ \nonumber\\
+    C_A(T,S,K) &=& (S-K)^+ \nonumber\\
              &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
                         \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
              &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt\Bigg).
   \end{eqnarray}
+
+  For completeness, we also record the result for reflection boundary condition as
+  \begin{eqnarray}
+    C_R(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{\nu t}\sinh t}{b+\cosh t}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt\Bigg).
+  \end{eqnarray}
+
 
 
 
@@ -305,7 +315,7 @@
 
   The SABR model is characterized by the following stochastic process,
   \begin{eqnarray}
-    && ds_t=\sigma_t s_t^{\beta}dW_t,\nonumber\\
+    && dS_t=\sigma_t S_t^{\beta}dW_t,\nonumber\\
     && d\sigma_t=\xi_t\sigma_tdZ_t,\\
     && {\mathrm E}[dW_tdZ_t]=\rho dt,\nonumber
   \end{eqnarray}
