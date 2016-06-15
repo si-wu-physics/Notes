@@ -91,12 +91,11 @@
   \begin{equation}
     j(t,s) = -\frac{1}{2}\sigma^2\frac{\partial }{\partial s}\left(s^{2\beta}p(t,s)\right).
   \end{equation}
-  The common choices for the boundary condition can be either absorbing or reflective, with $j(t,s)$ being finite or
-  vanishing, respectively, {\it i.e.},
+  The common choices for the boundary condition can be either absorbing or reflective,
   \begin{eqnarray}
-    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow {\rm const.}, 
+    s^{2\beta}p(t,s) \rightarrow 0,
         && s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
-    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow 0, 
+    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow 0,
         && s\rightarrow 0,\quad\quad {\rm reflection \quad boundary \quad condition}.
   \end{eqnarray}
   Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
@@ -215,7 +214,23 @@
 
 \section{Reflection boundary condition}
 
-  The transition density is then given by
+  Consider the reflection boundary condition. It can be shown, to impose this boundary condition, we must have
+  \begin{equation}
+    A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)=0,
+  \end{equation}
+  and
+  \begin{equation}
+    \frac{1}{\nu}-1\geq 0,
+  \end{equation}
+  which is equivalent to
+  \begin{equation}
+    \beta \leq \frac{1}{2}.
+  \end{equation}
+  Now, we have
+  \begin{equation}
+    g(\lambda,x)=-s^{(1-4\beta)/2}\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}J_{-\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
+  \end{equation}
+  Proceed in the same way as the absorbing boundary condition, the transition density is then given by
   \begin{equation}
     p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
@@ -286,7 +301,24 @@
 
 
 
-% \section{SABR}
+\section{SABR}
+
+  The SABR model is characterized by the following stochastic process,
+  \begin{eqnarray}
+    && ds_t=\sigma_t s_t^{\beta}dW_t,\nonumber\\
+    && d\sigma_t=\xi_t\sigma_tdZ_t,\\
+    && {\mathrm E}[dW_tdZ_t]=\rho dt,\nonumber
+  \end{eqnarray}
+  where the volatility of the forward process is now stochastic, $\xi_t$ is the volatility of volatility (volvol),
+  and $\rho$ is the correlation. In the following, we will first consider the zero correlation model, then map the non-zero
+  correlation model to the zero correlation one.
+
+  \subsection{Zero correlation}
+
+
+
+  \subsection{Non-zero correlation}
+
 
 
 % \section{Free boundary CEV}
