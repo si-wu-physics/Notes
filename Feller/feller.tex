@@ -12,19 +12,46 @@
 
 \section{Fokker-Planck Equation}
 
-  Consider the following paraboic partial differential equation \cite{Feller}
+  Consider the following paraboic partial differential equation (PDE) \cite{Feller}
   \begin{equation}
     \frac{\partial u(t,x)}{\partial t} = -\frac{\partial}{\partial x}\left((bx+c)u(t,x)\right)
-                                       + \frac{\partial^2}{\partial x^2}\left(axu(t,x)\right).
+                                       + \frac{\partial^2}{\partial x^2}\left(axu(t,x)\right),
+    \label{FP}
   \end{equation}
-  This can be view as the corresponding Fokker-Planck equation for the Cox-Ingersoll-Ross (CIR)
+  with $x>0$. This can be viewed as the corresponding Fokker-Planck equation for the Cox-Ingersoll-Ross (CIR)
   process
   \begin{equation}
     dx_t=\kappa(\theta-x_t)dt + \sigma\sqrt{x_t}dW_t,
   \end{equation}
   with $a=\sigma^2/2$, $b=-\kappa$, and $c=\kappa\theta$.
 
+  We want to find the fundamental solution of the PDE (\ref{FP}), {\it i.e.}, the initial condition is given
+  by
+  \begin{equation}
+    u(0,x)=\delta(x-y),
+  \end{equation}
+  where $\delta(x)$ is the Dirac delta function. To this end, introduce the Laplace transform of $u(t,x)$ as
+  \begin{equation}
+    v(t,\lambda)=\int_0^{+\infty}e^{-\lambda x}u(t,x),
+  \end{equation}
+  for $\lambda > 0$. Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
+  \begin{eqnarray}
+      && \int_0^{+\infty} e^{-\lambda x}\left[\left(axu(t,x)\right)_{xx}-\left((bx+c)u(t,x)\right)_x\right]dx \nonumber\\
+    = && \left. e^{-\lambda x}\left[\left(axu(t,x)\right)_{x}-\left((bx+c)u(t,x)\right)\right]\right|_0^{+\infty}\nonumber\\
+      && \quad\quad \lambda \int_0^{+\infty} e^{-\lambda x}\left[\left(axu(t,x)\right)_{x}-\left((bx+c)u(t,x)\right)\right]dx \nonumber\\
+    = && f(t) + \lambda(b-\lambda a)v_s - c\lambda v,
+  \end{eqnarray}
+  where
+  \begin{equation}
+    f(t) = \lim_{x\rightarrow 0}\left[(bx+c)u-(axu)_x\right],
+  \end{equation}
+  is the flux at $x=0$ and cannot be arbitrarily specified.
 
+  After the Laplace transform, Eq. (\ref{FP}) becomes
+  \begin{equation}
+    v_t + \lambda(\lambda a - b) v_s = f(t) - c\lambda v.
+  \end{equation}
+  This first order PDE can be solved by the method of characteristics.
 
 
 \begin{thebibliography}{99}
