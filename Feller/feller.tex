@@ -12,7 +12,7 @@
 
 \section{Fokker-Planck Equation}
 
-  Consider the following paraboic partial differential equation (PDE) \cite{Feller}
+  Consider the following parabolic partial differential equation (PDE) \cite{Feller}
   \begin{equation}
     \frac{\partial u(t,x)}{\partial t} = -\frac{\partial}{\partial x}\left((bx+c)u(t,x)\right)
                                        + \frac{\partial^2}{\partial x^2}\left(axu(t,x)\right),
@@ -25,7 +25,8 @@
   \end{equation}
   with $a=\sigma^2/2$, $b=-\kappa$, and $c=\kappa\theta$.
 
-  We want to find the fundamental solution of the PDE (\ref{FP}), {\it i.e.}, the initial condition is given
+  We want to find the solution of the PDE (\ref{FP}), with certain initial condition. In particular, we are 
+  interested in the fundamental solution of the PDE (\ref{FP}), {\it i.e.}, the initial condition is given
   by
   \begin{equation}
     u(0,x)=\delta(x-y),
@@ -34,12 +35,16 @@
   \begin{equation}
     v(t,\lambda)=\int_0^{+\infty}e^{-\lambda x}u(t,x)dx,
   \end{equation}
-  for $\lambda > 0$. Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
+  for $\lambda > 0$. We denote the Laplace transform of the initial condition as
+  \begin{equation}
+    \pi(\lambda) = \int_0^{+\infty}e^{-\lambda x}u(0,x)dx,
+  \end{equation} 
+  and for the fundamental solution, $\pi(\lambda) = e^{-\lambda y}$. Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
   \begin{eqnarray}
-      && \int_0^{+\infty} e^{-\lambda x}\left[\left(axu(t,x)\right)_{xx}-\left((bx+c)u(t,x)\right)_x\right]dx \nonumber\\
-    = && \left. e^{-\lambda x}\left[\left(axu(t,x)\right)_{x}-\left((bx+c)u(t,x)\right)\right]\right|_0^{+\infty}\nonumber\\
-      && \quad\quad \lambda \int_0^{+\infty} e^{-\lambda x}\left[\left(axu(t,x)\right)_{x}-\left((bx+c)u(t,x)\right)\right]dx \nonumber\\
-    = && f(t) + \lambda(b-\lambda a)v_s - c\lambda v,
+      && \int_0^{+\infty} e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{xx}-\big((bx+c)u(t,x)\big)_x\bigg]dx \nonumber\\
+    = && \left. e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{x}-\big((bx+c)u(t,x)\big)\bigg]\right|_0^{+\infty}\nonumber\\
+      && \quad\quad +\lambda \int_0^{+\infty} e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{x}-\big((bx+c)u(t,x)\big)\bigg]dx \nonumber\\
+    = && f(t) + \lambda(b-\lambda a)v_{\lambda} - c\lambda v,
   \end{eqnarray}
   where
   \begin{equation}
@@ -49,7 +54,7 @@
 
   After the Laplace transform, Eq. (\ref{FP}) becomes
   \begin{equation}
-    v_t + \lambda(\lambda a - b) v_s = f(t) - c\lambda v.
+    v_t + \lambda(\lambda a - b) v_{\lambda} = f(t) - c\lambda v.
   \end{equation}
   This first order PDE can be solved by the method of characteristics.
 
