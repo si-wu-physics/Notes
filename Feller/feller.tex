@@ -55,8 +55,25 @@
   After the Laplace transform, Eq. (\ref{FP}) becomes
   \begin{equation}
     v_t + \lambda(\lambda a - b) v_{\lambda} = f(t) - c\lambda v.
+    \label{FP2}
   \end{equation}
-  This first order PDE can be solved by the method of characteristics.
+  This first order PDE can be solved by the method of characteristics. The characteristics can be determined by integrating
+  \begin{equation}
+    dt = \frac{d\lambda}{\lambda(a\lambda - b)},
+  \end{equation}
+  which leads to 
+  \begin{equation}
+    e^{-bt}\frac{a\lambda - b}{\lambda} = C_1,
+  \end{equation}
+  with $C_1 = a - b/\lambda$. Then, Eq. (\ref{FP2}) can be integrated, 
+  \begin{equation}
+    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{C_2+\int_0^t\frac{f(\tau)}{\left|C_1-ae^{-bt}\right|^{c/a}}\right\}.
+  \end{equation}
+  Together with the initial condition, the general solution becomes
+  \begin{equation}
+    v(t,\lambda)=\left(\frac{b}{\lambda a(e^{bt}-1)+b}\right)^{c/a}\pi\left(\frac{\lambda be^{bt}}{\lambda a(e^{bt}-1)+b}\right)
+                    +\int_0^tf(\tau)\left(\frac{b}{\lambda a(e^{b(t-\tau)}-1)+b}\right)^{c/a}d\tau.
+  \end{equation}
 
 
 \begin{thebibliography}{99}
