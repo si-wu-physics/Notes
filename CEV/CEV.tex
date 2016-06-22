@@ -5,7 +5,7 @@
 
 \begin{document}
 
-\title{Notes on CEV}
+\title{Notes on CEV Model}
 \date{Dec. 32, 2999}
 
 \maketitle
@@ -126,6 +126,7 @@
   irrespective of the boundary condition, which gives the call option price as
   \begin{equation}
     C(t,S_t,T,K) = \int (s-K)^+p(T,s)ds = (S_t-K)^++\frac{1}{2}\sigma^2\int_t^T K^{2\beta}p(u,K)du.
+    \label{TimeValue}
   \end{equation}
   However, for the put payoff, there will be an additional boundary term for the reflection boundary condition.
 
@@ -137,10 +138,10 @@
   \begin{equation}
     g(\lambda, s)=s^{(1-4\beta)/2}A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
   \end{equation}
-  To determine the coefficient $A_{\nu}(\lambda)$, initial condition will be needed. The inverse Laplace transform of Eq.
-  (\ref{Laplace}) is given by
+  To determine the coefficient $A_{\nu}(\lambda)$, initial condition will be needed. From Eq. (\ref{Laplace}), the transition
+  density is given by
   \begin{equation}
-    p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda,s)d\lambda
+    p_A(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda,s)d\lambda
           =s^{(1-4\beta)/2}\int_0^{+\infty}e^{-\lambda t}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
   \end{equation}
@@ -186,7 +187,7 @@
   $$
   the transition density can be calculated,
   \begin{eqnarray}
-    p(t,s) &=& \frac{2\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-\lambda t}
+    p_A(t,s) &=& \frac{2\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-\lambda t}
                 J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
                 J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)d\lambda\nonumber\\
            &=& \frac{4\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-tu^2} u
@@ -204,7 +205,7 @@
 
   Finally, the transition density is given by
   \begin{equation}
-    p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
+    p_A(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
     I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
     \label{density1}
@@ -232,7 +233,7 @@
   \end{equation}
   Proceed in the same way as the absorbing boundary condition, the transition density is then given by
   \begin{equation}
-    p(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
+    p_R(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
     I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
   \end{equation}
@@ -246,7 +247,7 @@
   To preclude arbitrage opportunity, we are going to consider the European call option price under the absorbing boundary condition.
   The price for a European call option with expiry $T$, forward $S$, and strike $K$ is given by
   \begin{equation}
-    C_A(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp(0,S;\tau,K)d\tau,
+    C_A(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp_A(0,S;\tau,K)d\tau,
     \label{callprice}
   \end{equation}
   with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
@@ -316,11 +317,12 @@
   The SABR model is characterized by the following stochastic process,
   \begin{eqnarray}
     && dS_t=\sigma_t S_t^{\beta}dW_t,\nonumber\\
-    && d\sigma_t=\xi_t\sigma_tdZ_t,\\
+    && d\sigma_t=\gamma\sigma_tdZ_t,\\
     && {\mathrm E}[dW_tdZ_t]=\rho dt,\nonumber
   \end{eqnarray}
-  where the volatility of the forward process is now stochastic, $\xi_t$ is the volatility of volatility (volvol),
-  and $\rho$ is the correlation. In the following, we will first consider the zero correlation model, then map the non-zero
+  where the volatility of the forward process is now stochastic, $\gamma$ is the volatility of volatility (volvol),
+  and $\rho$ is the correlation. The initial volatility of $\sigma_t$ is assumed to be $\sigma_0$. 
+  In the following, we will first consider the zero correlation model, then map the non-zero
   correlation model to the zero correlation one.
 
   \subsection{Zero correlation}
@@ -331,7 +333,38 @@
 
 
 
-% \section{Free boundary CEV}
+\section{Free boundary CEV}
+
+  The CEV process (\ref{CEV}) can be modified to allow negative forward in the following way,
+  \begin{equation}
+    dS_t=\sigma \left|S_t\right|^{\beta}dW_t,
+    \label{FreeBoundaryCEV}
+  \end{equation}
+  with $0<\beta<1/2$. The corresponding Fokker-Planck equation is then given by
+  \begin{equation}
+    -\frac{\partial p(t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
+    \left(\left|s\right|^{2\beta}p(t,s)\right) = 0,
+    \label{FBCEVFP}
+  \end{equation}
+  with initial condition (\ref{initial}). The solution to the Fokker-Planck equation (\ref{FBCEVFP})
+  can be constructed as
+  \begin{equation}
+    p(t,s)=\frac{1}{2}\bigg(p_R\left(t,\left|s\right|\right)+{\rm sgn}(s)p_A\left(t,\left|s\right|\right)\bigg),
+  \end{equation}
+  where $p_A(t,s)$ and $p_R(t,s)$ are the solution to the Fokker-Plack equation (\ref{FP}) under
+  the absorbing and reflection boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
+  it can be shown that the call option price in the free boundary CEV model is
+  \begin{eqnarray}
+    C_F(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
+                \frac{dt}{b+\cosh t}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)\nonumber\\
+             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times 
+                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu t)+{\bf 1}_{K< 0}\sinh(\nu t)\bigg)\sinh t\Bigg).
+  \end{eqnarray}
+
 
 
 % \section{Free boundary SABR}
