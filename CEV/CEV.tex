@@ -12,25 +12,26 @@
 
 \section{Fokker-Planck Equation}
 
-  Consider the CEV process,
+  Assume the forward process follows the CEV process,
   \begin{equation}
     dS_t=\sigma S_t^{\beta}dW_t,
     \label{CEV}
   \end{equation}
   with $\beta < 1$, the corresponding Fokker-Planck equation is given by
   \begin{equation}
-    -\frac{\partial p(t_0,s_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
-    \left(s^{2\beta}p(t_0,s_0;t,s)\right) = 0,
+    -\frac{\partial p(0,s_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
+    \left(s^{2\beta}p(0,s_0;t,s)\right) = 0,
     \label{FP}
   \end{equation}
   with the initial condition
   \begin{equation}
-    p(t_0,s_0;t_0,s) = \delta(s-s_0),
+    p(0,s_0;0,s) = \delta(s-s_0),
     \label{initial}
   \end{equation}
-  where $\delta(x)$ is the Dirac delta function. In the following, we will write $p(t,s)\equiv p(t_0,s_0;t,s)$.
+  where $\delta(x)$ is the Dirac delta function. Since the CEV process is time homogeneous, we do not need
+  make the initial time explicit, and we will write $p(t,s)\equiv p(0,s_0;t,s)$.
 
-  Define the Laplace transform of the forward transition density $p(t,s)$ as
+  Define the Laplace transform of the forward transition density $p(t,s)$ as \cite{Lesniewski}
   \begin{equation}
     p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda, s)d\lambda,
     \label{Laplace}
@@ -83,7 +84,7 @@
     Y_{\nu}(x)=\frac{J_{\nu}(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)}.
   \end{equation}
 
-  Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current convervation form,
+  Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current conservation form,
   \begin{equation}
     \frac{\partial p(t,s)}{\partial t} + \frac{\partial j(t,s)}{\partial s} = 0,
   \end{equation}
@@ -145,8 +146,7 @@
           =s^{(1-4\beta)/2}\int_0^{+\infty}e^{-\lambda t}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
   \end{equation}
-  Assuming $t_0=0$ for the moment, and set $t=0$ in the above equation, and take into account of the initial condition
-  (\ref{initial}), we have
+  Take into account of the initial condition (\ref{initial}), we have
   \begin{equation}
     \delta(s-s_0)=s^{(1-4\beta)/2}\int_0^{+\infty}
           A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
@@ -196,6 +196,7 @@
            &=& \frac{2\nu}{\sigma^2t}\left(s_0s^{1-4\beta}\right)^{1/2}
                \exp\left(-\frac{2\nu^2}{\sigma^2t}\left(s_0^{\frac{1}{\nu}}+s^{\frac{1}{\nu}}\right)\right)
                I_{\nu}\left(\frac{4\nu^2}{\sigma^2t}\left(s_0s\right)^{\frac{1}{2\nu}}\right),
+    \label{density1}
   \end{eqnarray}
   where we have used the result \cite{DLMF1}
   \begin{equation}
@@ -203,12 +204,11 @@
   \end{equation}
   and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
 
-  Finally, the transition density is given by
+  Finally, the transion density is given by
   \begin{equation}
-    p_A(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
-    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
-    I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
-    \label{density1}
+    p_A(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+    I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
   \end{equation}
 
 
@@ -233,9 +233,9 @@
   \end{equation}
   Proceed in the same way as the absorbing boundary condition, the transition density is then given by
   \begin{equation}
-    p_R(t_0,s_0;t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2(t-t_0)}
-    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2(t-t_0)}\right)
-    I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2(t-t_0)}\right).
+    p_R(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+    I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
   \end{equation}
 
 
@@ -253,8 +253,8 @@
   with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
   Bessel function \cite{DLMF2},
   \begin{equation}
-    I_{\nu}(z) = \frac{1}{\pi}\int_0^{\pi}e^{z\cos\theta}\cos(\nu\theta)d\theta
-                - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}e^{-z\cosh t - \nu t}dt
+    I_{\nu}(z) = \frac{1}{\pi}\int_0^{\pi}e^{z\cos\phi}\cos(\nu\phi)d\phi
+                - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}e^{-z\cosh \psi - \nu \psi}d\psi
   \end{equation}
   Define
   \begin{equation}
@@ -263,51 +263,51 @@
   the integration term of Eq. (\ref{callprice}) becomes
   \begin{eqnarray}
     && \nu\sqrt{SK}\int_0^T\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\sigma^2\tau}\right)
-    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\sigma^2\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\sigma^2\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
     && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
-            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh t}{\sigma^2\tau}\right)e^{-\nu t}dt\Bigg)\nonumber\\
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\sigma^2\tau}\right)e^{-\nu \psi}d\psi\Bigg)\nonumber\\
     = && \nu\sqrt{SK}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
-    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
     && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
-            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh t}{\tau}\right)e^{-\nu t}dt\Bigg).
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\tau}\right)e^{-\nu \psi}d\psi\Bigg).
   \end{eqnarray}
   Now, consider the first integration of the above expression. Change the variable $y=q_Kq_S/\tau$, define
   $b=(q_K^2+q_S^2)/2q_Kq_S$, and integrate by parts, we have
   \begin{eqnarray}
     && \frac{\nu\sqrt{SK}}{\pi}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
-       \int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\theta}{\tau}\right)\cos(\nu\theta)d\theta\nonumber\\
+       \int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
     = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{dy}{y}
-       \int_0^{\pi}e^{-(b-\cos\theta)y}d\sin(\nu\theta)\nonumber\\
+       \int_0^{\pi}e^{-(b-\cos\phi)y}d\sin(\nu\phi)\nonumber\\
     = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}dy
-         \left[\left.\frac{\sin(\nu\theta)}{y}e^{-(b-\cos\theta)y}\right|_0^{\pi}
-              +\int_0^{\pi}\sin\theta\sin(\nu\theta)e^{-(b-\cos\theta)y}d\theta\right]\nonumber\\
+         \left[\left.\frac{\sin(\nu\phi)}{y}e^{-(b-\cos\phi)y}\right|_0^{\pi}
+              +\int_0^{\pi}\sin\phi\sin(\nu\phi)e^{-(b-\cos\phi)y}d\phi\right]\nonumber\\
     = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
-      && \quad\quad\quad\quad+ \frac{\sqrt{SK}}{\pi}\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta.
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}}{\pi}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi.
   \end{eqnarray}
   Similarly, the second integration can be manipulated to give
   \begin{eqnarray}
     && -\frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
-      && \quad\quad\quad\quad+ \frac{\sqrt{SK}\sin(\nu\pi)}{\pi}\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt.
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}\sin(\nu\pi)}{\pi}\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi.
   \end{eqnarray}
   Finally, the call option price is
   \begin{eqnarray}
     C_A(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt\Bigg).
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
     \label{CEVAbsorbingCall}
   \end{eqnarray}
 
   For completeness, we also record the result for reflection boundary condition as
   \begin{eqnarray}
     C_R(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{\nu t}\sinh t}{b+\cosh t}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)dt\Bigg).
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
   \end{eqnarray}
 
 
@@ -337,16 +337,16 @@
     the call option price is given by
     \begin{eqnarray}
       C(T,S,K) &=& (S-K)^+ \nonumber\\
-               &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
-                          \frac{G(\gamma^2T,s(\theta))}{\cosh\left(s(\theta)\right)}d\theta\nonumber\\
-               &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu t}\sinh t}{b+\cosh t}
-         \frac{G(\gamma^2T,s(t))}{\cosh\left(s(t)\right)}dt\Bigg),
+               &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                          \frac{G(\gamma^2T,s(\phi))}{\cosh\left(s(\phi)\right)}d\phi\nonumber\\
+               &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
+         \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}d\psi\Bigg),
       \label{SABRZC}
     \end{eqnarray}
     where 
     \begin{eqnarray}
-      && \sinh\left(s(\theta)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b-\cos\theta)}, \nonumber\\
-      && \sinh\left(s(t)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b+\cosh t)}.
+      && \sinh\left(s(\phi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b-\cos\phi)}, \nonumber\\
+      && \sinh\left(s(\psi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b+\cosh\psi)}.
     \end{eqnarray}
     Here, 
     \begin{equation}
@@ -409,10 +409,13 @@
       L=\frac{\sigma_{{\rm min}}}{\gamma q\sqrt{1-\rho^2}},
     \end{equation}
     and
-    \begin{equation}
-      I=
-    \end{equation}
-    where
+    \begin{eqnarray}
+      I=\frac{2}{\sqrt{1-L^2}}\left(\arctan\left(\frac{u_0+L}{\sqrt{1-L^2}}\right)
+                    -\arctan\left(\frac{L}{\sqrt{1-L^2}}\right)\right)       && \quad L < 1 \\
+      I=\frac{1}{\sqrt{L^2-1}}\log\left(\frac{1+u_0\left(L+\sqrt{L^2-1}\right)}
+                                               {1+u_0\left(L-\sqrt{L^2-1}\right)}\right)  && \quad L > 1
+    \end{eqnarray}
+    with the limit $I(L=1)=2u_0/(1+u_0)$, where
     \begin{equation}
       q=\frac{K^{1-\beta}}{1-\beta},\quad u_0=\frac{\delta q \gamma\rho+\sigma_0-\sigma_{{\rm min}}}{\delta q \gamma\sqrt{1-\rho^2}}.
     \end{equation}
@@ -478,25 +481,57 @@
   the absorbing and reflection boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
   it can be shown that the call option price in the free boundary CEV model is
   \begin{eqnarray}
-    C_F(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\theta\sin(\nu\theta)}{b-\cos\theta}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\theta\right)\right)d\theta\nonumber\\
+    C(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
              &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
-                \frac{dt}{b+\cosh t}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh t\right)\right)\nonumber\\
+                \frac{d\psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)\nonumber\\
              &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times 
-                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu t)+{\bf 1}_{K< 0}\sinh(\nu t)\bigg)\sinh t\Bigg).
+                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
   \end{eqnarray}
 
 
 
 \section{Free boundary SABR}
 
-
+  Similar to the free boundary CEV process, the forward process of the SABR model can also be modified to allow negative
+  forward in the following way,
+  \begin{equation}
+    dS_t=\sigma \left|S_t\right|^{\beta}dW_t,
+    \label{FreeBoundarySABR}
+  \end{equation}
+  with $0<\beta<1/2$, which becomes the free boundary SABR model. When the correlation is zero, $\rho=0$, the call option
+  value has the similar form to the SABR model,
+  \begin{eqnarray}
+    C(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \frac{G(\gamma^2T,s(\phi))}{\cosh\left(s(\phi)\right)}d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
+                \frac{d\psi}{b+\cosh \psi}
+       \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}\nonumber\\
+             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times 
+                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
+  \end{eqnarray}
+  For non-zero correlation, the parameters can be mapped to those of a zero correlation model as in the SABR case. The only difference is
+  that 
+  \begin{equation}
+      \delta q = \frac{|k|^{1-\beta}-|S|^{1-\beta}}{1-\beta},\quad 
+      \delta \tilde{q} = \frac{|k|^{1-\tilde{\beta}}-|S|^{1-\tilde{\beta}}}{1-\tilde{\beta}} = \delta q,
+  \end{equation}
+  where
+  \begin{equation}
+    k={\rm max}(K,0.1S).
+  \end{equation}
+  If the mapped $\tilde{\gamma}^2$ is negative, we can similarly set $\tilde{\gamma}$ to 0, and the free boundary SABR model
+  will degenerate to the corresponding free boundary CEV model.
 
 
 
 \begin{thebibliography}{99}
+  \bibitem{Lesniewski}
+    See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
+
   \bibitem{Bessel}
     See \url{http://mathworld.wolfram.com/BesselDifferentialEquation.html}.
 
