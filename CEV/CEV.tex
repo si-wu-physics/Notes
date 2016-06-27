@@ -483,13 +483,18 @@
   \begin{eqnarray}
     C(T,S,K) &=& (S-K)^+ \nonumber\\
              &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
+                        \exp\left(-\frac{\bar{q}\left(b-\cos\phi\right)}{\sigma^2T}\right)d\phi\nonumber\\
              &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
                 \frac{d\psi}{b+\cosh \psi}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)\nonumber\\
+       \exp\left(-\frac{\bar{q}\left(b+\cosh \psi\right)}{\sigma^2T}\right)\nonumber\\
              &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
-                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
+                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg),
   \end{eqnarray}
+  where
+  \begin{equation}
+    \bar{q}=q_Kq_S,\quad b=\frac{q_K^2+q_S^2}{2q_Kq_S},\quad q_K=\frac{|K|^{1-\beta}}{1-\beta},
+    \quad q_S=\frac{|S|^{1-\beta}}{1-\beta}.
+  \end{equation}
 
 
 
@@ -521,7 +526,11 @@
   \end{equation}
   where
   \begin{equation}
-    k={\rm max}(K,0.1S).
+    k={\rm max}(K,0.1S)
+  \end{equation}
+  and
+  \begin{equation}
+    L=\frac{\sigma_{{\rm min}}(1-\beta)}{\gamma k^{1-\beta}\sqrt{1-\rho^2}},
   \end{equation}
   If the mapped $\tilde{\gamma}^2$ is negative, we can similarly set $\tilde{\gamma}$ to 0, and the free boundary SABR model
   will degenerate to the corresponding free boundary CEV model.
