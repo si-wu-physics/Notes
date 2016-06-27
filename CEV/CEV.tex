@@ -343,12 +343,12 @@
          \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}d\psi\Bigg),
       \label{SABRZC}
     \end{eqnarray}
-    where 
+    where
     \begin{eqnarray}
       && \sinh\left(s(\phi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b-\cos\phi)}, \nonumber\\
       && \sinh\left(s(\psi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b+\cosh\psi)}.
     \end{eqnarray}
-    Here, 
+    Here,
     \begin{equation}
       G(t,s)=\frac{2e^{-t/8}}{t\sqrt{\pi t}}\int_s^{+\infty}ue^{-u^2/2t}\sqrt{\cosh u - \cosh s}du,
     \end{equation}
@@ -361,7 +361,7 @@
     For non-zero correlation model, we need to map it to a zero correlation model. Denote the mapped parameters with a tilde,
     then the mapped $\beta$ and $\gamma$ can be chosen as
     \begin{equation}
-      \tilde{\beta} = \beta, \quad 
+      \tilde{\beta} = \beta, \quad
       \tilde{\gamma}^2 = \gamma^2 - \frac{3}{2}\bigg(\gamma^2\rho^2+\sigma_0\gamma\rho(1-\beta)S^{\beta-1}\bigg).
     \end{equation}
     Then, the mapped initial volatility can be expressed as an expansion in maturity
@@ -378,7 +378,7 @@
     \end{equation}
     and
     \begin{equation}
-      \delta q = \frac{K^{1-\beta}-S^{1-\beta}}{1-\beta},\quad 
+      \delta q = \frac{K^{1-\beta}-S^{1-\beta}}{1-\beta},\quad
       \delta \tilde{q} = \frac{K^{1-\tilde{\beta}}-S^{1-\tilde{\beta}}}{1-\tilde{\beta}} = \delta q,
     \end{equation}
     since $\tilde{\beta} = \beta$. Also,
@@ -406,7 +406,7 @@
     Here,
     \begin{equation}
       \varphi_0=\arccos\left(-\frac{\gamma\delta q+\rho\sigma_0}{\sigma_{{\rm min}}}\right),\quad
-      L=\frac{\sigma_{{\rm min}}}{\gamma q\sqrt{1-\rho^2}},
+      L=\frac{\sigma_{{\rm min}}}{\gamma q_K\sqrt{1-\rho^2}},
     \end{equation}
     and
     \begin{eqnarray}
@@ -417,7 +417,7 @@
     \end{eqnarray}
     with the limit $I(L=1)=2u_0/(1+u_0)$, where
     \begin{equation}
-      q=\frac{K^{1-\beta}}{1-\beta},\quad u_0=\frac{\delta q \gamma\rho+\sigma_0-\sigma_{{\rm min}}}{\delta q \gamma\sqrt{1-\rho^2}}.
+      u_0=\frac{\delta q \gamma\rho+\sigma_0-\sigma_{{\rm min}}}{\delta q \gamma\sqrt{1-\rho^2}}.
     \end{equation}
 
     Finally, the call option price of the non-zero correlation model can be obtained by replace the parameters
@@ -487,7 +487,7 @@
              &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
                 \frac{d\psi}{b+\cosh \psi}
        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)\nonumber\\
-             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times 
+             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
                   \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
   \end{eqnarray}
 
@@ -510,13 +510,13 @@
              &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
                 \frac{d\psi}{b+\cosh \psi}
        \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}\nonumber\\
-             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times 
+             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
                   \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
   \end{eqnarray}
   For non-zero correlation, the parameters can be mapped to those of a zero correlation model as in the SABR case. The only difference is
-  that 
+  that
   \begin{equation}
-      \delta q = \frac{|k|^{1-\beta}-|S|^{1-\beta}}{1-\beta},\quad 
+      \delta q = \frac{|k|^{1-\beta}-|S|^{1-\beta}}{1-\beta},\quad
       \delta \tilde{q} = \frac{|k|^{1-\tilde{\beta}}-|S|^{1-\tilde{\beta}}}{1-\tilde{\beta}} = \delta q,
   \end{equation}
   where
