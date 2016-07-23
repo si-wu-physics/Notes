@@ -353,6 +353,22 @@
       G(t,s)=\frac{2e^{-t/8}}{t\sqrt{\pi t}}\int_s^{+\infty}ue^{-u^2/2t}\sqrt{\cosh u - \cosh s}du,
     \end{equation}
     is an integration kernel, which has a highly accurate series expansion approximation,
+    \begin{equation}
+      G(t,s)=\sqrt{\frac{\sinh s}{s}}e^{-\frac{s^2}{2t}-\frac{t}{8}}\left(R(t,s)+\delta R(t,s)\right),
+    \end{equation}
+    where
+    \begin{equation}
+      R(t,s)=1+\frac{3tg(s)}{8s^2}-\frac{5t^2(-8s^2+3g^2(s)+24g(s))}{128s^4}
+              +\frac{35t^3(-40s^2+3g^3(s)+24g^2(s)+120g(s))}{1024s^6},
+    \end{equation}
+    with $g(s)=s\coth(s)-1$, and
+    \begin{equation}
+      \delta R(t,s)=e^{\frac{t}{8}}-\frac{3072+384t+24t^2+t^3}{3072}.
+    \end{equation}
+    In the limit of $s\rightarrow 0$, $G(t,s)$ has the following MacLaurin expansion,
+    \begin{equation}
+      G(t,s)=e^{-\frac{s^2}{2t}}\left(1+\left(\frac{1}{12}-\frac{2688+80t^2+21t^3}{322560}e^{-\frac{t}{8}}\right)s^2\right).
+    \end{equation}
 
 
 
