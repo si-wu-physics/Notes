@@ -160,13 +160,14 @@
 
   The density relating the $T$-forward measure and the risk neutral measure is given by
   \begin{equation}
-    \zeta(t)=E_t^Q\left[\frac{dP^T}{dP}\right]=\frac{P(t,T)/P(0,T)}{B(t)/B(0)}.
+    \zeta(t)=E_t^Q\left[\frac{dP^T}{dP}\right]=\frac{P(t,T)/P(0,T)}{B(t)/B(0)},
   \end{equation}
+  where $B(t)=\exp(\int_0^tr(u)du)$ is the numeraire of the risk neutral measure.
   This density is a martingale in the risk neutral measure, and therefore,
   \begin{equation}
     \frac{d\zeta(t)}{\zeta(t)}=-G^{\prime}(t,T)\sigma_r^{\prime}(t)dW(t).
   \end{equation}
-  The Brownian motion under the $T$-forward is then given by
+  The Brownian motion under the $T$-forward, following the Girsanov's theorem, is then given by
   \begin{equation}
     dW^T(t)=dW(t)+\sigma_r(t)G(t,T)dt.
     \label{Tmeasure}
@@ -590,7 +591,7 @@
 
 \appendix
 
-  \section{Girsanov Theorem}
+  \section{Girsanov's Theorem}
 
   Consider two measures $P$ and $P(\theta)$ related by a density
   \begin{equation}
