@@ -452,134 +452,191 @@
   where $g(t;\omega)$ is a $d\times d$-matrix valued function, and $h(t)$ is a deterministic, $d$-dimensional column vector function.
   We are going to develop efficient approximation for the swap rate, which will also cover the pure Gaussian case.
 
-  Consider the following volatility specification which contains both local and stochastic volatilities,
-  \begin{equation}
-    \sigma_r(t;\omega) = \sqrt{z(t)}\sigma_x(t,x(t), y(t)),
-  \end{equation}
-  where $z(t)$ follows the CIR process
-  \begin{equation}
-    dz(t)=\theta(z_0-z(t))dt+\eta(t)\sqrt{z(t)}dZ(t),\quad\quad z(0)=z_0=1,
-  \end{equation}
-  and $\langle dZ(t),dW(t)\rangle=0$.
+  \subsection{Approximate swap rate dynamics}
 
-  To proceed with the swap rate dynamics, fix a tenor structure
-  \begin{equation}
-    0<T_0<T_1<\cdots<T_N
-  \end{equation}
-  with
-  \begin{equation}
-    \tau_n=T_{n+1}-T_n,
-  \end{equation}
-  and the swap rate $S(t)$, with first fix date at $T_0$ and last payment date at $T_N$, is given by
-  \begin{equation}
-    S(t)=\frac{P(t,T_0)-P(t,T_N)}{A(t)},\quad\quad A(t)=\sum_{n=0}^{N-1}\tau_nP(t,T_{n+1}).
-  \end{equation}
-  Notice the functional dependence of the discount bond $P(t,T)$ on the state variables $x$ and $y$,
-  {\it i.e.}, $P(t,T)\equiv P(t,T,x(t),y(t))$, the swap rate dynamics is
-  \begin{equation}
-    dS(t) = \sqrt{z(t)} (\nabla S) \sigma_x^{\top}dW(t) + O(dt),
-  \end{equation}
-  where we are only concerned with the drift term. Since the swap rate is a martingale in the annuity
-  measure, its dynamics in the corresponding annuity measure is given by
-  \begin{equation}
-    dS(t) = \sqrt{z(t)}\bigg((\nabla S) \sigma_x^{\top}\sigma_x (\nabla S)^{\top} \bigg)^{1/2} dW^A(t).
-  \end{equation}
+    Consider the following volatility specification which contains both local and stochastic volatilities,
+    \begin{equation}
+      \sigma_r(t;\omega) = \sqrt{z(t)}\sigma_x(t,x(t), y(t)),
+    \end{equation}
+    where $z(t)$ follows the CIR process
+    \begin{equation}
+      dz(t)=\theta(z_0-z(t))dt+\eta(t)\sqrt{z(t)}dZ(t),\quad\quad z(0)=z_0=1,
+    \end{equation}
+    and $\langle dZ(t),dW(t)\rangle=0$.
 
-  Using the Markovian Projection (MP) method, the above process is equivalent to the following local volatility
-  process in terms of European option pricing,
-  \begin{equation}
-    dS(t) = \sqrt{z(t)}\varphi(t,S(t)) dW^A(t),
-  \end{equation}
-  where
-  \begin{equation}
-    \varphi^2(t,s) = E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\top}\right|S(t)=s\bigg],
-    \label{local}
-  \end{equation}
-  and $c_x=\sigma_x^{\top}\sigma_x$.
+    To proceed with the swap rate dynamics, fix a tenor structure
+    \begin{equation}
+      0<T_0<T_1<\cdots<T_N
+    \end{equation}
+    with
+    \begin{equation}
+      \tau_n=T_{n+1}-T_n,
+    \end{equation}
+    and the swap rate $S(t)$, with first fix date at $T_0$ and last payment date at $T_N$, is given by
+    \begin{equation}
+      S(t)=\frac{P(t,T_0)-P(t,T_N)}{A(t)},\quad\quad A(t)=\sum_{n=0}^{N-1}\tau_nP(t,T_{n+1}).
+    \end{equation}
+    Notice the functional dependence of the discount bond $P(t,T)$ on the state variables $x$ and $y$,
+    {\it i.e.}, $P(t,T)\equiv P(t,T,x(t),y(t))$, the swap rate dynamics is
+    \begin{equation}
+      dS(t) = \sqrt{z(t)} (\nabla S) \sigma_x^{\top}dW(t) + O(dt),
+    \end{equation}
+    where we are only concerned with the drift term. Since the swap rate is a martingale in the annuity
+    measure, its dynamics in the corresponding annuity measure is given by
+    \begin{equation}
+      dS(t) = \sqrt{z(t)}\bigg((\nabla S) \sigma_x^{\top}\sigma_x (\nabla S)^{\top} \bigg)^{1/2} dW^A(t).
+    \end{equation}
 
-  We will look for the linear approximation to $\varphi(t,s)$ in $s$, and will use $E^A(x(t))$ and $E^A(y(t))$
-  as expansion point. First, define
-  \begin{equation}
-    \sigma_x^0(t)=\sigma_x(t,0,0),
-  \end{equation}
-  then from Eq. (\ref{y}), we have
-  \begin{equation}
-    y(t)=H(t)\left(\int_0^tH^{-1}(u)\sigma_r(u)^{\top}\sigma_r(u)H^{-1}(u)du\right)H(t),
-  \end{equation}
-  and
-  \begin{equation}
-    \bar{y}(t)= E^A\left[y(t)\right] \approx H(t)\left(\int_0^tH^{-1}(u)\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)H^{-1}(u)du\right)H(t).
-  \end{equation}
-  For the approximation of $x(t)$, replace $y(t)$ with $\bar{y}(t)$ in Eq. (\ref{x}), which is the Gaussian approximation
-  to $x(t)$,
-  \begin{equation}
-    dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\kappa(t)x_g(t)\bigg)dt+\left(\sigma_x^0(t)\right)^{\top}dW(t).
-  \end{equation}
-  The corresponding dynamics for $x_g(t)$ in the $T$-forward measure, using Eq. (\ref{Tmeasure}), is
-  \begin{equation}
-    dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\left(\sigma_x^0(t)\right)^{\top}\sigma_x^0(t)G(t,T)-\kappa(t)x_g(t)\bigg)dt
-                                      +\left(\sigma_x^0(t)\right)^{\top}dW^T(t).
-  \end{equation}
-  The solution to the above SDE is
-  \begin{equation}
-    x_g(t)=H(t)\left(\int_0^tH^{-1}(u)\left[\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)G(u,T)\right)du
-                      +\left(\sigma_x^0(t)\right)^{\top}dW^T(u)\right]\right),
-  \end{equation}
-  and
-  \begin{eqnarray}
-    \bar{x}(t) &=& E^A\left[x(t)\right]\approx E^A\left[x_g(t)\right]\nonumber\\
-               &=& E^Q\left[\frac{dP^A}{dP}x_g(t)\right] = E^Q\left[\frac{A(t)/A(0)}{B(t)}x_g(t)\right]\nonumber\\
-               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^Q\left[\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
-               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{dP}{dP^{T_{n+1}}}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
-               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{B(t)}{P(t,T_{n+1})/P(0,T_{n+1})}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
-               &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}E^{T_{n+1}}\left[x_g(t)\right]\nonumber\\
-               &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}H(t)
-                    \int_0^tH^{-1}(u)\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)G(u,T)\right)du.
-  \end{eqnarray}
+    Using the Markovian Projection (MP) method, the above process is equivalent to the following local volatility
+    process in terms of European option pricing,
+    \begin{equation}
+      dS(t) = \sqrt{z(t)}\varphi(t,S(t)) dW^A(t),
+    \end{equation}
+    where
+    \begin{equation}
+      \varphi^2(t,s) = E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\top}\right|S(t)=s\bigg],
+      \label{local}
+    \end{equation}
+    and $c_x=\sigma_x^{\top}\sigma_x$.
 
-  Now, we can proceed to develop further approximation for the swap rate dynamics, around $\bar{x}(t)$ and $\bar{y}(t)$. Expand Eq. (\ref{local})
-  to first order in $x$,
-  \begin{eqnarray}
-    &&\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,x(t),y(t)\right)
-      \approx \Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,\bar{x}(t),\bar{y}(t)\right)\nonumber\\
-      &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}\left(x(t)-\bar{x}(t)\right).
-  \end{eqnarray}
-  Then,
-  \begin{eqnarray}
-    && E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\top}\right|S(t)=s\bigg]
+    We will look for the linear approximation to $\varphi(t,s)$ in $s$, and will use $E^A(x(t))$ and $E^A(y(t))$
+    as expansion point. First, define
+    \begin{equation}
+      \sigma_x^0(t)=\sigma_x(t,0,0),
+    \end{equation}
+    then from Eq. (\ref{y}), we have
+    \begin{equation}
+      y(t)=H(t)\left(\int_0^tH^{-1}(u)\sigma_r(u)^{\top}\sigma_r(u)H^{-1}(u)du\right)H(t),
+    \end{equation}
+    and
+    \begin{equation}
+      \bar{y}(t)= E^A\left[y(t)\right] \approx H(t)\left(\int_0^tH^{-1}(u)\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)H^{-1}(u)du\right)H(t).
+    \end{equation}
+    For the approximation of $x(t)$, replace $y(t)$ with $\bar{y}(t)$ in Eq. (\ref{x}), which is the Gaussian approximation
+    to $x(t)$,
+    \begin{equation}
+      dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\kappa(t)x_g(t)\bigg)dt+\left(\sigma_x^0(t)\right)^{\top}dW(t).
+    \end{equation}
+    The corresponding dynamics for $x_g(t)$ in the $T$-forward measure, using Eq. (\ref{Tmeasure}), is
+    \begin{equation}
+      dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\left(\sigma_x^0(t)\right)^{\top}\sigma_x^0(t)G(t,T)-\kappa(t)x_g(t)\bigg)dt
+                                        +\left(\sigma_x^0(t)\right)^{\top}dW^T(t).
+    \end{equation}
+    The solution to the above SDE is
+    \begin{equation}
+      x_g(t)=H(t)\left(\int_0^tH^{-1}(u)\left[\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)G(u,T)\right)du
+                        +\left(\sigma_x^0(t)\right)^{\top}dW^T(u)\right]\right),
+    \end{equation}
+    and
+    \begin{eqnarray}
+      \bar{x}(t) &=& E^A\left[x(t)\right]\approx E^A\left[x_g(t)\right]\nonumber\\
+                 &=& E^Q\left[\frac{dP^A}{dP}x_g(t)\right] = E^Q\left[\frac{A(t)/A(0)}{B(t)}x_g(t)\right]\nonumber\\
+                 &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^Q\left[\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+                 &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{dP}{dP^{T_{n+1}}}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+                 &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{B(t)}{P(t,T_{n+1})/P(0,T_{n+1})}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+                 &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}E^{T_{n+1}}\left[x_g(t)\right]\nonumber\\
+                 &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}H(t)
+                      \int_0^tH^{-1}(u)\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)G(u,T)\right)du.
+    \end{eqnarray}
+
+    Now, we can proceed to develop further approximation for the swap rate dynamics, around $\bar{x}(t)$ and $\bar{y}(t)$. Expand Eq. (\ref{local})
+    to first order in $x$,
+    \begin{eqnarray}
+      &&\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,x(t),y(t)\right)
         \approx \Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,\bar{x}(t),\bar{y}(t)\right)\nonumber\\
-      &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}
-            E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big].
-  \end{eqnarray}
-  Using a Gaussian approximation for the conditional expectation,
-  \begin{eqnarray}
-    E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big] &\approx& E^A\Big[x_g(t)-\bar{x}_g(t)|S(t)=s\Big]\nonumber\\
-              &=& \frac{{\rm Cov}\left(S_g(t),x_g(t)\right)}{{\rm Var}\left(S_g(t)\right)}\left(s-S(0)\right)\nonumber\\
-              &=& \frac{c_x\left(\nabla S\right)^{\top}}{(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
-  \end{eqnarray}
-  Notice that
-  \begin{equation}
-    \nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)c_x\left(\nabla S\right)^{\top}
-      = (\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top},
-  \end{equation}
-  where
-  \begin{equation}
-    d_x=\sum_{l=1}^d \Big(c_x (\nabla S)^{\top}\Big)_l
-              \left(\frac{\partial \sigma_x^{\top}}{\partial x_l}\sigma_x+\sigma_x^{\top}\frac{\partial \sigma_x}{\partial x_l}\right).
-  \end{equation}
-  The local volatility function is
-  \begin{equation}
-    \varphi^2(t,s)=(\nabla S) c_x (\nabla S)^{\top}
-        + \frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
-               {(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right),
-  \end{equation}
-  and linearizing around $s\approx S(0)$,
-  \begin{eqnarray}
-    \varphi(t,s)&=&\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}
-                    + \frac{1}{2\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}}\nonumber\\
-        &&\quad\quad\quad\quad \times\frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
-                                          {(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
-  \end{eqnarray}
+        &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}\left(x(t)-\bar{x}(t)\right).
+    \end{eqnarray}
+    Then,
+    \begin{eqnarray}
+      && E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\top}\right|S(t)=s\bigg]
+          \approx \Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,\bar{x}(t),\bar{y}(t)\right)\nonumber\\
+        &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}
+              E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big].
+    \end{eqnarray}
+    Using a Gaussian approximation for the conditional expectation,
+    \begin{eqnarray}
+      E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big] &\approx& E^A\Big[x_g(t)-\bar{x}_g(t)|S(t)=s\Big]\nonumber\\
+                &=& \frac{{\rm Cov}\left(S_g(t),x_g(t)\right)}{{\rm Var}\left(S_g(t)\right)}\left(s-S(0)\right)\nonumber\\
+                &=& \frac{c_x\left(\nabla S\right)^{\top}}{(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
+    \end{eqnarray}
+    Notice that
+    \begin{equation}
+      \nabla\Big((\nabla S) c_x (\nabla S)^{\top}\Big)c_x\left(\nabla S\right)^{\top}
+        = (\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top},
+    \end{equation}
+    where
+    \begin{equation}
+      d_x=\sum_{l=1}^d \Big(c_x (\nabla S)^{\top}\Big)_l
+                \left(\frac{\partial \sigma_x^{\top}}{\partial x_l}\sigma_x+\sigma_x^{\top}\frac{\partial \sigma_x}{\partial x_l}\right).
+    \end{equation}
+    The local volatility function is
+    \begin{equation}
+      \varphi^2(t,s)=(\nabla S) c_x (\nabla S)^{\top}
+          + \frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
+                 {(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right),
+    \end{equation}
+    and linearizing around $s\approx S(0)$,
+    \begin{eqnarray}
+      \varphi(t,s)&=&\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}
+                      + \frac{1}{2\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}}\nonumber\\
+          &&\quad\quad\quad\quad \times\frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
+                                            {(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
+    \end{eqnarray}
+
+  \subsection{Volatility parameterization}
+
+    As discussed in the last section, the local volatility function $\sigma_x(t,x,y)$ still needs to be specified.
+    To this end, we consider $d$ rolling benchmark rates, $f_i(t)\equiv f_i(t,t+\delta_i)$, $i=1,\cdots,d$, with
+    $\delta_1<\cdots<\delta_d$. We require that the benchmark rates have the following dynamics,
+    \begin{equation}
+      df_i(t)=O(dt)+\sqrt{z(t)}\lambda_i^f(t)\Big(\alpha_i^f(t)+b_i^f(t)f_i(t)\Big)dU_i(t),
+      \label{benchmark}
+    \end{equation}
+    with $U(t)$ is a $d$-dimensional Brownian motion, with correlation matrix $X^f(t)=\{\chi_{i,j}(t)\}$. Define the decomposition
+    of $X^f$ as
+    \begin{equation}
+      X^f(t)=D^f(t)^{\top}D^f(t),
+    \end{equation}
+    and $H^f$ by
+    \begin{equation}
+      H^f(t)=\left(
+                \begin{array}{c}
+                  h(t+\delta_1)^{\top}\\
+                  \vdots\\
+                  h(t+\delta_d)^{\top}
+                \end{array}
+              \right),
+    \end{equation}
+    and $\sigma^f$ by
+    \begin{equation}
+      \sigma^f(t,f(t))={\rm diag}\left(
+                \lambda_1^f(t)\Big(\alpha_1^f(t)+b_1^f(t)f_1(t)\Big),
+                \cdots,
+                \lambda_d^f(t)\Big(\alpha_d^f(t)+b_d^f(t)f_d(t)\Big)
+              \right),
+    \end{equation}
+    then we can set
+    \begin{equation}
+      \sigma_r(t;\omega)^{\top}=\sqrt{z(t)}\sigma_x(t,x,y)^{\top}
+                =\sqrt{z(t)}H(t)H^f(t)^{-1}\sigma^f(t,f(t))D^f(t)^{\top},
+    \end{equation}
+    to be consistent with the benchmark rates dynamics. To see this, let $f(t)=(f_1(t),\cdots,f_d(t))^{\top}$,
+    and it can be shown from the bond reconstitution formula, Eq. (\ref{reconstitution}),
+    \begin{equation}
+      f(t)=f(0)+H^f(t)H(t)^{-1}\Big(x(t)+y(t)G(t,T)\Big).
+    \end{equation}
+    The dynamics is then given by
+    \begin{eqnarray}
+      df(t) &=& O(dt)+H^f(t)H(t)^{-1}dx(t)\nonumber\\
+            &=& O(dt)+H(t)H^f(t)^{-1}\sigma_r(t;\omega)^{\top}dW(t)\nonumber\\
+            &=& O(dt)+\sqrt{z(t)}\sigma^f(t,f(t))D^f(t)^{\top}dW(t),
+    \end{eqnarray}
+    consistent with Eq. (\ref{benchmark}).
+
+
+
+
+  \subsection{Approximate swap rate dynamics in Gaussian short rate models}
 
 
 
