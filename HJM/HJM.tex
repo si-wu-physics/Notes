@@ -96,6 +96,7 @@
   and
   \begin{equation}
     y(t)=H(t)\left(\int_0^tg^{\prime}(u)g(u)du\right)H(t),
+    \label{y}
   \end{equation}
   then it can be shown
   \begin{equation}
@@ -109,6 +110,7 @@
             + H(t)g^{\prime}(t)dW(t)\nonumber\\
           &=& \bigg(y(t)I_{d\times 1}-\kappa(t)x(t)\bigg)dt+H(t)g^{\prime}(t)dW(t)\nonumber\\
           &=& \bigg(y(t)I_{d\times 1}-\kappa(t)x(t)\bigg)dt+\sigma_r^{\prime}(t;\omega)dW(t),
+          \label{x}
   \end{eqnarray}
   where $I_{d\times 1}=(1,1,...,1)^{\prime}$. The $x$ and $y$ processes have
   initial conditions $x(0)=0$ and $y(0)=0$, which is evident from their definitions. It can be shown,
@@ -154,6 +156,20 @@
   \begin{equation}
     P(t,T)=\frac{P(0,T)}{P(0,t)}\exp\left(-G^{\prime}(t,T)x(t)-\frac{1}{2}G^{\prime}(t,T)y(t)G(t,T)\right).
     \label{reconstitution}
+  \end{equation}
+
+  The density relating the $T$-forward measure and the risk neutral measure is given by
+  \begin{equation}
+    \zeta(t)=E_t^Q\left[\frac{dP^T}{dP}\right]=\frac{P(t,T)/P(0,T)}{B(t)/B(0)}.
+  \end{equation}
+  This density is a martingale in the risk neutral measure, and therefore,
+  \begin{equation}
+    \frac{d\zeta(t)}{\zeta(t)}=-G^{\prime}(t,T)\sigma_r^{\prime}(t)dW(t).
+  \end{equation}
+  The Brownian motion under the $T$-forward is then given by
+  \begin{equation}
+    dW^T(t)=dW(t)+\sigma_r(t)G(t,T)dt.
+    \label{Tmeasure}
   \end{equation}
 
 
@@ -426,7 +442,7 @@
   \begin{equation}
     \frac{\langle df(t,T), df(t,T)\rangle}{dt}=\sigma_1^2(t)\exp\left\{-2\int_t^{T}\kappa_1(u)du\right\}b(t,T,T),
   \end{equation}
-  it can be shown that if $\rho_x$ is negative enough, the term structure of the volatility will develop a hump shape.
+  it can be shown that if $\rho_x$ is negative enough, the term structure of the volatility will develop a humped shape.
 
 
 \section{Quasi-Gaussian Models}
@@ -447,7 +463,7 @@
 
   To proceed with the swap rate dynamics, fix a tenor structure
   \begin{equation}
-    0<T_0<T_1<...<T_N
+    0<T_0<T_1<\cdots<T_N
   \end{equation}
   with
   \begin{equation}
@@ -475,13 +491,123 @@
   \end{equation}
   where
   \begin{equation}
-    \varphi^2(t,s) = E^A\bigg[\left.(\nabla S) \sigma_x^{\prime}\sigma_x (\nabla S)^{\prime}\right|S(t)=s\bigg].
+    \varphi^2(t,s) = E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\prime}\right|S(t)=s\bigg],
+    \label{local}
   \end{equation}
+  and $c_x=\sigma_x^{\prime}\sigma_x$.
+
+  We will look for the linear approximation to $\varphi(t,s)$ in $s$, and will use $E^A(x(t))$ and $E^A(y(t))$
+  as expansion point. First, define
+  \begin{equation}
+    \sigma_x^0(t)=\sigma_x(t,0,0),
+  \end{equation}
+  then from Eq. (\ref{y}), we have
+  \begin{equation}
+    y(t)=H(t)\left(\int_0^tH^{-1}(u)\sigma_r^{\prime}(u)\sigma_r(u)H^{-1}(u)du\right)H(t),
+  \end{equation}
+  and
+  \begin{equation}
+    \bar{y}(t)= E^A\left[y(t)\right] \approx H(t)\left(\int_0^tH^{-1}(u)\left(\sigma_x^0(u)\right)^{\prime}\sigma_x^0(u)H^{-1}(u)du\right)H(t).
+  \end{equation}
+  For the approximation of $x(t)$, replace $y(t)$ with $\bar{y}(t)$ in Eq. (\ref{x}), which is the Gaussian approximation
+  to $x(t)$,
+  \begin{equation}
+    dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\kappa(t)x_g(t)\bigg)dt+\left(\sigma_x^0(t)\right)^{\prime}dW(t).
+  \end{equation}
+  The corresponding dynamics for $x_g(t)$ in the $T$-forward measure, using Eq. (\ref{Tmeasure}), is
+  \begin{equation}
+    dx_g(t)=\bigg(\bar{y}(t)I_{d \times 1}-\left(\sigma_x^0(t)\right)^{\prime}\sigma_x^0(t)G(t,T)-\kappa(t)x_g(t)\bigg)dt
+                                      +\left(\sigma_x^0(t)\right)^{\prime}dW^T(t).
+  \end{equation}
+  The solution to the above SDE is
+  \begin{equation}
+    x_g(t)=H(t)\left(\int_0^tH^{-1}(u)\left[\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\prime}\sigma_x^0(u)G(u,T)\right)du
+                      +\left(\sigma_x^0(t)\right)^{\prime}dW^T(u)\right]\right),
+  \end{equation}
+  and
+  \begin{eqnarray}
+    \bar{x}(t) &=& E^A\left[x(t)\right]\approx E^A\left[x_g(t)\right]\nonumber\\
+               &=& E^Q\left[\frac{dP^A}{dP}x_g(t)\right] = E^Q\left[\frac{A(t)/A(0)}{B(t)}x_g(t)\right]\nonumber\\
+               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^Q\left[\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{dP}{dP^{T_{n+1}}}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+               &=& \frac{1}{A(0)}\sum_{n=0}^{N-1}\tau_n E^{T_{n+1}}\left[\frac{B(t)}{P(t,T_{n+1})/P(0,T_{n+1})}\frac{P(t,T_{n+1})}{B(t)}x_g(t)\right]\nonumber\\
+               &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}E^{T_{n+1}}\left[x_g(t)\right]\nonumber\\
+               &=& \sum_{n=0}^{N-1}\frac{\tau_nP(0,T_{n+1})}{A(0)}H(t)
+                    \int_0^tH^{-1}(u)\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\prime}\sigma_x^0(u)G(u,T)\right)du.
+  \end{eqnarray}
+
+  Now, we can proceed to develop further approximation for the swap rate dynamics, around $\bar{x}(t)$ and $\bar{y}(t)$. Expand Eq. (\ref{local})
+  to first order in $x$,
+  \begin{eqnarray}
+    &&\Big((\nabla S) c_x (\nabla S)^{\prime}\Big)\left(t,x(t),y(t)\right)
+      \approx \Big((\nabla S) c_x (\nabla S)^{\prime}\Big)\left(t,\bar{x}(t),\bar{y}(t)\right)\nonumber\\
+      &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\prime}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}\left(x(t)-\bar{x}(t)\right).
+  \end{eqnarray}
+  Then,
+  \begin{eqnarray}
+    && E^A\bigg[\left.(\nabla S) c_x (\nabla S)^{\prime}\right|S(t)=s\bigg]
+        \approx \Big((\nabla S) c_x (\nabla S)^{\prime}\Big)\left(t,\bar{x}(t),\bar{y}(t)\right)\nonumber\\
+      &&\quad\quad\quad\quad\quad\quad +\left.\nabla\Big((\nabla S) c_x (\nabla S)^{\prime}\Big)\right|_{\left(t,\bar{x}(t),\bar{y}(t)\right)}
+            E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big].
+  \end{eqnarray}
+  Using a Gaussian approximation for the conditional expectation,
+  \begin{eqnarray}
+    E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big] &\approx& E^A\Big[x_g(t)-\bar{x}_g(t)|S(t)=s\Big]\nonumber\\
+              &=& \frac{{\rm Cov}\left(S_g(t),x_g(t)\right)}{{\rm Var}\left(S_g(t)\right)}\left(s-S(0)\right)\nonumber\\
+              &=& \frac{c_x\left(\nabla S\right)^{\prime}}{(\nabla S) c_x (\nabla S)^{\prime}}\left(s-S(0)\right).
+  \end{eqnarray}
+  Notice that
+  \begin{equation}
+    \nabla\Big((\nabla S) c_x (\nabla S)^{\prime}\Big)c_x\left(\nabla S\right)^{\prime}
+      = (\nabla S) d_x (\nabla S)^{\prime} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\prime},
+  \end{equation}
+  where
+  \begin{equation}
+    d_x=\sum_{l=1}^d \Big(c_x (\nabla S)^{\prime}\Big)_l
+              \left(\frac{\partial \sigma_x^{\prime}}{\partial x_l}\sigma_x+\sigma_x^{\prime}\frac{\partial \sigma_x}{\partial x_l}\right).
+  \end{equation}
+  The local volatility function is
+  \begin{equation}
+    \varphi^2(t,s)=(\nabla S) c_x (\nabla S)^{\prime}
+        + \frac{(\nabla S) d_x (\nabla S)^{\prime} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\prime}}
+               {(\nabla S) c_x (\nabla S)^{\prime}}\left(s-S(0)\right),
+  \end{equation}
+  and linearizing around $s\approx S(0)$,
+  \begin{eqnarray}
+    \varphi(t,s)&=&\bigg((\nabla S) c_x (\nabla S)^{\prime}\bigg)^{1/2}
+                    + \frac{1}{2\bigg((\nabla S) c_x (\nabla S)^{\prime}\bigg)^{1/2}}\nonumber\\
+        &&\quad\quad\quad\quad \times\frac{(\nabla S) d_x (\nabla S)^{\prime} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\prime}}
+                                          {(\nabla S) c_x (\nabla S)^{\prime}}\left(s-S(0)\right).
+  \end{eqnarray}
 
 
 
+\section{The Affine Model}
+
+  $$\nabla\nabla$$
 
 % \section{Quadratic Gaussian Models}
+
+\appendix
+
+  \section{Girsanov Theorem}
+
+  Consider two measures $P$ and $P(\theta)$ related by a density
+  \begin{equation}
+    \zeta^{\theta}(t) = {\rm E}_t^P\left[\frac{dP(\theta)}{dP}\right],
+  \end{equation}
+  where $\zeta^{\theta}(t)$ is an exponential martingale given by
+  \begin{equation}
+    \frac{d\zeta^{\theta}(t)}{\zeta^{\theta}(t)}=-\theta^{\prime}(t)dW(t),
+  \end{equation}
+  where $W(t)$ is a $d$-dimensional $P$-Brownian motion. Then,
+  \begin{equation}
+    W^{\theta}(t) = W(t)+\int_0^t\theta(s)ds
+  \end{equation}
+  is a $P(\theta)$-Brownian motion, and
+  \begin{equation}
+    dW^{\theta}(t) = dW(t)+ \theta(t)dt.
+  \end{equation}
 
 
 
