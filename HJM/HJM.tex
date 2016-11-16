@@ -359,7 +359,7 @@
   \end{equation}
   Moreover,
   \begin{equation}
-    M(t,T)=h(T)/h(t)=\exp\left(-\int_t^T\kappa(u)du\right),
+    M(t,T)=\frac{h(T)}{h(t)}=\exp\left(-\int_t^T\kappa(u)du\right),
   \end{equation}
   and
   \begin{equation}
@@ -404,9 +404,13 @@
   \end{eqnarray}
   Notice that
   \begin{equation}
-    \int \frac{e^{\lambda t}}{1+\gamma t}dt = \frac{e^{-\lambda/\gamma}}{\gamma}{\rm Ei}\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right) + {\rm const.},
+    \int \frac{e^{\lambda t}}{1+\gamma t}dt = \frac{e^{-\lambda/\gamma}}{\gamma}{\rm Ei}\left(\frac{\lambda}{\gamma}(1+\gamma t)\right) + {\rm const.},
   \end{equation}
-  it can be shown that
+  where
+  \begin{equation}
+    {\rm Ei}(x)=\int_{-\infty}^x\frac{e^t}{t}dt
+  \end{equation}
+  is the exponential integral function, it can be shown that
   \begin{eqnarray}
     y(t) &=& \frac{\sigma^2(1+\gamma t)}{\gamma^2}\left[2\lambda(1+\gamma t)\exp\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right)
                       {\rm Ei}\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right)-\gamma\right]\nonumber\\
@@ -415,7 +419,7 @@
   \end{eqnarray}
   Also,
   \begin{equation}
-    M(t,T)=h(T)/h(t)=\frac{1+\gamma T}{1+\gamma t}e^{-\lambda(T-t)},
+    M(t,T)=\frac{h(T)}{h(t)}=\frac{1+\gamma T}{1+\gamma t}e^{-\lambda(T-t)},
   \end{equation}
   and
   \begin{eqnarray}
