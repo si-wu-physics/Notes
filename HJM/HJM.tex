@@ -16,7 +16,7 @@
   \begin{equation}
     P(t,T)=E_t^Q\left[\exp\left(-\int_t^T r(u)du\right)\right],
   \end{equation}
-  where $Q$ stands for the risk neutral measure, and $r(t)$ is the short rate. Then, under the same measure,
+  where $Q$ stands for the risk neutral measure, and $r(t)$ is the short rate. Then, under the same measure \cite{AP},
   \begin{equation}
     \label{bond1}
     \frac{dP(t,T)}{P(t,T)}=r(t)dt-\sigma_P(t,T)^{{\top}}dW(t),
@@ -167,7 +167,7 @@
   \begin{equation}
     \frac{d\zeta(t)}{\zeta(t)}=-G(t,T)^{\top}\sigma_r(t)^{\top}dW(t).
   \end{equation}
-  The Brownian motion under the $T$-forward, following the Girsanov's theorem, is then given by
+  The Brownian motion under the $T$-forward, following the Girsanov's theorem (see Appendix \ref{Girsanov}), is then given by
   \begin{equation}
     dW^T(t)=dW(t)+\sigma_r(t)G(t,T)dt.
     \label{Tmeasure}
@@ -349,14 +349,80 @@
   \begin{equation}
     x(t)=\int_0^ty(u)\exp\left(-\int_u^t\kappa(s)ds\right)du+\int_0^t\sigma(u)\exp\left(-\int_u^t\kappa(s)ds\right)dW(u).
   \end{equation}
+  Also,
+  \begin{equation}
+    \sigma_f(t,T)=g(t)h(T)=\sigma(t)\exp\left(-\int_t^T\kappa(u)du\right),
+  \end{equation}
+  and
+  \begin{equation}
+    \sigma_P(t,T)=\int_t^T\sigma_f(t,u)du=\int_t^T\sigma(t)\exp\left(-\int_t^u\kappa(s)ds\right)du.
+  \end{equation}
+  Moreover,
+  \begin{equation}
+    M(t,T)=h(T)/h(t)=\exp\left(-\int_t^T\kappa(u)du\right),
+  \end{equation}
+  and
+  \begin{equation}
+    G(t,T)=\int_t^TM(t,u)du=\int_t^T\exp\left(-\int_t^u\kappa(s)ds\right)du.
+  \end{equation}
+  The bond reconstitution formula follows Eq. (\ref{reconstitution}).
+
+  The Vasicek model can be recovered by setting $\kappa$ and $\sigma$ to constants, and the mathematical details will not be reproduced here.
+
 
   \subsection{Mercurio-Moraleda Model}
 
-  Similar to the Vasicek model, set
+  The Mercurio-Moraleda model \cite{BM} can be obtained by setting
   \begin{equation}
     \kappa(t)=\lambda-\frac{\gamma}{1+\gamma t},
   \end{equation}
+  then
+  \begin{equation}
+    h(t)=\left(1+\gamma t\right)e^{-\lambda t},
+  \end{equation}
+  and
+  \begin{equation}
+    g(t)=\sigma\frac{e^{\lambda t}}{1+\gamma t}.
+  \end{equation}
+  The forward rate volatility is given by
+  \begin{equation}
+    \sigma_f(t,T)=g(t)h(T)=\sigma\frac{1+\gamma T}{1+\gamma t}e^{-\lambda(T-t)},
+    \label{MM}
+  \end{equation}
+  which satisfies the separability condition, and the short rate dynamics will be Markovian. Moreover, this volatility specification can also generate
+  a humped shape in the volatility term structure, which is often observed in the cap market. However, the above dynamics is not time-stationary.
+  This can be addressed by expanding the forward volatility to the first order in $\gamma$, leading to the following expression,
+  \begin{equation}
+    \sigma_f(t,T)=\sigma\Big[1+\gamma(T-t)\Big]e^{-\lambda(T-t)},
+  \end{equation}
+  sacrificing the Markov property of the short rate dynamics. In the following, we will focus on the volatility structure specified by Eq. (\ref{MM}).
 
+  From Eq. (\ref{y}), we have
+  \begin{eqnarray}
+    y(t) &=& \int_0^t\sigma^2\exp\left(-2\int_u^t\kappa(s)ds\right)du\nonumber\\
+         &=& \sigma^2\int_0^t\left(\frac{1+\gamma t}{1+\gamma u}\right)^2e^{-2\lambda(t-u)}du.
+  \end{eqnarray}
+  Notice that
+  \begin{equation}
+    \int \frac{e^{\lambda t}}{1+\gamma t}dt = \frac{e^{-\lambda/\gamma}}{\gamma}{\rm Ei}\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right) + {\rm const.},
+  \end{equation}
+  it can be shown that
+  \begin{eqnarray}
+    y(t) &=& \frac{\sigma^2(1+\gamma t)}{\gamma^2}\left[2\lambda(1+\gamma t)\exp\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right)
+                      {\rm Ei}\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right)-\gamma\right]\nonumber\\
+         && \quad +\frac{\sigma^2(1+\gamma t)^2}{\gamma^2}\left[2\lambda\exp\left(\frac{2\lambda}{\gamma}(1+\gamma t)\right)
+                      {\rm Ei}\left(\frac{2\lambda}{\gamma}\right)-\gamma e^{-2\lambda t}\right].
+  \end{eqnarray}
+  Also,
+  \begin{equation}
+    M(t,T)=h(T)/h(t)=\frac{1+\gamma T}{1+\gamma t}e^{-\lambda(T-t)},
+  \end{equation}
+  and
+  \begin{eqnarray}
+    G(t,T)&=&\int_t^TM(t,u)du=\frac{e^{\lambda t}}{1+\gamma t}\int_t^T(1+\gamma u)e^{-\lambda u}du\nonumber\\
+          &=&\frac{1}{\lambda^2(1+\gamma t)}\Big[\gamma+\lambda+\gamma\lambda t - \left(\gamma+\lambda+\gamma\lambda T\right)e^{-\lambda(T-t)}\Big].
+  \end{eqnarray}
+  The bond reconstitution formula follows Eq. (\ref{reconstitution}).
 
 
 \section{Examples of Classical Gaussian Short Rate Models - Multi Factor Models}
@@ -539,7 +605,12 @@
                       \int_0^tH^{-1}(u)\left(\bar{y}(u)I_{d \times 1}-\left(\sigma_x^0(u)\right)^{\top}\sigma_x^0(u)G(u,T)\right)du.
     \end{eqnarray}
 
-    Now, we can proceed to develop further approximation for the swap rate dynamics, around $\bar{x}(t)$ and $\bar{y}(t)$. Expand Eq. (\ref{local})
+    Now, we can proceed to develop further approximation for the swap rate dynamics, around $\bar{x}(t)$ and $\bar{y}(t)$. Let us define $S_g(t)$ to be the Gaussian
+    approximation to $S(t)$, and its dynamics will be represented by
+    \begin{equation}
+      dS_g(t)=\nabla S(\sigma_x^0)^{\top}dW^A(t).
+    \end{equation}
+    Expand Eq. (\ref{local})
     to first order in $x$,
     \begin{eqnarray}
       &&\Big((\nabla S) c_x (\nabla S)^{\top}\Big)\left(t,x(t),y(t)\right)
@@ -555,7 +626,7 @@
     \end{eqnarray}
     Using a Gaussian approximation for the conditional expectation,
     \begin{eqnarray}
-      E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big] &\approx& E^A\Big[x_g(t)-\bar{x}_g(t)|S(t)=s\Big]\nonumber\\
+      E^A\Big[x(t)-\bar{x}(t)|S(t)=s\Big] &\approx& E^A\Big[x_g(t)-\bar{x}_g(t)|S_g(t)=s\Big]\nonumber\\
                 &=& \frac{{\rm Cov}\left(S_g(t),x_g(t)\right)}{{\rm Var}\left(S_g(t)\right)}\left(s-S(0)\right)\nonumber\\
                 &=& \frac{c_x\left(\nabla S\right)^{\top}}{(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
     \end{eqnarray}
@@ -655,6 +726,7 @@
 \appendix
 
   \section{Girsanov's Theorem}
+  \label{Girsanov}
 
   Consider two measures $P$ and $P(\theta)$ related by a density
   \begin{equation}
@@ -675,12 +747,12 @@
 
 
 
-% \begin{thebibliography}{1}
+\begin{thebibliography}{1}
 
-% \bibitem{AP} Leif Andersen and Vladimir Piterbarg, {\it Interest Rate Modeling}, Atlantic Financial Press, 2010.
-% \bibitem{BM} Damiano Brigo and Fabio Mercurio, {\it Interest Rate Models}, Springer, 2006.
+\bibitem{AP} Leif Andersen and Vladimir Piterbarg, {\it Interest Rate Modeling}, Atlantic Financial Press, 2010.
+\bibitem{BM} Damiano Brigo and Fabio Mercurio, {\it Interest Rate Models - Theory and Practice: With Smile, Inflation and Credit}, Springer, 2006.
 
 
-% \end{thebibliography}
+\end{thebibliography}
 
 \end{document}
