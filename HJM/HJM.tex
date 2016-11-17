@@ -15,6 +15,7 @@
   Let $P(t,T)$ denotes the time $t$ price of a zero coupon bond which pays 1 at time $T$, {\it i.e.},
   \begin{equation}
     P(t,T)=E_t^Q\left[\exp\left(-\int_t^T r(u)du\right)\right],
+    \label{bond0}
   \end{equation}
   where $Q$ stands for the risk neutral measure, and $r(t)$ is the short rate. Then, under the same measure \cite{AP},
   \begin{equation}
@@ -656,7 +657,20 @@
                       + \frac{1}{2\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}}\nonumber\\
           &&\quad\quad\quad\quad \times\frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
                                             {(\nabla S) c_x (\nabla S)^{\top}}\left(s-S(0)\right).
+      \label{expansion}
     \end{eqnarray}
+    Setting
+    \begin{eqnarray}
+      &&\lambda_S(t)=\frac{\varphi(t,S(0))}{S(0)}=\frac{1}{S(0)}\bigg((\nabla S) c_x (\nabla S)^{\top}\bigg)^{1/2}\left(t,\bar{x}(t),\bar{y}(t)\right),\\
+      &&b_S(t)=S(0)\frac{\frac{\partial\varphi}{\partial s}(t,S(0))}{\varphi(t,S(0))}
+              =\left.S(0)\frac{(\nabla S) d_x (\nabla S)^{\top} + 2(\nabla S) c_x (\nabla^2 S) c_x (\nabla S)^{\top}}
+                                            {2(\nabla S) c_x (\nabla S)^{\top}(\nabla S) c_x (\nabla S)^{\top}}\right|_{t,\bar{x}(t),\bar{y}(t)},
+    \end{eqnarray}
+    the swap rate dynamics can be recast into a Heston form,
+    \begin{equation}
+      dS(t)=\sqrt{z(t)}\lambda_S(t)\Big(b_S(t)S(t)+\left(1-b_S(t)\right)S(0)\Big)dU^A(t),
+    \end{equation}
+    and the European swaption price can be obtained through the parameter averaging method.
 
   \subsection{Volatility parameterization}
 
@@ -713,23 +727,114 @@
 
   \subsection{Approximate swap rate dynamics in Gaussian short rate models}
 
+    For Gaussian short rate models, the volatility is a deterministic function, and
+    \begin{equation}
+      dS(t) = \varphi(t,S(t)) dW^A(t),
+    \end{equation}
+    with $\varphi(t,S(t))$ identical to Eq. (\ref{local}).
+    Set $x(t)$ in the above SDE to $\bar{x}(t)$ as discussed earlier, the swap rate dynamics can be reduced to
+    a normal process. The European payer swaption price is then given by the Bachelier formula,
+    \begin{equation}
+      A(0)\Big[\left(S(0)-c\right)\Phi(d)+\sqrt{v}\phi(d)\Big],
+    \end{equation}
+    with
+    \begin{equation}
+      d=\frac{S(0)-c}{\sqrt{v}},\quad\quad v=\int_0^{T_0}\Big[(\nabla S)\sigma_x(t)^{\top}\sigma_x(t)(\nabla S)^{\top}\Big]dt.
+    \end{equation}
+    Similarly, we can also expand the $\varphi(t,S(t))$ term to the first order in $x(t)$ and obtain a
+    shifted lognormal process for the swap rate, and the corresponding models parameters are identical to those in Eq. (\ref{expansion}).
+
+    For volatility parameterization, we can simply choose the volatilities of the benchmark rates to be deterministic functions, $\lambda_i^f(t)$,
+    $i=1,\cdots,d$.
 
 
 \section{The Affine Model}
 
   \subsection{One-Factor Model}
 
-    Consider the following short rate dynamics,
-    \begin{equation}
-      dr(t)=\kappa(t)\left(\theta(t)-r(t)\right)dt + \sigma(t)\sqrt{\alpha + \beta r(t)}dW(t),
-    \end{equation}
-    with some technical conditions which will be omitted here. The details can be found in \cite{AP}.
+    \subsubsection{Discount Bond Price}
+
+      Consider the following short rate dynamics,
+      \begin{equation}
+        dr(t)=\kappa(t)\left(\theta(t)-r(t)\right)dt + \sigma(t)\sqrt{\alpha(t) + \beta(t) r(t)}dW(t),
+      \end{equation}
+      with some technical conditions which will be omitted here. The details can be found in \cite{AP}.
+
+      Even though we are interested in the discount bond price (\ref{bond0}), let us consider the more general problem
+      and find
+      \begin{equation}
+        g(t,T;c_1,c_2)={\rm E}_t^Q\left[\exp\left(-c_1r(T)-c_2\int_t^Tr(u)du\right)\right],
+      \end{equation}
+      which can be viewed as the joint characteristic function for $r(t)$ and $\int r(t)dt$. Then, the bond price can be
+      obtained through
+      \begin{equation}
+        P(t,T)=g(t,T;0,1).
+      \end{equation}
+      The affine structure of the model enable us to write
+      \begin{equation}
+        g(t,T;c_1,c_2)=\exp\left(A(t,T;c_1, c_2) - B(t,T;c_1, c_2)r(t)\right),
+      \end{equation}
+      and the its PDE is given by
+      \begin{equation}
+        \frac{\partial g}{\partial t}+\kappa(t)\left(\theta(t)-r\right)\frac{\partial g}{\partial r}
+            +\frac{1}{2}\sigma^2(t)(\alpha(t)+\beta(t) r)\frac{\partial^2g}{\partial r^2} = c_2rg.
+      \end{equation}
+      Matching terms, the above PDE reduces to the following system of Riccati ODEs,
+      \begin{eqnarray}
+        &&\frac{dA}{dt}-\kappa(t)\theta(t)B+\frac{1}{2}\alpha(t)\sigma^2(t)B^2=0,\\
+        &&-\frac{dB}{dt}+\kappa(t)B+\frac{1}{2}\beta(t)\sigma^2(t)B^2=c_2,
+      \end{eqnarray}
+      subject to the terminal condition $A(T,T;c_1,c_2)=B(T,T;c_1,c_2)=0$. For constant model parameters, this system of ODEs can
+      analytically solved.
+
+    \subsubsection{European Option Pricing}
+
+      Since caplest are equivalent to options on zero coupon bond, the joint characteristic function from last section can be used
+      for simple option pricing by the Fourier transform method, as briefly discussed in Appendix \ref{fourier}. For European swaption,
+      we will seek approximate swap rate martingale dynamics.
+
+      To this end, we introduce another variable, $x(t)=r(t)-f(0,t)$, whose dynamics is given by
+      \begin{equation}
+        dx(t)=dr(t)-\frac{\partial f(0,t)}{\partial t}dt=\left(\omega(t)-\kappa(t)x(t)\right)dt+\sigma(t)\sqrt{\xi(t)+\beta(t) x(t)}dW(t),
+      \end{equation}
+      where $x(0)=0$, $\xi(t)=\alpha(t) +\beta(t) f(0,t)$, and
+      \begin{equation}
+        \omega(t)=\kappa(t)\theta(t)-\frac{\partial f(0,t)}{\partial t}-\kappa(t)f(0,t).
+      \end{equation}
+      Notice that even $\omega(t)$ contains the derivative of the initial forward rate, which is generally interpolated from market data and
+      is likely not smooth, $\omega(t)$ is likely to be smooth. $\omega(t)$ ensures that the affine model will exactly match the initial
+      yield curve, in contrast to $\theta(t)$.
+
+      The swap rate dynamics is a martingale in the annuity measure, that is, in terms of $x(t)$,
+      \begin{equation}
+        dS(t)=\frac{\partial S}{\partial x}\sigma(t)\sqrt{\xi(t)+\beta(t) x(t)}dW^A(t).
+      \end{equation}
+      Similar to the quasi-Gaussian model, we can expand $S(t)$ around some point to the first order in $x(t)$,
+      \begin{equation}
+        S(t)\approx \zeta(t)+\chi(t)x(t).
+      \end{equation}
+      Then, the swap rate dynamics becomes
+      \begin{eqnarray}
+        dS(t)&\approx&\chi(t)\sigma(t)\sqrt{\xi(t)+\beta(t) \left(\frac{S(t)-\zeta(t)}{\chi(t)}\right)}dW^A(t)\nonumber\\
+             &=& \sigma(t)\sqrt{\alpha_s(t)+\beta_s(t)S(t)}dW^A(t),
+      \end{eqnarray}
+      with
+      \begin{equation}
+        \alpha_s(t)=\xi(t)\chi^2(t)-\beta(t)\zeta(t)\chi(t), \quad \beta_s(t)=\beta(t)\chi(t).
+      \end{equation}
+      Since the value of a European payer swaption is, in the annuity measure,
+      \begin{equation}
+        A(0){\rm E}^A\left[\Big(S(T_0)-c\Big)^+\right],
+      \end{equation}
+      it can be valued using the Fourier transform method. Alternatively, it can also be valued by the parameter averaging (PA) method,
+      as discussed in Appendix \ref{PA}.
+
 
 \section{The Quadratic Gaussian Model}
 
   $$\nabla\nabla$$
 
-    
+
 
 \section{The Libor Market Model (LMM)}
 
@@ -756,6 +861,16 @@
   \begin{equation}
     dW^{\theta}(t) = dW(t)+ \theta(t)dt.
   \end{equation}
+
+  \section{Transform Method for Option Pricing}
+  \label{fourier}
+
+  aaa
+
+  \section{Parameter Averaging Method for Option Pricing}
+  \label{PA}
+
+  bbb
 
 
 
