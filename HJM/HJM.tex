@@ -524,6 +524,7 @@
   We are going to develop efficient approximation for the swap rate, which will also cover the pure Gaussian case.
 
   \subsection{Approximate Swap Rate Dynamics}
+  \label{qGS}
 
     Consider the following volatility specification which contains both local and stochastic volatilities,
     \begin{equation}
@@ -741,8 +742,35 @@
     \end{eqnarray}
     consistent with Eq. (\ref{benchmark}).
 
-    For the volatility parameterization of Gaussian short rate models, we can simply choose the volatilities of
-    the benchmark rates to be deterministic functions, $\lambda_i^f(t)$, $i=1,\cdots,d$.
+    \subsubsection{Case 1: One Factor Model}
+
+      For one factor model, there is only one benchmark rate, and we can simply write $\sigma_r$ as
+      \begin{equation}
+        \sigma_r(t;\omega)\equiv \sigma_r(t,x(t), y(t))=\sqrt{z(t)}\lambda_r(t)\big(\alpha_r(t)+b_r(t)x(t)\big),
+      \end{equation}
+      where $\alpha_r(t)$ is actually redundant and can be absorbed into $\lambda_r(t)$. We will get onto this shortly.
+
+      In the one dimensional case, the matrix products appearing in the approximate swap rate dynamics (see Sec. \ref{qGS})
+      will reduce to scalar products, and the result is given by
+      \begin{eqnarray}
+        \lambda_S(t)=\lambda_r(t)\frac{1}{S(0)}\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)\Big(\alpha_r(t)+b_r(t)\bar{x}(t)\Big),\\
+        b_S(t)=\frac{S(0)}{\alpha_r(t)+b_r(t)\bar{x}(t)}\frac{b_r(t)}{\displaystyle \frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}
+                +\frac{\displaystyle S(0)\frac{\partial^2 S}{\partial x^2}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}
+                {\displaystyle \left(\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)\right)^2},
+      \end{eqnarray}
+      and then the short rate dynamics takes the same form as in the multi-factor case.
+
+      From the above result, we can see that the local swap rate skew is related to the local short rate skew, ignoring small terms, by
+      \begin{equation}
+        b_S(t)\approx\frac{S(0)}{\alpha_r(t)}\frac{b_r(t)}{\displaystyle\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}.
+      \end{equation}
+      It will be convenient to have these two skews of the same order of magnitude. Therefore, we can choose $\alpha_r(t)$ to be the same as the swap rate,
+      and scale $b_r(t)$ by $\partial S/\partial x$.
+
+    \subsubsection{Case 2: Gaussian Model}
+
+      For the volatility parameterization of Gaussian short rate models, we can simply choose the volatilities of
+      the benchmark rates to be deterministic functions, $\lambda_i^f(t)$, $i=1,\cdots,d$.
 
   \subsection{Calibration}
 
