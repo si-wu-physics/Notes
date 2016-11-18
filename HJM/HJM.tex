@@ -672,9 +672,28 @@
     \end{equation}
     and the European swaption price can be obtained through the parameter averaging method.
 
+  \subsection{Approximate swap rate dynamics in Gaussian short rate models}
+
+    For Gaussian short rate models, the volatility is a deterministic function, and
+    \begin{equation}
+      dS(t) = \varphi(t,S(t)) dW^A(t),
+    \end{equation}
+    with $\varphi(t,S(t))$ identical to Eq. (\ref{local}).
+    Set $x(t)$ in the above SDE to $\bar{x}(t)$ as discussed earlier, the swap rate dynamics can be reduced to
+    a normal process. The European payer swaption price is then given by the Bachelier formula,
+    \begin{equation}
+      A(0)\Big[\left(S(0)-c\right)\Phi(d)+\sqrt{v}\phi(d)\Big],
+    \end{equation}
+    with
+    \begin{equation}
+      d=\frac{S(0)-c}{\sqrt{v}},\quad\quad v=\int_0^{T_0}\Big[(\nabla S)\sigma_x(t)^{\top}\sigma_x(t)(\nabla S)^{\top}\Big]dt.
+    \end{equation}
+    Similarly, we can also expand the $\varphi(t,S(t))$ term to the first order in $x(t)$ and obtain a
+    shifted lognormal process for the swap rate, and the corresponding models parameters are identical to those in Eq. (\ref{expansion}).
+
   \subsection{Volatility parameterization}
 
-    As discussed in the last section, the local volatility function $\sigma_x(t,x,y)$ still needs to be specified.
+    The local volatility function $\sigma_x(t,x,y)$ still needs to be specified.
     To this end, we consider $d$ rolling benchmark rates, $f_i(t)\equiv f_i(t,t+\delta_i)$, $i=1,\cdots,d$, with
     $\delta_1<\cdots<\delta_d$. We require that the benchmark rates have the following dynamics,
     \begin{equation}
@@ -722,30 +741,10 @@
     \end{eqnarray}
     consistent with Eq. (\ref{benchmark}).
 
+    For the volatility parameterization of Gaussian short rate models, we can simply choose the volatilities of
+    the benchmark rates to be deterministic functions, $\lambda_i^f(t)$, $i=1,\cdots,d$.
 
-
-
-  \subsection{Approximate swap rate dynamics in Gaussian short rate models}
-
-    For Gaussian short rate models, the volatility is a deterministic function, and
-    \begin{equation}
-      dS(t) = \varphi(t,S(t)) dW^A(t),
-    \end{equation}
-    with $\varphi(t,S(t))$ identical to Eq. (\ref{local}).
-    Set $x(t)$ in the above SDE to $\bar{x}(t)$ as discussed earlier, the swap rate dynamics can be reduced to
-    a normal process. The European payer swaption price is then given by the Bachelier formula,
-    \begin{equation}
-      A(0)\Big[\left(S(0)-c\right)\Phi(d)+\sqrt{v}\phi(d)\Big],
-    \end{equation}
-    with
-    \begin{equation}
-      d=\frac{S(0)-c}{\sqrt{v}},\quad\quad v=\int_0^{T_0}\Big[(\nabla S)\sigma_x(t)^{\top}\sigma_x(t)(\nabla S)^{\top}\Big]dt.
-    \end{equation}
-    Similarly, we can also expand the $\varphi(t,S(t))$ term to the first order in $x(t)$ and obtain a
-    shifted lognormal process for the swap rate, and the corresponding models parameters are identical to those in Eq. (\ref{expansion}).
-
-    For volatility parameterization, we can simply choose the volatilities of the benchmark rates to be deterministic functions, $\lambda_i^f(t)$,
-    $i=1,\cdots,d$.
+  \subsection{Calibration}
 
 
 \section{The Affine Model}
