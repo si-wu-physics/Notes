@@ -120,7 +120,7 @@
 
   Using the above parameterizations, it can be shown, for forward rate,
   \begin{eqnarray}
-    f(t,T) &=& f(0,T)+I_{d\times 1}H(T)^{\top}\int_0^tg(u)^{\top}g(u)\left(\int_u^Th(s)ds\right)du
+    f(t,T) &=& f(0,T)+I_{d\times 1}^{\top}H(T)^{\top}\int_0^tg(u)^{\top}g(u)\left(\int_u^Th(s)ds\right)du
               +I_{d\times 1}^{\top}H(T)\int_0^tg(u)^{\top}dW(u)\nonumber\\
            &=& f(0,T)+I_{d\times 1}^{\top}H(T)\int_0^tg(u)^{\top}g(u)\left(\int_u^th(s)ds\right)du
               +I_{d\times 1}^{\top}H(T)\int_0^tg(u)^{\top}dW(u)\nonumber\\
@@ -461,7 +461,7 @@
   \end{equation}
   and
   \begin{equation}
-    dx(t)=\Big(y(t)I_{2\times 1}-\kappa(t)x(t)\Big)dt+\sigma_r^{{\top}}(t)dW(t),
+    dx(t)=\Big(y(t)I_{2\times 1}-\kappa(t)x(t)\Big)dt+\sigma_r(t)^{{\top}}dW(t),
   \end{equation}
   where $y(t)$ can be found by numerical integration, and $\kappa(t)={\rm diag}(\kappa_1(t),\kappa_2(t))$. The short rate can be
   written as
@@ -486,7 +486,7 @@
   \end{equation}
   and
   \begin{equation}
-    df(t,T)=O(dt)+\sigma_f^{{\top}}(t,T)dW(t).
+    df(t,T)=O(dt)+\sigma_f(t,T)^{{\top}}dW(t).
   \end{equation}
   The covariance of the forward rates maturing at $T_1$ and $T_2$ is
   \begin{eqnarray}
@@ -523,7 +523,7 @@
   where $g(t;\omega)$ is a $d\times d$-matrix valued function, and $h(t)$ is a deterministic, $d$-dimensional column vector function.
   We are going to develop efficient approximation for the swap rate, which will also cover the pure Gaussian case.
 
-  \subsection{Approximate swap rate dynamics}
+  \subsection{Approximate Swap Rate Dynamics}
 
     Consider the following volatility specification which contains both local and stochastic volatilities,
     \begin{equation}
@@ -672,7 +672,7 @@
     \end{equation}
     and the European swaption price can be obtained through the parameter averaging method.
 
-  \subsection{Approximate swap rate dynamics in Gaussian short rate models}
+  \subsection{Approximate Swap Rate Dynamics in Gaussian Short Rate Models}
 
     For Gaussian short rate models, the volatility is a deterministic function, and
     \begin{equation}
@@ -691,7 +691,7 @@
     Similarly, we can also expand the $\varphi(t,S(t))$ term to the first order in $x(t)$ and obtain a
     shifted lognormal process for the swap rate, and the corresponding models parameters are identical to those in Eq. (\ref{expansion}).
 
-  \subsection{Volatility parameterization}
+  \subsection{Volatility Parameterization}
 
     The local volatility function $\sigma_x(t,x,y)$ still needs to be specified.
     To this end, we consider $d$ rolling benchmark rates, $f_i(t)\equiv f_i(t,t+\delta_i)$, $i=1,\cdots,d$, with
@@ -736,7 +736,7 @@
     The dynamics is then given by
     \begin{eqnarray}
       df(t) &=& O(dt)+H^f(t)H(t)^{-1}dx(t)\nonumber\\
-            &=& O(dt)+H(t)H^f(t)^{-1}\sigma_r(t;\omega)^{\top}dW(t)\nonumber\\
+            &=& O(dt)+H^f(t)H(t)^{-1}\sigma_r(t;\omega)^{\top}dW(t)\nonumber\\
             &=& O(dt)+\sqrt{z(t)}\sigma^f(t,f(t))D^f(t)^{\top}dW(t),
     \end{eqnarray}
     consistent with Eq. (\ref{benchmark}).
