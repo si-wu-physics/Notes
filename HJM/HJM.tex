@@ -753,8 +753,8 @@
       In the one dimensional case, the matrix products appearing in the approximate swap rate dynamics (see Sec. \ref{qGS})
       will reduce to scalar products, and the result is given by
       \begin{eqnarray}
-        \lambda_S(t)=\lambda_r(t)\frac{1}{S(0)}\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)\Big(\alpha_r(t)+b_r(t)\bar{x}(t)\Big),\\
-        b_S(t)=\frac{S(0)}{\alpha_r(t)+b_r(t)\bar{x}(t)}\frac{b_r(t)}{\displaystyle \frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}
+        \lambda_S(t)&=&\lambda_r(t)\frac{1}{S(0)}\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)\Big(\alpha_r(t)+b_r(t)\bar{x}(t)\Big),\\
+        b_S(t)&=&\frac{S(0)}{\alpha_r(t)+b_r(t)\bar{x}(t)}\frac{b_r(t)}{\displaystyle \frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}
                 +\frac{\displaystyle S(0)\frac{\partial^2 S}{\partial x^2}\Big(t, \bar{x}(t),\bar{y}(t)\Big)}
                 {\displaystyle \left(\frac{\partial S}{\partial x}\Big(t, \bar{x}(t),\bar{y}(t)\Big)\right)^2},
       \end{eqnarray}
@@ -808,8 +808,8 @@
       \end{equation}
       Matching terms, the above PDE reduces to the following system of Riccati ODEs,
       \begin{eqnarray}
-        &&\frac{dA}{dt}-\kappa(t)\theta(t)B+\frac{1}{2}\alpha(t)\sigma^2(t)B^2=0,\\
-        &&-\frac{dB}{dt}+\kappa(t)B+\frac{1}{2}\beta(t)\sigma^2(t)B^2=c_2,
+        \frac{dA}{dt}-\kappa(t)\theta(t)B+\frac{1}{2}\alpha(t)\sigma^2(t)B^2&=&0,\\
+        -\frac{dB}{dt}+\kappa(t)B+\frac{1}{2}\beta(t)\sigma^2(t)B^2&=&c_2,
       \end{eqnarray}
       subject to the terminal condition $A(T,T;c_1,c_2)=B(T,T;c_1,c_2)=0$. For constant model parameters, this system of ODEs can
       analytically solved.
