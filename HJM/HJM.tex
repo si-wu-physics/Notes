@@ -269,9 +269,12 @@
       \Omega(t,T)=\int_t^T\left[\sigma_P(u,T+\tau)^{\top}-\sigma_P(u,T)^{\top}\right]\sigma_P(u,T+\tau)du.
     \end{equation}
     So, the futures rate is
-    \begin{equation}
-      F(t,T,T+\tau)=\frac{1}{\tau}\left(\frac{1}{P(t,T,T+\tau)}e^{\Omega(t,T)}-1\right).
-    \end{equation}
+    \begin{eqnarray}
+      F(t,T,T+\tau)&=&\frac{1}{\tau}\left(\frac{1}{P(t,T,T+\tau)}e^{\Omega(t,T)}-1\right)\nonumber\\
+                   &=&L(t,T,T+\tau) + \left(\frac{1}{\tau}+L(t,T,T+\tau)\right)\left(e^{\Omega(t,T)}-1\right),
+      \label{ca}
+    \end{eqnarray}
+    where the last term is the futures convexity adjustment in Gaussian short rate models.
 
   \subsection{European Swaption - Jamshidian Decomposition}
 
@@ -872,22 +875,86 @@
   \section{Girsanov's Theorem}
   \label{Girsanov}
 
-  Consider two measures $P$ and $P(\theta)$ related by a density
-  \begin{equation}
-    \zeta^{\theta}(t) = {\rm E}_t^P\left[\frac{dP(\theta)}{dP}\right],
-  \end{equation}
-  where $\zeta^{\theta}(t)$ is an exponential martingale given by
-  \begin{equation}
-    \frac{d\zeta^{\theta}(t)}{\zeta^{\theta}(t)}=-\theta(t)^{\top}dW(t),
-  \end{equation}
-  where $W(t)$ is a $d$-dimensional $P$-Brownian motion. Then,
-  \begin{equation}
-    W^{\theta}(t) = W(t)+\int_0^t\theta(s)ds
-  \end{equation}
-  is a $P(\theta)$-Brownian motion, and
-  \begin{equation}
-    dW^{\theta}(t) = dW(t)+ \theta(t)dt.
-  \end{equation}
+    Consider two measures $P$ and $P(\theta)$ related by a density
+    \begin{equation}
+      \zeta^{\theta}(t) = {\rm E}_t^P\left[\frac{dP(\theta)}{dP}\right],
+    \end{equation}
+    where $\zeta^{\theta}(t)$ is an exponential martingale given by
+    \begin{equation}
+      \frac{d\zeta^{\theta}(t)}{\zeta^{\theta}(t)}=-\theta(t)^{\top}dW(t),
+    \end{equation}
+    where $W(t)$ is a $d$-dimensional $P$-Brownian motion. Then,
+    \begin{equation}
+      W^{\theta}(t) = W(t)+\int_0^t\theta(s)ds
+    \end{equation}
+    is a $P(\theta)$-Brownian motion, and
+    \begin{equation}
+      dW^{\theta}(t) = dW(t)+ \theta(t)dt.
+    \end{equation}
+
+  \section{Futures Convexity Adjustment}
+
+    \subsection{Ho-Lee Model}
+
+      In the Ho-Lee model, $\sigma_P(t,T)=\sigma(T-t)$, and
+      \begin{equation}
+        \Omega(t,T)=\sigma^2\tau\int_t^T\left(T+\tau-u\right)du=\frac{\sigma^2}{2}(T-t)(T-t+2\tau)\tau.
+      \end{equation}
+      By expanding Eq. (\ref{ca}) to first order in $\tau$, the futures rate in the Ho-Lee model is given by
+      \begin{equation}
+        F(t,T,T+\tau)=L(t,T,T+\tau)+\frac{\sigma^2}{2}(T-t)(T-t+2\tau).
+      \end{equation}
+
+    \subsection{Vasicek Model}
+
+      In the Vasicek model, the forward rate volatility function is set to
+      $\sigma_f(t,T)=\sigma e^{-\kappa(T-t)}$.
+      Therefore,
+      \begin{equation}
+        \sigma_P(t,T)=\frac{\sigma}{\kappa}\left(1-e^{-\kappa(T-t)}\right),
+      \end{equation}
+      and
+      \begin{equation}
+        \Omega(t,T)=\frac{\sigma^2}{\kappa^2}\int_t^T\left(e^{-\kappa(T-u)}-e^{-\kappa(T+\tau-u)}\right)
+                                                            \left(1-e^{-\kappa(T+\tau-u)}\right)du.
+      \end{equation}
+      This can be shown to give
+      \begin{equation}
+        \Omega(t,T)=\frac{\sigma^2}{2\kappa^3}\left(1-e^{-\kappa\tau}\right)\left(1-e^{-\kappa(T-t)}\right)
+                                              \left(2-e^{-\kappa\tau}-e^{-\kappa(T+\tau-t)}\right).
+      \end{equation}
+      The above result can be exactly reduced to the Ho-Lee model when taking the limit $\kappa\rightarrow 0$,
+      while under this limit, the vasicek model also reduces to the Ho-Lee model.
+
+    \subsection{Continuously Compounded Forward Rate}
+
+      Rather than using the simply compounded forward rate, we can also formulate the convexity adjustment in terms of continuously
+      compounded forward rate,
+      \begin{equation}
+        f(t,T,T+\tau) = -\frac{1}{\tau}\log\left(\frac{P(t,T+\tau)}{P(t,T)}\right)
+                      = \frac{1}{\tau}\left(\log P(t,T)-\log P(t,T+\tau)\right),
+      \end{equation}
+      and the dynamics can be derived by simple application of Ito's lemma,
+      \begin{equation}
+        df(t,T,T+\tau) = \frac{\sigma_P^2(t,T+\tau)-\sigma_P^2(t,T)}{2\tau}dt
+                       + \frac{\sigma_P(t,T+\tau)-\sigma_P(t,T)}{\tau}dW(t).
+      \end{equation}
+      Then, the expected change in the forward rate from $t$ to the expiry of the futures contract $T$, is
+      given by the integral over the drift term,
+      \begin{equation}
+        {\rm ConvAdj}(t,T,T+\tau)=\frac{1}{2\tau}\int_t^T\left[\sigma_P^2(u,T+\tau)-\sigma_P^2(u,T)\right]du.
+      \end{equation}
+
+      For the Ho-Lee model, the convexity adjustment is given by
+      \begin{equation}
+        \frac{\sigma^2}{2}(T-t)(T-t+\tau),
+      \end{equation}
+      and the vasicek convexity adjustment is
+      \begin{equation}
+        \frac{\sigma^2}{4\kappa^3\tau}\left(1-e^{-\kappa\tau}\right)\left(1-e^{-\kappa(T-t)}\right)
+                                      \left(3-e^{-\kappa\tau}-e^{-\kappa(T-t)}-e^{-\kappa(T-t+\tau)}\right).
+      \end{equation}
+      Again, in the $\kappa\rightarrow 0$ limit, this reduces to the Ho-Lee convexity adjustment.
 
   \section{Transform Method for Option Pricing}
   \label{fourier}
