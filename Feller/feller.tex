@@ -25,11 +25,12 @@
   \end{equation}
   with $a=\sigma^2/2$, $b=-\kappa$, and $c=\kappa\theta$.
 
-  We want to find the solution of the PDE (\ref{FP}), with certain initial condition. In particular, we are 
+  We want to find the solution of the PDE (\ref{FP}), with certain initial condition. In particular, we are
   interested in the fundamental solution of the PDE (\ref{FP}), {\it i.e.}, the initial condition is given
   by
   \begin{equation}
-    u(0,x)=\delta(x-y),
+    u(0,x)=\delta(x-\xi),
+    \label{init}
   \end{equation}
   where $\delta(x)$ is the Dirac delta function. To this end, introduce the Laplace transform of $u(t,x)$ as
   \begin{equation}
@@ -38,8 +39,8 @@
   for $\lambda > 0$. We denote the Laplace transform of the initial condition as
   \begin{equation}
     \pi(\lambda) = \int_0^{+\infty}e^{-\lambda x}u(0,x)dx,
-  \end{equation} 
-  and for the fundamental solution, $\pi(\lambda) = e^{-\lambda y}$. Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
+  \end{equation}
+  and for the fundamental solution, $\pi(\lambda) = e^{-\lambda \xi}$. Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
   \begin{eqnarray}
       && \int_0^{+\infty} e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{xx}-\big((bx+c)u(t,x)\big)_x\bigg]dx \nonumber\\
     = && \left. e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{x}-\big((bx+c)u(t,x)\big)\bigg]\right|_0^{+\infty}\nonumber\\
@@ -61,19 +62,194 @@
   \begin{equation}
     dt = \frac{d\lambda}{\lambda(a\lambda - b)},
   \end{equation}
-  which leads to 
+  which leads to the following characteristic
   \begin{equation}
+    \label{char}
     e^{-bt}\frac{a\lambda - b}{\lambda} = C_1,
   \end{equation}
-  with $C_1 = a - b/\lambda$. Then, Eq. (\ref{FP2}) can be integrated, 
+  or equivalently,
   \begin{equation}
-    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{C_2+\int_0^t\frac{f(\tau)}{\left|C_1-ae^{-bt}\right|^{c/a}}\right\}.
+    \lambda(t) = -\frac{be^{-bt}}{C_1-ae^{-bt}}.
   \end{equation}
-  Together with the initial condition, the general solution becomes
+  Then, Eq. (\ref{FP2}) becomes an ordinary differential equation,
+  \begin{equation}
+    \frac{dv}{dt}-\frac{bce^{-bt}}{C_1-ae^{-bt}}v=f(t).
+  \end{equation}
+  It can be integrated,
+  \begin{equation}
+    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{C_2+\int_0^t\frac{f(\tau)}{\left|C_1-ae^{-b\tau}\right|^{c/a}}d\tau\right\}.
+  \end{equation}
+  To determine the unknown constants, assume $C_2=A(C_1)$, where $A(y)$ is an arbitrary function. For the initial condition $v(0,\lambda)=\pi(\lambda)$,
+  we have
+  \begin{equation}
+    \pi(\lambda) = \left|\frac{b}{\lambda}\right|^{c/a}A\left(a-\frac{b}{\lambda}\right),
+  \end{equation}
+  which gives
+  \begin{equation}
+    A(y) = \left|a-y\right|^{-c/a}\pi\left(\frac{b}{a-y}\right).
+  \end{equation}
+  Now, we have
+  \begin{equation}
+    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{\left|a-C_1\right|^{-c/a}\pi\left(\frac{b}{a-C_1}\right)+\int_0^t\frac{f(\tau)}{\left|C_1-ae^{-b\tau}\right|^{c/a}}d\tau\right\}.
+  \end{equation}
+  Using Eq. (\ref{char}), the general solution becomes
   \begin{equation}
     v(t,\lambda)=\left(\frac{b}{\lambda a(e^{bt}-1)+b}\right)^{c/a}\pi\left(\frac{\lambda be^{bt}}{\lambda a(e^{bt}-1)+b}\right)
                     +\int_0^tf(\tau)\left(\frac{b}{\lambda a(e^{b(t-\tau)}-1)+b}\right)^{c/a}d\tau.
+    \label{FP4}
   \end{equation}
+
+\section{Fundamental solutions}
+
+  In the following, we will consider several parameter regimes and the corresponding solutions to the Fokker-Planck equation (\ref{FP}) with
+  initial condition (\ref{init}).
+
+  \subsection{$c\le 0$}
+
+    We are looking for integrable solutions near $x=0$, so that $u$ is a probability distribution. To this end, the integrability of $u$ near
+    $x=0$ is equivalent to $v(t,\lambda)\rightarrow 0$ as $\lambda\rightarrow +\infty$. Therefore, we must require that $f(t)$ satisfies the following
+    equation,
+    \begin{equation}
+      \label{current}
+      \pi\left(\frac{b}{a(1-e^{-bt})}\right)
+                    +\int_0^tf(\tau)\left(\frac{e^{bt}-1}{e^{b(t-\tau)}-1}\right)^{c/a}d\tau = 0.
+    \end{equation}
+    Then, the Fokker-Planck equation (\ref{FP}) with arbitrary initial condition $u(0,x)$ has only one solution corresponding to $f(t)$ in Eq. (\ref{current}).
+
+    For the fundamental solution, we have $\pi(\lambda)=e^{-\lambda\xi}$, and Eq. (\ref{current}) becomes
+    \begin{equation}
+      \int_0^tf(\tau)\left(\frac{e^{bt}-1}{e^{b(t-\tau)}-1}\right)^{c/a}d\tau = -\exp\left(-\frac{b\xi}{a(1-e^{-bt})}\right).
+      \label{current2}
+    \end{equation}
+    Define
+    \begin{equation}
+      \frac{1}{z}=1-e^{-bt}, \quad\quad \frac{1}{\zeta}=1-e^{-b\tau},
+    \end{equation}
+    Eq. (\ref{current2}) becomes
+    \begin{equation}
+      \int_z^{+\infty}f(\tau)\left(\frac{\zeta}{\zeta-z}\right)^{c/a}\frac{d\zeta}{b\zeta(\zeta-1)}=-\exp\left(-\frac{b\xi z}{a}\right).
+      \label{current3}
+    \end{equation}
+    Let
+    \begin{equation}
+      g(\zeta) = f(\tau)\frac{\zeta^{c/a}}{b\zeta(\zeta-1)},
+    \end{equation}
+    and let $g(\zeta)$ have the following functional form
+    \begin{equation}
+      g(\zeta) = Be^{-A\zeta},
+    \end{equation}
+    then the right hand side of  Eq. (\ref{current3}) becomes
+    \begin{equation}
+      B\int_z^{+\infty}e^{-A\zeta}(\zeta-z)^{-c/a}d\zeta = \frac{\displaystyle B\Gamma\left(1-\frac{c}{a}\right)}{\displaystyle A^{1-c/a}}e^{-Az}.
+    \end{equation}
+    Matching terms, we can see that
+    \begin{equation}
+      A = \frac{b\xi}{a}, \quad\quad B = -\frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{b\xi}{a}\right)^{1-c/a}.
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      f(t)=-\frac{b}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\frac{e^{-bt}}{1-e^{-bt}}\left(\frac{b\xi}{a(1-e^{-bt})}\right)^{1-c/a}
+            \exp\left(-\frac{b\xi}{a(1-e^{-bt})}\right).
+    \end{equation}
+
+    With some manipulation, the fundamental solution can be written in the following convenient form,
+    \begin{equation}
+      v(t,\lambda) = \left(\frac{b}{\lambda a(e^{bt}-1)+b}\right)^{c/a}\exp\left(-\frac{\lambda b\xi e^{bt}}{\lambda a(e^{bt}-1)+b}\right)
+                      \Gamma\left(1-\frac{c}{a};\frac{b\xi e^{bt}}{a(e^{bt}-1)}\frac{b}{\lambda a(e^{bt}-1)+b}\right),
+      \label{solution1}
+    \end{equation}
+    where
+    \begin{equation}
+      \Gamma(n;z)=\frac{1}{\Gamma(n)}\int_0^ze^{-x}x^{n-1}dx
+    \end{equation}
+    is the incomplete Gamma function. From this, we can see that
+    \begin{equation}
+      \int_0^{+\infty}u(t,x)dx = \lim_{\lambda\rightarrow 0}v(t,\lambda) = \Gamma\left(1-\frac{c}{a};\frac{\lambda b\xi e^{bt}}{a(e^{bt}-1)}\right),
+    \end{equation}
+    which is strictly less than 1. This means that the $x=0$ boundary serves as an absorbing boundary, and once it is hit, the solution will stay there.
+
+    We can also find the explicit form of the fundamental solution via inverse Laplace transform. Again, let
+    \begin{equation}
+      \label{sub}
+      A = \frac{b\xi e^{bt}}{a(e^{bt}-1)}, \quad\quad \frac{1}{z} = \frac{b}{\lambda a(e^{bt}-1)+b},
+    \end{equation}
+    the incomplete Gamma function in Eq. (\ref{solution1}) can be expressed as
+    \begin{eqnarray}
+      \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\int_0^{A/z}e^{-x}x^{n-1}dx
+      &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{A}{z}\right)^{1-c/a}\int_0^1 e^{-Au/z}u^{-c/a}du \nonumber\\
+      &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{A}{z}\right)^{1-c/a}e^{-A/z}\int_0^1 e^{Av/z}(1-v)^{-c/a}dv.
+    \end{eqnarray}
+    Then,
+    \begin{equation}
+      v(t,\lambda) = \frac{e^{-A}A^{1-c/a}}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\int_0^1 (1-v)^{-c/a}\frac{e^{Av/z}}{z}dv.
+    \end{equation}
+    The inverse Laplace transform can be applied to $e^{Av/z}/z$, which yields
+    \begin{eqnarray}
+      \int e^{\lambda x}\frac{e^{Av/z}}{z}d\lambda &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b}{a(e^{bt}-1)}\right)
+                                                          \int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{Av/z}}{z}dz \nonumber\\
+                                                   &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(2\left(\frac{Avbx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
+                                                   &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(\frac{2b}{a(e^{bt}-1)}\left(e^{bt}\xi v x\right)^{1/2}\right),
+    \end{eqnarray}
+    where we have used the fact that the inverse Laplace transform of $e^{Av/z}/z$ is $I_0(2\sqrt{Avx})$, where $I_{\nu}(x)$ is the modified Bessel
+    function of order $\nu$. Finally, we have
+    \begin{eqnarray}
+      \label{solution4}
+      u(t,x) &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\frac{b}{a(e^{bt}-1)}\left(\frac{b\xi}{a(1-e^{-bt})}\right)^{1-c/a}
+                 \exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right) \nonumber\\
+              && \times\int_0^1(1-v)^{-c/a}I_0\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi v x\right)^{1/2}\right)dv.
+    \end{eqnarray}
+    Using the series expansion of the modified Bessel function,
+    \begin{equation}
+      I_{\nu}(x) = \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1+\nu)}\left(\frac{x}{2}\right)^{2r+\nu},
+    \end{equation}
+    the integral in (\ref{solution4}) can be written as
+    \begin{eqnarray}
+       && \int_0^1(1-v)^{-c/a}I_0\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi v x\right)^{1/2}\right)dv \nonumber\\
+      &=& \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1)}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r}\int_0^1(1-v)^{-c/a}v^rdv \nonumber\\
+      &=& \Gamma\left(1-\frac{c}{a}\right)\sum_{r=0}^{\infty}\frac{1}{\displaystyle r!\Gamma\left(r-\frac{c}{a}+2\right)}
+              \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r} \nonumber\\
+      &=& \Gamma\left(1-\frac{c}{a}\right)\left(\frac{b}{a(1-e^{-bt})}\right)^{-1+c/a}\left(e^{-bt}\xi x\right)^{(c-a)/2a}I_{1-c/a}
+              \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+    \end{eqnarray}
+    Then,
+    \begin{equation}
+      u(t,x) = \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)
+                \left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{1-c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+    \end{equation}
+
+  \subsection{$0<c\le a$}
+
+    For $0<c\le a$, there are infinitely many solutions. We may impose the absorbing boundary condition as in the last section, and obtain the same fundamental solution.
+
+    We can also impose the reflecting boundary condition on Eq. (\ref{FP4}), $f(t)\equiv 0$, which will render a positive and norm preserving solution. To find the 
+    explicit form of the fundamental solution, we can apply the inverse Laplace transform on Eq. (\ref{FP4}), with $f(t)\equiv 0$. Use the same substitution as in Eq. (\ref{sub}),
+    we have
+    \begin{equation}
+      v(t,\lambda) = z^{-c/a}\exp\left(-b\xi+\frac{A}{z}\right).
+    \end{equation}
+    The same manipulation of the inverse Laplace transform as in last section leads to
+    \begin{eqnarray}
+      \int e^{\lambda x} \frac{e^{A/z}}{z^{c/a}}d\lambda
+      &=& \frac{b}{a(e^{bt}-1)}\int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{A/z}}{z^{c/a}}dz \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\left(\frac{bx}{Aa(e^{bt}-1)}\right)^{(c-a)/2a}I_{-1+c/a}\left(2\left(\frac{Abx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{-1+c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right),
+    \end{eqnarray}
+    where we have use the fact that the inverse Laplace transform of $e^{A/z}/z^{1+\nu}$ is $(x/A)^{\nu/2}I_{\nu}(2\sqrt{Ax})$, 
+    and the fundamental solution is then given by
+    \begin{equation}
+      u(t,x)=\frac{be^{-b\xi}}{a(e^{bt}-1)}\left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{-1+c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+    \end{equation}
+
+
+  \subsection{$c>a$}
+
+
+
+\section{CEV model}
+
+
+
+\section{Simulation of the CIR process}
 
 
 \begin{thebibliography}{99}
