@@ -163,13 +163,17 @@
   \end{lemma}
 
   From the above results, we can draw the following conclusions:
-  \begin{itemize}
-    \item a
+  \begin{enumerate}
+    \item If $c\le 0$, there is one solution for each initial condition $\phi(x)$. The solution is positive and norm decreasing, and is
+          absorbing at the $x=0$ boundary;
 
-    \item b
+    \item If $0<c<a$, there is one positive and norm preserving solution, with vanishing flux at the $x=0$ boundary, {\it i.e.}, the reflecting
+          boundary condition. There are infinitely many positive and norm decreasing solutions, with only one solution which is finite
+          at the $x=0$ boundary, {\it i.e.}, absorbing boundary condition;
 
-    \item c
-  \end{itemize}
+    \item If $c\ge a$, the exists one positive and norm preserving solution, with vanishing value and flux at the $x=0$ boundary.
+          No boundary condition can be specified at the $x=0$ boundary, and the boundary is unattainable.
+  \end{enumerate}
 
 \section{Fundamental solutions}
 
@@ -248,7 +252,7 @@
     \end{equation}
     The inverse Laplace transform can be applied to $e^{Av/z}/z$, which yields
     \begin{eqnarray}
-      \int e^{\lambda x}\frac{e^{Av/z}}{z}d\lambda &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b}{a(e^{bt}-1)}\right)
+      \int e^{\lambda x}\frac{e^{Av/z}}{z}d\lambda &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)
                                                           \int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{Av/z}}{z}dz \nonumber\\
                                                    &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(2\left(\frac{Avbx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
                                                    &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(\frac{2b}{a(e^{bt}-1)}\left(e^{bt}\xi v x\right)^{1/2}\right),
@@ -271,13 +275,13 @@
       &=& \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1)}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r}\int_0^1(1-v)^{-c/a}v^rdv \nonumber\\
       &=& \Gamma\left(1-\frac{c}{a}\right)\sum_{r=0}^{\infty}\frac{1}{\displaystyle r!\Gamma\left(r-\frac{c}{a}+2\right)}
               \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r} \nonumber\\
-      &=& \Gamma\left(1-\frac{c}{a}\right)\left(\frac{b}{a(1-e^{-bt})}\right)^{-1+c/a}\left(e^{-bt}\xi x\right)^{(c-a)/2a}I_{1-c/a}
+      &=& \Gamma\left(1-\frac{c}{a}\right)\left(\frac{b}{a(1-e^{-bt})}\right)^{-1+c/a}\left(e^{-bt}\xi x\right)^{\frac{c-a}{2a}}I_{1-\frac{c}{a}}
               \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
     \end{eqnarray}
     Then,
     \begin{equation}
       u(t,x) = \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)
-                \left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{1-c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+                \left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{1-\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
     \end{equation}
 
   \subsection{Reflection boundary condition}
@@ -289,19 +293,19 @@
     Use the same substitution as in Eq. (\ref{sub}),
     we have
     \begin{equation}
-      v(t,\lambda) = z^{-c/a}\exp\left(-b\xi+\frac{A}{z}\right).
+      v(t,\lambda) = e^{-A}z^{-c/a}\exp\left(\frac{A}{z}\right).
     \end{equation}
     The same manipulation of the inverse Laplace transform as in last section leads to
     \begin{eqnarray}
-      \int e^{\lambda x} \frac{e^{A/z}}{z^{c/a}}d\lambda
-      &=& \frac{b}{a(e^{bt}-1)}\int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{A/z}}{z^{c/a}}dz \nonumber\\
-      &=& \frac{b}{a(e^{bt}-1)}\left(\frac{bx}{Aa(e^{bt}-1)}\right)^{(c-a)/2a}I_{-1+c/a}\left(2\left(\frac{Abx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
-      &=& \frac{b}{a(e^{bt}-1)}\left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{-1+c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right),
+      &&\int e^{\lambda x} \frac{e^{A/z}}{z^{c/a}}d\lambda\nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{A/z}}{z^{c/a}}dz \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(\frac{bx}{Aa(e^{bt}-1)}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(2\left(\frac{Abx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right),
     \end{eqnarray}
     where we have use the fact that the inverse Laplace transform of $e^{A/z}/z^{1+\nu}$ is $(x/A)^{\nu/2}I_{\nu}(2\sqrt{Ax})$, 
     and the fundamental solution is then given by
     \begin{equation}
-      u(t,x)=\frac{be^{-b\xi}}{a(e^{bt}-1)}\left(e^{-bt}\frac{x}{\xi}\right)^{(c-a)/2a}I_{-1+c/a}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+      u(t,x)=\frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
     \end{equation}
 
 
@@ -310,11 +314,40 @@
 
   For the underlying asset price, the CEV model assumes the following stochastic process,
   \begin{equation}
-    dS_t=\sigma S_t^{\beta}dW,
+    dS_t=\sigma S_t^{\beta}dW_t,
   \end{equation}
-  where $\sigma>0$ is the volatility, and $\beta>0$.
+  where $\sigma>0$ is the volatility, and $\beta>0$. Define
+  \begin{equation}
+    X_t=\frac{S_t^{2(1-\beta)}}{\sigma^2(1-\beta)^2},
+  \end{equation}
+  and apply the Ito's lemma, we have
+  \begin{equation}
+    dX_t = \delta dt + 2\sqrt{X_t}dW_t,
+  \end{equation}
+  where
+  \begin{equation}
+    \delta = \frac{1-2\beta}{1-\beta}.
+  \end{equation}
+  Thus, the CEV model has been reduced to the problem that we have studied in the past few sections, with
+  $a=2$, $b=0$, and $c=\delta$.
 
+  The absorbing boundary condition can be imposed when $c\le a$, or $\delta\le 2$, which is equivalent to
+  $0<\beta\le 1$. The transition density for the transformed state variable $X$ is given by
+  \begin{equation}
+    p(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+                    I_{\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right),
+  \end{equation}
+  where
+  \begin{equation}
+    \nu=\frac{1}{2(1-\beta)}.
+  \end{equation}
 
+  The reflecting boundary condition can be imposed when $0<c\le a$, or $0<\delta\le 2$, which is equivalent to
+  $0<\beta\le \frac{1}{2}$. The transition density for the transformed state variable $X$ is given by
+  \begin{equation}
+    p(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+                    I_{-\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right).
+  \end{equation}
 
 \section{Simulation of the CIR process}
 
