@@ -317,7 +317,7 @@
   \begin{equation}
     dS_t=\sigma S_t^{\beta}dW_t,
   \end{equation}
-  where $\sigma>0$ is the volatility, and $\beta>0$. Define
+  where $\sigma>0$ is the volatility, and $\beta>0$. Define \cite{Brecher}
   \begin{equation}
     X_t=\frac{S_t^{2(1-\beta)}}{\sigma^2(1-\beta)^2},
   \end{equation}
@@ -335,19 +335,32 @@
   The absorbing boundary condition can be imposed when $c\le a$, or $\delta\le 2$, which is equivalent to
   $0<\beta\le 1$. The transition density for the transformed state variable $X$ is given by
   \begin{equation}
-    p(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+    p_A(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
                     I_{\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right),
+    \label{transition}
   \end{equation}
   where
   \begin{equation}
     \nu=\frac{1}{2(1-\beta)}.
   \end{equation}
+  For the underlying, the transition density \cite{Lesniewski} can be obtained from (\ref{transition}),
+  \begin{equation}
+    p_A(S_T,T;S_0)=\frac{\left(S_0S_T^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2T}
+                  \exp\left(-\frac{S_0^{2(1-\beta)}+S_T^{2(1-\beta)}}{2(1-\beta)^2\sigma^2T}\right)
+                    I_{\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
+  \end{equation}
 
   The reflecting boundary condition can be imposed when $0<c\le a$, or $0<\delta\le 2$, which is equivalent to
   $0<\beta\le \frac{1}{2}$. The transition density for the transformed state variable $X$ is given by
   \begin{equation}
-    p(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+    p_R(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
                     I_{-\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right).
+  \end{equation}
+  Similarly, transition density for the underlying is
+  \begin{equation}
+    p_R(S_T,T;S_0)=\frac{\left(S_0S_T^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2T}
+                  \exp\left(-\frac{S_0^{2(1-\beta)}+S_T^{2(1-\beta)}}{2(1-\beta)^2\sigma^2T}\right)
+                    I_{-\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
   \end{equation}
 
 \section{Simulation of the CIR process}
@@ -356,6 +369,12 @@
 \begin{thebibliography}{99}
   \bibitem{Feller}
     W. Feller, {\it Two Singular Diffusion Problems}, Annals of Mathematics {\bf 54}, 173 (1951).
+
+  \bibitem{Brecher}
+    See \url{http://www.fincad.com/sites/default/files/wysiwyg/Resources-Wiki/cev-process-working-paper.pdf}.
+
+  \bibitem{Lesniewski}
+    See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
 
 \end{thebibliography}
 
