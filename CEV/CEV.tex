@@ -97,7 +97,7 @@
     s^{2\beta}p(t,s) \rightarrow 0,
         && s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
     \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow 0,
-        && s\rightarrow 0,\quad\quad {\rm reflection \quad boundary \quad condition}.
+        && s\rightarrow 0,\quad\quad {\rm reflecting \quad boundary \quad condition}.
   \end{eqnarray}
   Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
   have
@@ -113,11 +113,11 @@
     \label{conservation}
   \end{eqnarray}
   Let $f(s)\equiv 1$, it can be seen that the right hand side of Eq. (\ref{conservation}) does not vanish for absorbing
-  boundary condition, and is zero for reflection boundary condition. Therefore, the total probability is not conserved for
-  the absorbing boundary condition, and is conserved for the reflection boundary condition.
+  boundary condition, and is zero for reflecting boundary condition. Therefore, the total probability is not conserved for
+  the absorbing boundary condition, and is conserved for the reflecting boundary condition.
 
   Now consider $f(s)\equiv s$. The right hand side of Eq. (\ref{conservation}) will vanish for absorbing
-  boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflection
+  boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflecting
   boundary condition.
 
   Finally, let us consider the call payoff, $f(s)=(s-K)^+$. Then, Eq. (\ref{conservation}) becomes
@@ -129,7 +129,7 @@
     C(t,S_t,T,K) = \int (s-K)^+p(T,s)ds = (S_t-K)^++\frac{1}{2}\sigma^2\int_t^T K^{2\beta}p(u,K)du.
     \label{TimeValue}
   \end{equation}
-  However, for the put payoff, there will be an additional boundary term for the reflection boundary condition.
+  However, for the put payoff, there will be an additional boundary term for the reflecting boundary condition.
 
 
 
@@ -213,9 +213,9 @@
 
 
 
-\section{Reflection boundary condition}
+\section{Reflecting boundary condition}
 
-  Consider the reflection boundary condition. It can be shown, to impose this boundary condition, we must have
+  Consider the reflecting boundary condition. It can be shown, to impose this boundary condition, we must have
   \begin{equation}
     A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)=0,
   \end{equation}
@@ -301,7 +301,7 @@
     \label{CEVAbsorbingCall}
   \end{eqnarray}
 
-  For completeness, we also record the result for reflection boundary condition as
+  For completeness, we also record the result for reflecting boundary condition as
   \begin{eqnarray}
     C_R(T,S,K) &=& (S-K)^+ \nonumber\\
              &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
@@ -494,7 +494,7 @@
     p(t,s)=\frac{1}{2}\bigg(p_R\left(t,\left|s\right|\right)+{\rm sgn}(s)p_A\left(t,\left|s\right|\right)\bigg),
   \end{equation}
   where $p_A(t,s)$ and $p_R(t,s)$ are the solution to the Fokker-Plack equation (\ref{FP}) under
-  the absorbing and reflection boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
+  the absorbing and reflecting boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
   it can be shown that the call option price in the free boundary CEV model is
   \begin{eqnarray}
     C(T,S,K) &=& (S-K)^+ \nonumber\\
