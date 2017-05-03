@@ -178,7 +178,7 @@
 
 \section{Fundamental solutions}
 
-  In the following, we will consider the absorbing and reflection boundary conditions and find the explicit form of the
+  In the following, we will consider the absorbing and reflecting boundary conditions and find the explicit form of the
   fundamental solutions to the Fokker-Planck equation (\ref{FP}) with initial condition (\ref{init}).
 
   \subsection{Absorbing boundary condition}
@@ -285,10 +285,9 @@
                 \left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{1-\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
     \end{equation}
 
-  \subsection{Reflection boundary condition}
+  \subsection{Reflecting boundary condition}
 
-    If $0<c\le a$,
-    we can also impose the reflecting boundary condition on Eq. (\ref{FP4}), $f(t)\equiv 0$, which will render a positive
+    If $c>0$, we can impose the reflecting boundary condition on Eq. (\ref{FP4}), $f(t)\equiv 0$, which will render a positive
     and norm preserving solution. To find the 
     explicit form of the fundamental solution, we can apply the inverse Laplace transform on Eq. (\ref{FP4}), with $f(t)\equiv 0$.
     Use the same substitution as in Eq. (\ref{sub}),
@@ -350,8 +349,8 @@
                     I_{\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
   \end{equation}
 
-  The reflecting boundary condition can be imposed when $0<c\le a$, or $0<\delta\le 2$, which is equivalent to
-  $0<\beta\le \frac{1}{2}$. The transition density for the transformed state variable $X$ is given by
+  The reflecting boundary condition can be imposed when $c>0$, which is equivalent to
+  $0<\beta\le \frac{1}{2}$ or $\beta>1$. The transition density for the transformed state variable $X$ is given by
   \begin{equation}
     p_R(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
                     I_{-\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right).
