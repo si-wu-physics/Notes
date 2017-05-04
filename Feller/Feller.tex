@@ -29,7 +29,8 @@
   with $x>0$. This can be viewed as the corresponding Fokker-Planck equation for the Cox-Ingersoll-Ross (CIR)
   process
   \begin{equation}
-    dx_t=\kappa(\theta-x_t)dt + \sigma\sqrt{x_t}dW_t,
+    \label{CIR}
+    dv_t=\kappa(\theta-v_t)dt + \sigma\sqrt{v_t}dW_t,
   \end{equation}
   with $a=\sigma^2/2$, $b=-\kappa$, and $c=\kappa\theta$.
 
@@ -306,6 +307,7 @@
     and the fundamental solution is then given by
     \begin{equation}
       u(t,x)=\frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+      \label{reflecting}
     \end{equation}
 
 
@@ -363,6 +365,20 @@
   \end{equation}
 
 \section{Simulation of the CIR process}
+
+  For the CIR process (\ref{CIR}), when the following inequality is satisfied,
+  \begin{equation}
+    2\kappa\theta >\sigma^2,
+  \end{equation}
+  the process will never reach the $v=0$ boundary. This is known as the {\it Feller condition}. When the Feller
+  condition is violated, {\it i.e.}, $2\kappa\theta \le\sigma^2$, the process will hit the $v=0$ boundary, and a
+  proper boundary condition is required. To preserve the total probability, a natural choice is the reflecting
+  boundary condition, and once the process hit the lower boundary, it will be completely reflected. Therefore,
+  for meaningful CIR parameters, we can always impose the reflecting boundary condition, and the
+  probability distribution of $v_{t+\Delta}$ conditional on $v_t$ is given by (\ref{reflecting}),
+  \begin{equation}
+    p(\left.v_{t+\Delta}\right|v_t)
+  \end{equation}
 
 
 \begin{thebibliography}{99}
