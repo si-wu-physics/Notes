@@ -3,6 +3,14 @@
 \usepackage[hscale=.8,vscale=.8]{geometry}
 \usepackage{hyperref}
 
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}
+
 \begin{document}
 
 \title{Notes on Characteristic Functions}
@@ -10,12 +18,73 @@
 
 \maketitle
 
-For an underlying $S_t$ following certain stochastic process, its characteristic function is defined as
-\begin{equation}
-  \label{Char01}
-  \varphi(u)=E[\left.e^{iuX_T}\right|X_t],
-\end{equation}
-where $X_t=\log S_t$.
+\section{Characteristic Function}
+
+  A stochastic process $X_t$ is called a {\it L\'{e}vy process} if it has the following properties:
+  \begin{enumerate}[noitemsep]
+    \item $X_0=0$ almost surealy;
+    \item {\it Independence of increments}. For any $0\le t_1 < t_2 < \cdots < t_n < +\infty$, $X_{t_2}-X_{t_1}$, 
+          $X_{t_3}-{t_2}$, $\cdots$, $X_{t_n}-X_{t_{n-1}}$ are independent;
+    \item {\it Stationary increments}. For any $s<t$, $X_t-X_s$ is equal in distribution to $X_{t-s}$;
+    \item {\it Continuity in probability}. For any $\epsilon>0$ and $t\ge 0$, $\lim_{h\rightarrow 0}P(|X_{t+h}-X_t>\epsilon|)=0$.
+  \end{enumerate}
+  For the L\'{e}vy process, the characteristic function is given by
+  \begin{equation}
+    \varphi(u)={\rm E}\left[e^{iuX_t}\right]=\exp\left\{t\left(iua-\frac{1}{2}u^2\sigma^2
+              +\int_{\mathbb{R}\textbackslash\{0\}}\left(e^{iux}-1-iux\mathcal{I}_{|x|<1}\right)\Pi(dx)\right)\right\}.
+  \end{equation}
+
+  In the following, we will give several examples of L\'{e}vy process and their corresponding characteristic functions.
+
+  \subsection{Black-Scholes Model}
+
+    For the Black-Scholes model, 
+    \begin{equation}
+      dS_t=(r-q)S_tdt+\sigma S_tdW_t,
+    \end{equation}
+    we can define 
+    \begin{equation}
+      X_t=\log\left(\frac{S_t}{S_0e^{(r-q)t}}\right),
+    \end{equation}
+    it can be shown that
+    \begin{equation}
+      dX_t = -\frac{1}{2}\sigma^2 dt + \sigma dW_t.
+    \end{equation}
+    Therefore, $X_t\sim N(-\sigma^2t/2, \sigma^2t)$, where $N(\mu,\sigma^2)$ is a Gaussian distribution with mean and variance
+    as $\mu$ and $\sigma^2$, respectively. The characteristic function can be found by direct integration
+    \begin{equation}
+      \varphi(u)=\frac{1}{2\pi\sigma^2 t}\int \exp\left(iux-\frac{\left(x+\frac{1}{2}\sigma^2t\right)^2}{2\sigma^2t}\right)
+                =\exp\left(-\frac{\sigma^2t}{2}u(u+i)\right).
+      \label{BS}
+    \end{equation}
+
+    \begin{remark}
+      In many applications, the characteristic function is alternatively defined as ${\rm E}\left[e^{iu\log S_t}\right]$, which is related
+      to (\ref{BS}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which 
+      definition is used is clear from the context.
+    \end{remark}
+
+  \subsection{Heston Model}
+
+    The state variable dynamics of the Heston model is given by
+    \begin{eqnarray}
+      dS_t &=& (r-q)S_tdt+\sqrt{v_t}S_tdW_t, \\
+      dv_t &=& \kappa(\theta - v_t)dt + \sigma\sqrt{v_t}dB_t,
+    \end{eqnarray}
+    with $\langle dW_t,dB_t\rangle=\rho dt$. Consider the bivariate characteristic function,
+    \begin{equation}
+      \varphi(u_1,u_2)={\rm E}\left[\left.\exp\left(iu_1x_T+iu_2v_T\right)\right|x_t,v_t\right],
+    \end{equation}
+    where $u_t=\log S_t$. Define $\tau = T-t$, we are seeking a solution in the form of
+    \begin{equation}
+      \varphi(u_1,u_2) = \exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)x_t+C(\tau,u_1,u_2)v_t\right).
+    \end{equation}
+    According to the Feynman-Kac theorem, the bivariate characteristic function satisfies the following PDE,
+    \begin{equation}
+      -\frac{\partial \varphi}{\partial \tau} + \left(r-q-\frac{1}{2}v\right)\frac{\partial \varphi}{\partial x}
+      + \kappa(\theta - v)\frac{\partial \varphi}{\partial x} + \frac{1}{2}v\frac{\partial^2 \varphi}{\partial x^2}
+      + \rho\sigma v\frac{\partial^2 \varphi}{\partial x\partial v}+\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}=0.
+    \end{equation}
 
 \section{Fourier Inversion Formula}
 
