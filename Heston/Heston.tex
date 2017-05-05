@@ -32,6 +32,7 @@
   \begin{equation}
     \varphi(u)={\rm E}\left[e^{iuX_t}\right]=\exp\left\{t\left(iua-\frac{1}{2}u^2\sigma^2
               +\int_{\mathbb{R}\textbackslash\{0\}}\left(e^{iux}-1-iux\mathcal{I}_{|x|<1}\right)\Pi(dx)\right)\right\}.
+    \label{char}
   \end{equation}
 
   In the following, we will give several examples of L\'{e}vy process and their corresponding characteristic functions.
@@ -73,33 +74,106 @@
     \end{eqnarray}
     with $\langle dW_t,dB_t\rangle=\rho dt$. Consider the bivariate characteristic function,
     \begin{equation}
-      \varphi(u_1,u_2)={\rm E}\left[\left.\exp\left(iu_1x_T+iu_2v_T\right)\right|x_t,v_t\right],
+      \varphi(u_1,u_2; x_t, v_t)={\rm E}\left[\left.\exp\left(iu_1x_T+iu_2v_T\right)\right|x_t,v_t\right],
     \end{equation}
     where $u_t=\log S_t$. Define $\tau = T-t$, we are seeking a solution in the form of
     \begin{equation}
-      \varphi(u_1,u_2) = \exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)x_t+C(\tau,u_1,u_2)v_t\right).
+      \varphi(u_1,u_2; x_t, v_t) = \exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)x_t+C(\tau,u_1,u_2)v_t\right).
     \end{equation}
     According to the Feynman-Kac theorem, the bivariate characteristic function satisfies the following PDE,
     \begin{equation}
       -\frac{\partial \varphi}{\partial \tau} + \left(r-q-\frac{1}{2}v\right)\frac{\partial \varphi}{\partial x}
       + \kappa(\theta - v)\frac{\partial \varphi}{\partial x} + \frac{1}{2}v\frac{\partial^2 \varphi}{\partial x^2}
-      + \rho\sigma v\frac{\partial^2 \varphi}{\partial x\partial v}+\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}=0.
+      + \rho\sigma v\frac{\partial^2 \varphi}{\partial x\partial v}+\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}=0,
     \end{equation}
+    with initial conditions $A(0,u_1,u_2)=0$, $B(0,u_1,u_2)=iu_1$, and $C(0,,u_1,u_2)=iu_2$. Matching terms, the
+    PDE becomes coupled ODEs,
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& (r-q)B+\kappa\theta C, \\
+      \frac{dB}{d\tau} &=& 0, \\
+      \frac{dC}{d\tau} &=& \frac{1}{2}\sigma^2C^2+(\rho\sigma B-\kappa)C+\frac{1}{2}B^2-\frac{1}{2}B.
+    \end{eqnarray}
+    Using the initial condtion, we have $B(\tau,u_1,u_2)=iu_1$, and the other two equations become
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& i(r-q)u_1+\kappa\theta C, \label{A} \\
+      \frac{dC}{d\tau} &=& \frac{1}{2}\sigma^2C^2+(i\rho\sigma u_1-\kappa)C-\frac{1}{2}u_1(u_1+i).
+      \label{C}
+    \end{eqnarray}
+    The Riccati equation for $C(\tau,u_1,u_2)$ has the following solution
+    \begin{equation}
+      C(\tau,u_1,u_2)=-\frac{w^{\prime}(\tau)}{w(\tau)}\frac{1}{R(\tau)},
+    \end{equation}
+    where $w(\tau)$ satisfies the following equation,
+    \begin{equation}
+      w^{\prime\prime}-\left[\frac{R^{\prime}}{R}+Q\right]w^{\prime}+PRw=0,
+    \end{equation}
+    and
+    \begin{equation}
+      P(\tau) = -\frac{1}{2}u_1(u_1+i), \quad\quad Q(\tau)=i\rho\sigma u_1-\kappa,
+      \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
+    \end{equation}
+    Define
+    \begin{equation}
+      \beta = \kappa-i\rho\sigma u_1, \quad\quad  d=\sqrt{\beta^2+\sigma^2u_1(u_1+i)},
+    \end{equation}
+    it can be shown that the solution to Eq. (\ref{C}) is
+    \begin{equation}
+      C(\tau,u_1,u_2)=\frac{\beta+d}{\sigma^2}\frac{e^{d\tau}-1}{Ke^{d\tau}-1},
+      \label{C1}
+    \end{equation}
+    where
+    \begin{equation}
+      K=\frac{\beta+d-iu_2\sigma^2}{\beta-d-iu_2\sigma^2}.
+    \end{equation}
+    Then, Eq. (\ref{A}) can be directly integrated,
+    \begin{equation}
+      A(\tau,u_1,u_2)=iu_1(r-q)\tau+\frac{\kappa\theta}{\sigma^2}\left[(\beta+d)\tau
+                      -2\log\left(\frac{Ke^{d\tau}-1}{K-1}\right)\right].
+      \label{A1}
+    \end{equation}
+
+    \begin{remark}
+      When the characteristic function for the log stock price is needed, we can simply set $u_2=0$ in the 
+      above bivariate characteristic function.
+    \end{remark}
+
+    \begin{remark}
+      For numerical integration, the {\it Little Heston Trap} trick is generally applied to the argument of the 
+      complex logarithm, to remove the discountinuities. Define
+      \begin{equation}
+        G=\frac{1}{K}=\frac{\beta-d-iu_2\sigma^2}{\beta+d-iu_2\sigma^2},
+      \end{equation}
+      we can rewrite Eqs. (\ref{C1}) and (\ref{A1}) equivalently as
+      \begin{eqnarray}
+        A(\tau,u_1,u_2) &=& iu_1(r-q)\tau+\frac{\kappa\theta}{\sigma^2}\left[(\beta-d)\tau
+                      -2\log\left(\frac{1-Ge^{-d\tau}}{1-G}\right)\right], \\
+        C(\tau,u_1,u_2) &=& \frac{\beta+d}{\sigma^2K}\frac{1-e^{-d\tau}}{1-Ge^{-d\tau}}.
+      \end{eqnarray}
+    \end{remark}
+
+  \subsection{Cox-Ingersoll-Ross Process}
+
+
+  % \subsection{3/2 Model}
+
+  \subsection{Orenstein-Uhlenbeck Process}
+
 
 \section{Fourier Inversion Formula}
 
-  Consider the problem of finding the in-the-money (ITM) probability of the underlying asset at maturity, $P(\log S_T > \log K)$, which is given by
+  Consider the problem of finding the cumulative density function from characteristic function (\ref{char}). 
+  In particular, we want to find the probability of $X>k$, {\it i.e.}, $P(X>k)$, which is given by
   \begin{equation}
-    P(\log S_T > k)=\int_k^{+\infty}f(x)dx,
+    P(X > k)=\int_k^{+\infty}f(x)dx.
   \end{equation}
-  with $k=\log K$. Here, $f(x)$ is the probability density function of $X_T=\log S_T$, and can be recovered from the characteristic function (\ref{Char01})
+  Here, $f(x)$ is the probability density function of $X$, and can be recovered from the characteristic function (\ref{char})
   by the inverse Fourier transform,
   \begin{equation}
     f(x)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du.
   \end{equation}
   Therefore,
   \begin{eqnarray}
-    P(\log S_T > k)&=&\frac{1}{2\pi}\int_k^{+\infty} \left(\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du\right)dx
+    P(X > k)&=&\frac{1}{2\pi}\int_k^{+\infty} \left(\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du\right)dx
                         =\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u) \left(\int_k^{+\infty}e^{-iux}dx\right)du\nonumber\\
                    &=&\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuk}}{iu}du
                         - \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuR}}{iu}du.
@@ -118,10 +192,10 @@
   \end{equation}
   where $F(x)$ is the cumulative distribution function of $X_T$.
 
-  Finally, the ITM probability is given by
+  Finally, the probability is given by
   \begin{equation}
     \label{inversion}
-    P(\log S_T > k)=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuk}}{iu}du.
+    P(X > k)=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuk}}{iu}du.
   \end{equation}
 
 
@@ -168,8 +242,9 @@
     \end{equation}
     From Eq. (\ref{inversion}), the two probabilities $P_1$ and $P_2$ can be written as
     \begin{equation}
-      P_j=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi_j(u)\frac{e^{-iuk}}{iu}du, \quad\quad j=1,2.
+      P_j=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi_j(u)\frac{e^{-iuk}}{iu}du, \quad\quad j=1,2,
     \end{equation}
+    with $k=\log K$.
     It seems that two characteristic functions corresponding to the two different measures are required in the valuation of the option
     price. However, these two characteristic functions are related due to the measure change. To see this, notice that
     \begin{equation}
@@ -188,7 +263,7 @@
     \begin{equation}
       {\rm E}^{\mathbb{Q}}[e^{X_T}]=\int_{-\infty}^{+\infty}e^{x}f(x)dx=\varphi(-i),
     \end{equation}
-    where $\varphi(u)$ is the characteristic function as defined in (\ref{Char01}), and coincides with $\varphi_2(u)$. Therefore,
+    where $\varphi(u)$ is the characteristic function as defined in (\ref{char}), and coincides with $\varphi_2(u)$. Therefore,
     \begin{eqnarray}
       P_1 &=& \frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{-iu\log K}\varphi(u-i)}{iu\varphi(-i)}du, \\
       P_2 &=& \frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{-iu\log K}\varphi(u)}{iu}du. \\
