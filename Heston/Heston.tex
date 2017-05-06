@@ -24,7 +24,7 @@
   \begin{enumerate}[noitemsep]
     \item $X_0=0$ almost surealy;
     \item {\it Independence of increments}. For any $0\le t_1 < t_2 < \cdots < t_n < +\infty$, $X_{t_2}-X_{t_1}$, 
-          $X_{t_3}-{t_2}$, $\cdots$, $X_{t_n}-X_{t_{n-1}}$ are independent;
+          $X_{t_3}-X_{t_2}$, $\cdots$, $X_{t_n}-X_{t_{n-1}}$ are independent;
     \item {\it Stationary increments}. For any $s<t$, $X_t-X_s$ is equal in distribution to $X_{t-s}$;
     \item {\it Continuity in probability}. For any $\epsilon>0$ and $t\ge 0$, $\lim_{h\rightarrow 0}P(|X_{t+h}-X_t>\epsilon|)=0$.
   \end{enumerate}
@@ -45,23 +45,29 @@
     \end{equation}
     we can define 
     \begin{equation}
-      X_t=\log\left(\frac{S_t}{S_0e^{(r-q)t}}\right),
+      \varphi(u; x_t)={\rm E}\left[\left.\exp\left(iux_T\right)\right|x_t\right],
+      \label{char00}
     \end{equation}
-    it can be shown that
+    where $x_t=\log S_t$, and it can be shown that
     \begin{equation}
-      dX_t = -\frac{1}{2}\sigma^2 dt + \sigma dW_t.
+      dx_t = \left(r-q-\frac{1}{2}\sigma^2\right) dt + \sigma dW_t.
     \end{equation}
-    Therefore, $X_t\sim N(-\sigma^2t/2, \sigma^2t)$, where $N(\mu,\sigma^2)$ is a Gaussian distribution with mean and variance
-    as $\mu$ and $\sigma^2$, respectively. The characteristic function can be found by direct integration
+    Therefore, 
     \begin{equation}
-      \varphi(u)=\frac{1}{2\pi\sigma^2 t}\int \exp\left(iux-\frac{\left(x+\frac{1}{2}\sigma^2t\right)^2}{2\sigma^2t}\right)
-                =\exp\left(-\frac{\sigma^2t}{2}u(u+i)\right).
+      x_T\sim N\left(x_t+\left(r-q-\frac{1}{2}\sigma^2\right)\tau, \sigma^2\tau\right),
+    \end{equation}
+    where $N(\mu,\sigma^2)$ is a Gaussian distribution with mean and variance
+    as $\mu$ and $\sigma^2$, respectively, and $\tau=T-t$. The characteristic function can be found by direct integration
+    \begin{eqnarray}
+      \varphi(u)&=&\frac{1}{2\pi\sigma^2 \tau}\int \exp\left\{iux-\frac{1}{2\sigma^2\tau}
+                      \left[x-x_t-\left(r-q-\frac{1}{2}\sigma^2\right)\tau\right]^2\right\}dx\nonumber\\
+                &=&=\exp\left(iux_t + iu(r-q)\tau -\frac{\sigma^2\tau}{2}u(u+i)\right).
       \label{BS}
-    \end{equation}
+    \end{eqnarray}
 
     \begin{remark}
-      In many applications, the characteristic function is alternatively defined as ${\rm E}\left[e^{iu\log S_t}\right]$, which is related
-      to (\ref{BS}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which 
+      In many applications, the characteristic function is alternatively defined as (\ref{char00}), which is related
+      to (\ref{char}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which 
       definition is used is clear from the context.
     \end{remark}
 
@@ -76,11 +82,11 @@
     \begin{equation}
       \varphi(u_1,u_2; x_t, v_t)={\rm E}\left[\left.\exp\left(iu_1x_T+iu_2v_T\right)\right|x_t,v_t\right],
     \end{equation}
-    where $u_t=\log S_t$. Define $\tau = T-t$, we are seeking a solution in the form of
+    where $x_t=\log S_t$. Define $\tau = T-t$, we are seeking a solution in the form of
     \begin{equation}
       \varphi(u_1,u_2; x_t, v_t) = \exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)x_t+C(\tau,u_1,u_2)v_t\right).
     \end{equation}
-    According to the Feynman-Kac theorem, the bivariate characteristic function satisfies the following PDE,
+    Applying the Feynman-Kac theorem, the bivariate characteristic function satisfies the following PDE,
     \begin{equation}
       -\frac{\partial \varphi}{\partial \tau} + \left(r-q-\frac{1}{2}v\right)\frac{\partial \varphi}{\partial x}
       + \kappa(\theta - v)\frac{\partial \varphi}{\partial x} + \frac{1}{2}v\frac{\partial^2 \varphi}{\partial x^2}
@@ -153,6 +159,43 @@
 
   \subsection{Cox-Ingersoll-Ross Process}
 
+    For the Cox-Ingersoll-Ross process,
+    \begin{equation}
+      dv_t = \kappa(\theta - v_t)dt + \sigma\sqrt{v_t}dW_t,
+    \end{equation}
+    and we want to find the joint characteristic function
+    \begin{equation}
+      \varphi(u_1,u_2;v_t)={\rm E}\left[\left. \exp\left(iu_1v_T+iu_2\int_t^Tv_sds\right)\right| v_t\right].
+    \end{equation}
+    We are seeking a solution in the form of
+    \begin{equation}
+      \varphi(u_1,u_2;v_t)=\exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)v_t\right).
+    \end{equation}
+    Applying Feynman-Kac theorem, and define $\tau=T-t$, the joint characteristic function satisfies the following PDE,
+    \begin{equation}
+      -\frac{\partial \varphi}{\partial \tau}
+      + \kappa(\theta - v)\frac{\partial \varphi}{\partial x}
+      +\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}
+      +iu_2\varphi = 0,
+    \end{equation}
+    with initial conditions, $A(0,u_1,u_2)=0$, and $B(0,u_1,u_2)=iu_1$. Matching terms, we have
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& \kappa\theta B, \label{AA} \\
+      \frac{dB}{d\tau} &=& iu_2 - \kappa B + \frac{1}{2}\sigma^2B^2. \label{BB}
+    \end{eqnarray}
+    The solution to the Riccati equation (\ref{BB}) is given by
+    \begin{equation}
+      B(\tau,u_1,u_2)=-\frac{w^{\prime}(\tau)}{w(\tau)}\frac{1}{R(\tau)},
+    \end{equation}
+    where $w(\tau)$ satisfies the following equation,
+    \begin{equation}
+      w^{\prime\prime}-\left[\frac{R^{\prime}}{R}+Q\right]w^{\prime}+PRw=0,
+    \end{equation}
+    and
+    \begin{equation}
+      P(\tau) = iu, \quad\quad Q(\tau)=-\kappa, \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
+    \end{equation}
+
 
   % \subsection{3/2 Model}
 
@@ -161,12 +204,12 @@
 
 \section{Fourier Inversion Formula}
 
-  Consider the problem of finding the cumulative density function from characteristic function (\ref{char}). 
+  Consider the problem of finding the cumulative density function from its characteristic function. 
   In particular, we want to find the probability of $X>k$, {\it i.e.}, $P(X>k)$, which is given by
   \begin{equation}
     P(X > k)=\int_k^{+\infty}f(x)dx.
   \end{equation}
-  Here, $f(x)$ is the probability density function of $X$, and can be recovered from the characteristic function (\ref{char})
+  Here, $f(x)$ is the probability density function of $X$, and can be recovered from the characteristic function
   by the inverse Fourier transform,
   \begin{equation}
     f(x)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du.
