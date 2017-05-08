@@ -1,0 +1,368 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage[hscale=.8,vscale=.8]{geometry}
+\usepackage{hyperref}
+
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\title{Notes on Characteristic Functions}
+\date{Dec. 32, 2999}
+
+\maketitle
+
+\section{Characteristic Function}
+
+  A stochastic process $X_t$ is called a {\it L\'{e}vy process} if it has the following properties:
+  \begin{enumerate}[noitemsep]
+    \item $X_0=0$ almost surealy;
+    \item {\it Independence of increments}. For any $0\le t_1 < t_2 < \cdots < t_n < +\infty$, $X_{t_2}-X_{t_1}$, 
+          $X_{t_3}-X_{t_2}$, $\cdots$, $X_{t_n}-X_{t_{n-1}}$ are independent;
+    \item {\it Stationary increments}. For any $s<t$, $X_t-X_s$ is equal in distribution to $X_{t-s}$;
+    \item {\it Continuity in probability}. For any $\epsilon>0$ and $t\ge 0$, $\lim_{h\rightarrow 0}P(|X_{t+h}-X_t>\epsilon|)=0$.
+  \end{enumerate}
+  For the L\'{e}vy process, the characteristic function is given by
+  \begin{equation}
+    \varphi(u)={\rm E}\left[e^{iuX_t}\right]=\exp\left\{t\left(iua-\frac{1}{2}u^2\sigma^2
+              +\int_{\mathbb{R}\textbackslash\{0\}}\left(e^{iux}-1-iux\mathcal{I}_{|x|<1}\right)\Pi(dx)\right)\right\}.
+    \label{char}
+  \end{equation}
+
+  In the following, we will give several examples of L\'{e}vy process and their corresponding characteristic functions.
+
+  \subsection{Black-Scholes Model}
+
+    For the Black-Scholes model, 
+    \begin{equation}
+      dS_t=(r-q)S_tdt+\sigma S_tdW_t,
+    \end{equation}
+    we can define 
+    \begin{equation}
+      \varphi(u; x_t)={\rm E}\left[\left.\exp\left(iux_T\right)\right|x_t\right],
+      \label{char00}
+    \end{equation}
+    where $x_t=\log S_t$, and it can be shown that
+    \begin{equation}
+      dx_t = \left(r-q-\frac{1}{2}\sigma^2\right) dt + \sigma dW_t.
+    \end{equation}
+    Therefore, 
+    \begin{equation}
+      x_T\sim N\left(x_t+\left(r-q-\frac{1}{2}\sigma^2\right)\tau, \sigma^2\tau\right),
+    \end{equation}
+    where $N(\mu,\sigma^2)$ is a Gaussian distribution with mean and variance
+    as $\mu$ and $\sigma^2$, respectively, and $\tau=T-t$. The characteristic function can be found by direct integration
+    \begin{eqnarray}
+      \varphi(u)&=&\frac{1}{2\pi\sigma^2 \tau}\int \exp\left\{iux-\frac{1}{2\sigma^2\tau}
+                      \left[x-x_t-\left(r-q-\frac{1}{2}\sigma^2\right)\tau\right]^2\right\}dx\nonumber\\
+                &=&=\exp\left(iux_t + iu(r-q)\tau -\frac{\sigma^2\tau}{2}u(u+i)\right).
+      \label{BS}
+    \end{eqnarray}
+
+    \begin{remark}
+      In many applications, the characteristic function is alternatively defined as (\ref{char00}), which is related
+      to (\ref{char}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which 
+      definition is used is clear from the context.
+    \end{remark}
+
+  \subsection{Heston Model}
+
+    The state variable dynamics of the Heston model is given by
+    \begin{eqnarray}
+      dS_t &=& (r-q)S_tdt+\sqrt{v_t}S_tdW_t, \\
+      dv_t &=& \kappa(\theta - v_t)dt + \sigma\sqrt{v_t}dB_t,
+    \end{eqnarray}
+    with $\langle dW_t,dB_t\rangle=\rho dt$. Consider the bivariate characteristic function,
+    \begin{equation}
+      \varphi(u_1,u_2; x_t, v_t)={\rm E}\left[\left.\exp\left(iu_1x_T+iu_2v_T\right)\right|x_t,v_t\right],
+    \end{equation}
+    where $x_t=\log S_t$. Define $\tau = T-t$, we are seeking a solution in the form of
+    \begin{equation}
+      \varphi(u_1,u_2; x_t, v_t) = \exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)x_t+C(\tau,u_1,u_2)v_t\right).
+    \end{equation}
+    Applying the Feynman-Kac theorem, the bivariate characteristic function satisfies the following PDE,
+    \begin{equation}
+      -\frac{\partial \varphi}{\partial \tau} + \left(r-q-\frac{1}{2}v\right)\frac{\partial \varphi}{\partial x}
+      + \kappa(\theta - v)\frac{\partial \varphi}{\partial x} + \frac{1}{2}v\frac{\partial^2 \varphi}{\partial x^2}
+      + \rho\sigma v\frac{\partial^2 \varphi}{\partial x\partial v}+\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}=0,
+    \end{equation}
+    with initial conditions $A(0,u_1,u_2)=0$, $B(0,u_1,u_2)=iu_1$, and $C(0,,u_1,u_2)=iu_2$. Matching terms, the
+    PDE becomes coupled ODEs,
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& (r-q)B+\kappa\theta C, \\
+      \frac{dB}{d\tau} &=& 0, \\
+      \frac{dC}{d\tau} &=& \frac{1}{2}\sigma^2C^2+(\rho\sigma B-\kappa)C+\frac{1}{2}B^2-\frac{1}{2}B.
+    \end{eqnarray}
+    Using the initial condtion, we have $B(\tau,u_1,u_2)=iu_1$, and the other two equations become
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& i(r-q)u_1+\kappa\theta C, \label{A} \\
+      \frac{dC}{d\tau} &=& \frac{1}{2}\sigma^2C^2+(i\rho\sigma u_1-\kappa)C-\frac{1}{2}u_1(u_1+i).
+      \label{C}
+    \end{eqnarray}
+    The Riccati equation for $C(\tau,u_1,u_2)$ has the following solution
+    \begin{equation}
+      C(\tau,u_1,u_2)=-\frac{w^{\prime}(\tau)}{w(\tau)}\frac{1}{R(\tau)},
+    \end{equation}
+    where $w(\tau)$ satisfies the following equation,
+    \begin{equation}
+      w^{\prime\prime}-\left[\frac{R^{\prime}}{R}+Q\right]w^{\prime}+PRw=0,
+    \end{equation}
+    and
+    \begin{equation}
+      P(\tau) = -\frac{1}{2}u_1(u_1+i), \quad\quad Q(\tau)=i\rho\sigma u_1-\kappa,
+      \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
+    \end{equation}
+    Define
+    \begin{equation}
+      \beta = \kappa-i\rho\sigma u_1, \quad\quad  d=\sqrt{\beta^2+\sigma^2u_1(u_1+i)},
+    \end{equation}
+    it can be shown that the solution to Eq. (\ref{C}) is
+    \begin{equation}
+      C(\tau,u_1,u_2)=\frac{\beta+d}{\sigma^2}\frac{e^{d\tau}-1}{Ke^{d\tau}-1},
+      \label{C1}
+    \end{equation}
+    where
+    \begin{equation}
+      K=\frac{\beta+d-iu_2\sigma^2}{\beta-d-iu_2\sigma^2}.
+    \end{equation}
+    Then, Eq. (\ref{A}) can be directly integrated,
+    \begin{equation}
+      A(\tau,u_1,u_2)=iu_1(r-q)\tau+\frac{\kappa\theta}{\sigma^2}\left[(\beta+d)\tau
+                      -2\log\left(\frac{Ke^{d\tau}-1}{K-1}\right)\right].
+      \label{A1}
+    \end{equation}
+
+    \begin{remark}
+      When the characteristic function for the log stock price is needed, we can simply set $u_2=0$ in the 
+      above bivariate characteristic function.
+    \end{remark}
+
+    \begin{remark}
+      For numerical integration, the {\it Little Heston Trap} trick is generally applied to the argument of the 
+      complex logarithm, to remove the discountinuities. Define
+      \begin{equation}
+        G=\frac{1}{K}=\frac{\beta-d-iu_2\sigma^2}{\beta+d-iu_2\sigma^2},
+      \end{equation}
+      we can rewrite Eqs. (\ref{C1}) and (\ref{A1}) equivalently as
+      \begin{eqnarray}
+        A(\tau,u_1,u_2) &=& iu_1(r-q)\tau+\frac{\kappa\theta}{\sigma^2}\left[(\beta-d)\tau
+                      -2\log\left(\frac{1-Ge^{-d\tau}}{1-G}\right)\right], \\
+        C(\tau,u_1,u_2) &=& \frac{\beta+d}{\sigma^2K}\frac{1-e^{-d\tau}}{1-Ge^{-d\tau}}.
+      \end{eqnarray}
+    \end{remark}
+
+  \subsection{Cox-Ingersoll-Ross Process}
+
+    For the Cox-Ingersoll-Ross process,
+    \begin{equation}
+      dv_t = \kappa(\theta - v_t)dt + \sigma\sqrt{v_t}dW_t,
+    \end{equation}
+    and we want to find the joint characteristic function
+    \begin{equation}
+      \varphi(u_1,u_2;v_t)={\rm E}\left[\left. \exp\left(iu_1v_T+iu_2\int_t^Tv_sds\right)\right| v_t\right].
+    \end{equation}
+    We are seeking a solution in the form of
+    \begin{equation}
+      \varphi(u_1,u_2;v_t)=\exp\left(A(\tau,u_1,u_2)+B(\tau,u_1,u_2)v_t\right).
+    \end{equation}
+    Applying Feynman-Kac theorem, and define $\tau=T-t$, the joint characteristic function satisfies the following PDE,
+    \begin{equation}
+      -\frac{\partial \varphi}{\partial \tau}
+      + \kappa(\theta - v)\frac{\partial \varphi}{\partial x}
+      +\frac{1}{2}\sigma^2v\frac{\partial^2 \varphi}{\partial v^2}
+      +iu_2\varphi = 0,
+    \end{equation}
+    with initial conditions, $A(0,u_1,u_2)=0$, and $B(0,u_1,u_2)=iu_1$. Matching terms, we have
+    \begin{eqnarray}
+      \frac{dA}{d\tau} &=& \kappa\theta B, \label{AA} \\
+      \frac{dB}{d\tau} &=& iu_2 - \kappa B + \frac{1}{2}\sigma^2B^2. \label{BB}
+    \end{eqnarray}
+    The solution to the Riccati equation (\ref{BB}) is given by
+    \begin{equation}
+      B(\tau,u_1,u_2)=-\frac{w^{\prime}(\tau)}{w(\tau)}\frac{1}{R(\tau)},
+    \end{equation}
+    where $w(\tau)$ satisfies the following equation,
+    \begin{equation}
+      w^{\prime\prime}-\left[\frac{R^{\prime}}{R}+Q\right]w^{\prime}+PRw=0,
+    \end{equation}
+    and
+    \begin{equation}
+      P(\tau) = iu, \quad\quad Q(\tau)=-\kappa, \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
+    \end{equation}
+
+
+  % \subsection{3/2 Model}
+
+  \subsection{Orenstein-Uhlenbeck Process}
+
+
+\section{Fourier Inversion Formula}
+
+  Consider the problem of finding the cumulative density function from its characteristic function. 
+  In particular, we want to find the probability of $X>k$, {\it i.e.}, $P(X>k)$, which is given by
+  \begin{equation}
+    P(X > k)=\int_k^{+\infty}f(x)dx.
+  \end{equation}
+  Here, $f(x)$ is the probability density function of $X$, and can be recovered from the characteristic function
+  by the inverse Fourier transform,
+  \begin{equation}
+    f(x)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du.
+  \end{equation}
+  Therefore,
+  \begin{eqnarray}
+    P(X > k)&=&\frac{1}{2\pi}\int_k^{+\infty} \left(\int_{-\infty}^{+\infty}e^{-iux}\varphi(u)du\right)dx
+                        =\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u) \left(\int_k^{+\infty}e^{-iux}dx\right)du\nonumber\\
+                   &=&\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuk}}{iu}du
+                        - \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuR}}{iu}du.
+  \end{eqnarray}
+  To evaluate the second term, we again use the definition of the characteristic function,
+  \begin{eqnarray}
+    \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuR}}{iu}du
+    &=& \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}\left(\int_{-\infty}^{+\infty}e^{iux}f(x)dx\right)\frac{e^{-iuR}}{iu}du\nonumber\\
+    &=& \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}f(x)\left(\int_{-\infty}^{+\infty}\frac{e^{iu(x-R)}}{iu}du\right)dx\nonumber\\
+    &=& \frac{1}{2\pi}\lim_{R\rightarrow +\infty}\int_{-\infty}^{+\infty}f(x)\cdot\pi {\rm sgn}(x-R)dx\nonumber\\
+    &=& \frac{1}{2}\lim_{R\rightarrow +\infty}\left(1-2F(R)\right) = -\frac{1}{2}.
+  \end{eqnarray}
+  Here, we have used the fact that
+  \begin{equation}
+    \int_{-\infty}^{+\infty}{\rm sgn}(x-y)f(x)dx=\int_y^{+\infty}f(x)dx - \int_{-\infty}^yf(x)dx = 1-2F(x),
+  \end{equation}
+  where $F(x)$ is the cumulative distribution function of $X_T$.
+
+  Finally, the probability is given by
+  \begin{equation}
+    \label{inversion}
+    P(X > k)=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(u)\frac{e^{-iuk}}{iu}du.
+  \end{equation}
+
+
+\section{Vanilla option pricing with characteristic functions}
+
+  In the following, we are going to explore several formulations of vanilla option prices in terms of
+  characteristic functions.
+
+  \subsection{Heston \cite{Heston}}
+
+    Consider the call option price
+    \begin{equation}
+      C(K)=e^{-r(T-t)}{\rm E}^{\mathbb{Q}}\left[\left(S_T-K\right)^+\right],
+    \end{equation}
+    under the risk neutral measure.
+    We are seeking a representation similar to the Black-Scholes formula. To this end, we can write the
+    call option prices as
+    \begin{equation}
+      C(K)=e^{-r(T-t)}{\rm E}^{\mathbb{Q}}\left[\left(S_T-K\right){\mathcal I}_{S_T>K}\right],
+    \end{equation}
+    where ${\mathcal I}$ is the indicator function. Now, we have
+    \begin{equation}
+      C(K)=e^{-r(T-t)}{\rm E}^{\mathbb{Q}}\left[S_T{\mathcal I}_{S_T>K}\right]-Ke^{-r(T-t)}{\rm E}^{\mathbb{Q}}\left[{\mathcal I}_{S_T>K}\right]
+          =S_tP_1 - Ke^{-r(T-t)}P_2,
+    \end{equation}
+    where
+    \begin{equation}
+      P_1 = {\rm E}^{\mathbb{Q}}\left[\frac{S_T/S_t}{B_T/B_t}{\mathcal I}_{S_T>K}\right],\quad\quad
+      P_2 = {\rm E}^{\mathbb{Q}}\left[{\mathcal I}_{S_T>K}\right].
+    \end{equation}
+    It is obvious that $P_2$ is the risk neutral probability for the underlying asset maturing in-the-money. Also, $P_1$ can
+    be represented as the ITM probability in another measure. Notice that
+    \begin{equation}
+      \frac{d{\mathbb{Q}}}{d{\mathbb{Q}}^S}=\frac{B_T/B_t}{S_T/S_t}=\frac{{\rm E}^{\mathbb{Q}}[e^{X_T}]}{e^{X_T}},
+    \end{equation}
+    where we have used the fact that
+    \begin{equation}
+      {\rm E}^{\mathbb{Q}}[S_T]={\rm E}^{\mathbb{Q}}[e^{X_T}]=S_t\frac{B_T}{B_t},
+    \end{equation}
+    then
+    \begin{equation}
+      P_1 = {\rm E}^{{\mathbb{Q}^S}}\left[\frac{S_T/S_t}{B_T/B_t}{\mathcal I}_{S_T>K}\frac{dQ}{dQ^S}\right]
+          = {\rm E}^{{\mathbb{Q}^S}}\left[{\mathcal I}_{S_T>K}\right].
+    \end{equation}
+    From Eq. (\ref{inversion}), the two probabilities $P_1$ and $P_2$ can be written as
+    \begin{equation}
+      P_j=\frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi_j(u)\frac{e^{-iuk}}{iu}du, \quad\quad j=1,2,
+    \end{equation}
+    with $k=\log K$.
+    It seems that two characteristic functions corresponding to the two different measures are required in the valuation of the option
+    price. However, these two characteristic functions are related due to the measure change. To see this, notice that
+    \begin{equation}
+      \varphi_1(u)=\int_{-\infty}^{+\infty}e^{iux}f^S(x)dx,
+    \end{equation}
+    where $f^S(x)$ is the probability density function of $X_T$ under the $\mathbb{Q}^S$-measure. It is related to $f(x)$, the probability density
+    function of $X_T$ under the $\mathbb{Q}$-measure, through the measure change,
+    \begin{equation}
+      f^S(x)=f(x)\frac{d{\mathbb{Q}}^S}{d{\mathbb{Q}}}=f(x)\frac{e^{X_T}}{{\rm E}^{\mathbb{Q}}[e^{X_T}]}.
+    \end{equation}
+    Now,
+    \begin{equation}
+      \varphi_1(u)=\frac{1}{{\rm E}^{\mathbb{Q}}[e^{X_T}]}\int_{-\infty}^{+\infty}e^{ix(u-i)}f(x)dx=\frac{\varphi(u-i)}{\varphi(-i)},
+    \end{equation}
+    since
+    \begin{equation}
+      {\rm E}^{\mathbb{Q}}[e^{X_T}]=\int_{-\infty}^{+\infty}e^{x}f(x)dx=\varphi(-i),
+    \end{equation}
+    where $\varphi(u)$ is the characteristic function as defined in (\ref{char}), and coincides with $\varphi_2(u)$. Therefore,
+    \begin{eqnarray}
+      P_1 &=& \frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{-iu\log K}\varphi(u-i)}{iu\varphi(-i)}du, \\
+      P_2 &=& \frac{1}{2}+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{-iu\log K}\varphi(u)}{iu}du. \\
+    \end{eqnarray}
+
+  \subsection{Carr and Madan \cite{CarrMadan}}
+
+    The call option price can be represented as
+    \begin{equation}
+      C(k)=e^{-r(T-t)}\int_k^{+\infty}(e^x-e^k)f(x)dx,
+    \end{equation}
+    where $k=\log K$, $x=\log S_T$, and $f(x)$ is the probability density function for the distribution of $x$ at maturity. We want to find the
+    Fourier transform of the above call option price, but it is not integrable. To remedy this, we introduce a damping factor and modify the
+    call option price accodingly,
+    \begin{equation}
+      c(k)=e^{\alpha k}C(k),
+    \end{equation}
+    and the corresponding Fourier transform is given by
+    \begin{equation}
+      \hat{c}(v)=\int_{-\infty}^{+\infty}e^{ivk}c(k)dk.
+    \end{equation}
+    Rearrange the integration order, we have
+    \begin{eqnarray}
+      \hat{c}(v) &=& e^{-r(T-t)}\int_{-\infty}^{+\infty}e^{ivk}\left(\int_k^{+\infty}e^{\alpha k}(e^x-e^k)f(x)dx\right)dk \nonumber\\
+                 &=& e^{-r(T-t)}\int_{-\infty}^{+\infty}f(x)\left(\int_{-\infty}^x\left(e^{(\alpha+iv)k}e^x-e^{(\alpha+iv+1)k}\right)dk\right)dx \nonumber\\
+                 &=& e^{-r(T-t)}\int_{-\infty}^{+\infty}f(x)\left.\left[\frac{e^{(\alpha+iv)k}e^x}{\alpha+iv}
+                                                        -\frac{e^{(\alpha+iv+1)k}}{\alpha+iv+1}\right]\right|_{-\infty}^{x}dx \nonumber\\
+                 &=& e^{-r(T-t)}\int_{-\infty}^{+\infty}f(x)\left[\frac{e^{(\alpha+iv+1)x}}{\alpha+iv} -\frac{e^{(\alpha+iv+1)x}}{\alpha+iv+1}\right]dx \nonumber\\
+                 &=& e^{-r(T-t)}\int_{-\infty}^{+\infty}f(x)\frac{e^{(\alpha+iv+1)x}}{(\alpha+iv)(\alpha+iv+1)}dx \nonumber\\
+                 &=& \frac{e^{-r(T-t)}\varphi(v-(1+\alpha)i)}{(\alpha+iv)(\alpha+iv+1)},
+    \end{eqnarray}
+    where $\alpha > 0$ is necessary to ensure convergence at $k=-\infty$. Once the Fourier transform of the modified call option price is known,
+    we can use the inverse Fourier transform to recover the call option price,
+    \begin{equation}
+      C(k)=\frac{e^{-\alpha k}}{2\pi}\int_{-\infty}^{+\infty}e^{-ivk}\hat{c}(v)dv.
+    \end{equation}
+
+  \subsection{Lewis \cite{Lewis}}
+
+    Denote the payoff the contingent claim at maturity as $g(x)$, then the value of the derivative is given by
+    \begin{equation}
+      V = \int_{-\infty}^{+\infty}f(x)g(x)dx.
+    \end{equation}
+
+
+\begin{thebibliography}{99}
+  \bibitem{Heston}
+    S. Heston, {\it A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options}, Review of Financial Studies {\bf 6}, 327 (1993).
+
+  \bibitem{CarrMadan}
+    P. Carr and D. Madan, {\it Option valuation using the fast Fourier transform}, The Journal of Computational Finance {\bf 2}, 61 (1999).
+
+  \bibitem{Lewis}
+    A. Lewis, {\it A Simple Option Formula for General Jump-Diffusion and Other Exponential Levy Processes}, \url{https://ssrn.com/abstract=282110}.
+
+\end{thebibliography}
+
+
+\end{document}
