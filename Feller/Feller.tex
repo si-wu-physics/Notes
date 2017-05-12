@@ -364,21 +364,55 @@
                     I_{-\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
   \end{equation}
 
-\section{Simulation of the CIR process}
+\section{Simulation of the Heston model}
 
-  For the CIR process (\ref{CIR}), when the following inequality is satisfied,
+  In this section, we will consider the Monte Carlo simulation of the Heston model,
+  \begin{eqnarray}
+    d\log X_t &=& -\frac{v_t}{2}dt+\sqrt{v_t}dZ_t, \\
+    dv_t &=& \kappa(\theta-v_t)dt + \sigma\sqrt{v_t}dW_t,
+  \end{eqnarray}
+  with $\langle dZ_t,dW_t\rangle = \rho dt$. Here, the parameters have the usual meaning.
+  Alternatively, the forward process can be written as
+  \begin{equation}
+    d\log X_t = -\frac{v_t}{2}dt+\rho\sqrt{v_t}dW_t + \sqrt{1-\rho^2}\sqrt{v_t}dB_t,
+  \end{equation}
+  where $\langle dB_t,dW_t\rangle = 0$.
+
+  For the variance process $v_t$, we normally impose a reflecting boundary condition. Note that,
+  when the {\it Feller condition} is satisfied,
   \begin{equation}
     2\kappa\theta >\sigma^2,
   \end{equation}
-  the process will never reach the $v=0$ boundary. This is known as the {\it Feller condition}. When the Feller
-  condition is violated, {\it i.e.}, $2\kappa\theta \le\sigma^2$, the process will hit the $v=0$ boundary, and a
-  proper boundary condition is required. To preserve the total probability, a natural choice is the reflecting
-  boundary condition, and once the process hit the lower boundary, it will be completely reflected. Therefore,
-  for meaningful CIR parameters, we can always impose the reflecting boundary condition, and the
-  probability distribution of $v_{t+\Delta}$ conditional on $v_t$ is given by (\ref{reflecting}),
+  the lower boundary is unattainable. Nevertheless, when the process is discretized in Monte Carlo
+  simulation, it is still possible to reach the lower boundary. From earlier results, the transition
+  density for the variance is given by
+  \begin{eqnarray}
+    p\left(\left. v_T\right|v_t\right)&=&\frac{1}{2}\frac{n(t,T)}{e^{-\kappa(T-t)}}
+          \exp\left(-\frac{1}{2}\left(\frac{n(t,T)}{e^{-\kappa(T-t)}}v_T+n(t,T)v_t\right)\right)
+          \left(\frac{\displaystyle \frac{n(t,T)}{e^{-\kappa(T-t)}}v_T}{n(t,T)v_t}\right)^{d/4-1/2}\nonumber\\
+          && \quad\quad\times I_{d/2-1}\left(\left(\frac{n(t,T)}{e^{-\kappa(T-t)}}v_T\times n(t,T)v_t\right)^{1/2}\right),
+  \end{eqnarray}
+  where
   \begin{equation}
-    p(\left.v_{t+\Delta}\right|v_t)
+    d=\frac{4\kappa\theta}{\sigma^2},\quad\quad\quad n(t,T) = \frac{4\kappa e^{-\kappa(T-t)}}{\sigma^2\left(1-e^{-\kappa(T-t)}\right)}.
   \end{equation}
+  Then, the cumulative distribution of $v_T$ conditioning on $v_t$ is given by
+  \begin{eqnarray}
+    P\left(\left. v_T \le z\right|v_t\right) &=& \frac{1}{2}\int_0^{y}\exp\left(-\frac{1}{2}\left(u+n(t,T)v_t\right)\right)
+                \left(\frac{u}{n(t,T)v_t}\right)^{d/4-1/2}\nonumber\\
+                && \quad\quad\quad\times I_{d/2-1}\left(\left(u\times n(t,T)v_t\right)^{1/2}\right)du,
+  \end{eqnarray}
+  which is the cumulative distribution function for the noncentral chi-squared distribution
+  \begin{equation}
+    \Upsilon\left(\frac{n(t,T) z}{e^{-\kappa(T-t)}}; d, n(t,T)v_t\right),
+  \end{equation}
+  and $y=n(t,T) z/e^{-\kappa(T-t)}$.
+
+  In the following, we will discuss several efficient simulation methods specific for the Heston model.
+
+  \subsection{Exact simulation of the variance process}
+
+
 
 
 \begin{thebibliography}{99}
