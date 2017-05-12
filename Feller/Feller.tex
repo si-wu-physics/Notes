@@ -269,6 +269,7 @@
     \end{eqnarray}
     Using the series expansion of the modified Bessel function,
     \begin{equation}
+      \label{modified}
       I_{\nu}(x) = \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1+\nu)}\left(\frac{x}{2}\right)^{2r+\nu},
     \end{equation}
     the integral in (\ref{solution4}) can be written as
@@ -397,22 +398,100 @@
     d=\frac{4\kappa\theta}{\sigma^2},\quad\quad\quad n(t,T) = \frac{4\kappa e^{-\kappa(T-t)}}{\sigma^2\left(1-e^{-\kappa(T-t)}\right)}.
   \end{equation}
   Then, the cumulative distribution of $v_T$ conditioning on $v_t$ is given by
-  \begin{eqnarray}
-    P\left(\left. v_T \le z\right|v_t\right) &=& \frac{1}{2}\int_0^{y}\exp\left(-\frac{1}{2}\left(u+n(t,T)v_t\right)\right)
-                \left(\frac{u}{n(t,T)v_t}\right)^{d/4-1/2}\nonumber\\
-                && \quad\quad\quad\times I_{d/2-1}\left(\left(u\times n(t,T)v_t\right)^{1/2}\right)du,
-  \end{eqnarray}
-  which is the cumulative distribution function for the noncentral chi-squared distribution
   \begin{equation}
-    \Upsilon\left(\frac{n(t,T) z}{e^{-\kappa(T-t)}}; d, n(t,T)v_t\right),
+    \label{condition}
+    P\left(\left. v_T \le z\right|v_t\right) = \Upsilon\left(\frac{n(t,T) z}{e^{-\kappa(T-t)}}; d, n(t,T)v_t\right),
   \end{equation}
-  and $y=n(t,T) z/e^{-\kappa(T-t)}$.
+  where $\Upsilon(z;\nu,\lambda)$ is the cumulative distribution function of the non-central chi-squared distribution
+  with $\nu$ degrees of freedom and noncentrality parameter $\lambda$,
+  \begin{equation}
+    \Upsilon\left(z;\nu,\lambda\right)=\frac{1}{2}\int_0^z e^{-(x+\lambda)/2}\left(\frac{x}{\lambda}\right)^{\nu/4-1/2}
+            I_{\nu/2-1}\left(\sqrt{\lambda x}\right)dx.
+    \label{condition1}
+  \end{equation}
 
   In the following, we will discuss several efficient simulation methods specific for the Heston model.
 
   \subsection{Exact simulation of the variance process}
 
+    From the distribution of $v_T$ conditioning on $v_t$, (\ref{condition}), we can sample $v_T$ exactly. However, the exact
+    distribution (\ref{condition}) requires the integration of modified Bessel function. This poses a numerical problem, since
+    we need to perform the integration to invert the distribution function.
 
+    Alternatively, there are other methods to sample from a non-central chi-squared distribution. Notice that, when $d>1$, a
+    non-central chi-squared random variable with $d$ degrees of freedom and noncentrality parameter $\lambda$ can be obtained
+    from a chi-squared random variable by the following relation,
+    \begin{equation}
+      \chi_d^{\prime 2}(\lambda) \stackrel{d}{=} \left(Z+\sqrt{\lambda}\right)^2 + \chi_{d-1}^2,
+    \end{equation}
+    where $Z$ is a standard normal variable, $\stackrel{d}{=}$ denotes equality in distribution. Therefore, by sampling from
+    a standard normal distribution and a chi-squared distribution, we can obtain the desired non-central chi-squared distribution.
+
+    The above method only works when $d>1$. Another sampling method relies on the series expansion of the modified Bessel function.
+    Using Eq. (\ref{modified}), the cumulative distribution function for non-central chi-squared distribution can be written as
+    \begin{equation}
+      \Upsilon\left(z;\nu,\lambda\right) = \sum_{j=0}^{\infty} \frac{e^{-\lambda/2}(\lambda/2)^j}{j!}\frac{1}{2^{\nu/2+j}\Gamma(\nu/2+j)}
+                  \int_0^z x^{\nu/2+j-1}e^{-x/2}dx.
+    \end{equation}
+    It can be seen that the integration part of the above expression is a chi-squared distribution with $\nu+2j$ degrees of freedom,
+    and $j$ follows a Poisson distribution with parameter $\lambda/2$. Therefore, we can sample a non-central chi-squared distribution
+    $\chi_d^{\prime 2}(\lambda)$ as $\chi_{d+2N}^{ 2}$, with $N\sim {\rm Poisson}(\lambda/2)$.
+
+  \subsection{Exact simulation of the Heston model \cite{BK}}
+
+    For the simulation of the forward process, we have
+    \begin{equation}
+      \log X_T = \log X_t - \frac{1}{2}\int_t^Tv_sds + \rho\int_t^T\sqrt{v_s}dW_s
+                  + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
+    \end{equation}
+    From the variance process, we have
+    \begin{equation}
+      \int_t^T\sqrt{v_s}dW_s = \frac{1}{\sigma}\left(v_T-v_t-\kappa\theta(T-t)+\kappa\int_t^Tv_sds\right).
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      \log X_T = \log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right) 
+                    + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds
+                    + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
+    \end{equation}
+    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample three components: (1) $v_T$;
+    (2) $\int_t^Tv_sds$; and (3) $\int_t^T\sqrt{v_s}dB_s$. Let us consider each term in the following.
+
+    \subsubsection{$v_T$}
+
+      As discussed in the previous section, $v_T$ can be sampled from a non-central chi-squared distribution exactly.
+
+    \subsubsection{$\int_t^Tv_sds$}
+
+      We need to sample $\int_t^Tv_sds$ conditioning on $v_t$ and $v_T$. To this end, we can use the characteristic function,
+      \begin{eqnarray}
+        \varphi(u) &=& {\rm E}\left[\left. \exp\left(iu\int_t^Tv_sds\right) \right|v_t,v_T\right] \nonumber\\
+                   &=& \frac{\gamma(u)e^{-(\gamma(u)-\kappa)(T-t)/2}(1-e^{-\kappa(T-t)})}{\kappa(1-e^{-\gamma(u)(T-t)})}\nonumber\\
+                   && \quad\quad\times 
+                        \exp\left\{\frac{v_t+v_T}{\sigma^2}\left[\frac{\kappa(1+e^{-\kappa(T-t)})}{1-e^{-\kappa(T-t)}}
+                                                -\frac{\gamma(u)(1+e^{-\gamma(u)(T-t)})}{1-e^{-\gamma(u)(T-t)}}\right]\right\} \nonumber\\
+                  && \quad\quad\times 
+                  \frac{\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\gamma(u)e^{-\gamma(u)(T-t)/2}}{\sigma^2(1-e^{-\gamma(u)(T-t)})}\right]}
+                       {\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\kappa e^{-\kappa(T-t)/2}}{\sigma^2(1-e^{-\kappa(T-t)})}\right]},
+      \end{eqnarray}
+      where $\gamma(u)=\sqrt{\kappa^2-2iu\sigma^2}$. Then, for $\int_t^Tv_sds$, its distribution can be inverted from the
+      above characteristic function, and it can be sampled from this distribution.
+
+    \subsubsection{$\int_t^T\sqrt{v_s}dB_s$}
+
+      Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed 
+      with mean 0, and variance $\int_t^Tv_sds$, which has been sample from previous step. 
+
+    Finally, $\log X_T$ is normally distributed, conditioning on $\log X_t$ and one realization of the variance path $v_t$,
+    \begin{equation}
+      \log X_T \sim N\left(\log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right) 
+                    + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds, \quad (1-\rho^2)\int_t^Tv_sds\right).
+    \end{equation}
+    The simulation for the forward and the variance is exact, in the price of numerical complexity.
+
+  \subsection{Quadratic exponential scheme for the variance process \cite{Andersen}}
+
+    Even though we can exactly simulate the variance process following the schemes described earlier, its usage is quite limited.
 
 
 \begin{thebibliography}{99}
@@ -424,6 +503,13 @@
 
   \bibitem{Lesniewski}
     See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
+
+  \bibitem{BK}
+    M. Broadie and \"{O}. Kaya, {\it Exact Simulation of Stochastic Volatility and Other Affine Jump Diffusion Processes}, 
+    Operations Research {\bf 54}(2), 217 (2006).
+
+  \bibitem{Andersen}
+    L. Andersen, {\it Efficient Simulation of the Heston Stochastic Volatility Model}, \url{https://ssrn.com/abstract=946405}.
 
 \end{thebibliography}
 
