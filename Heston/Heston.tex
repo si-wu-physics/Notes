@@ -61,7 +61,7 @@
     \begin{eqnarray}
       \varphi(u)&=&\frac{1}{2\pi\sigma^2 \tau}\int \exp\left\{iux-\frac{1}{2\sigma^2\tau}
                       \left[x-x_t-\left(r-q-\frac{1}{2}\sigma^2\right)\tau\right]^2\right\}dx\nonumber\\
-                &=&=\exp\left(iux_t + iu(r-q)\tau -\frac{\sigma^2\tau}{2}u(u+i)\right).
+                &=&\exp\left(iux_t + iu(r-q)\tau -\frac{\sigma^2\tau}{2}u(u+i)\right).
       \label{BS}
     \end{eqnarray}
 
@@ -193,13 +193,39 @@
     \end{equation}
     and
     \begin{equation}
-      P(\tau) = iu, \quad\quad Q(\tau)=-\kappa, \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
+      P(\tau) = iu_2, \quad\quad Q(\tau)=-\kappa, \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
     \end{equation}
 
 
   % \subsection{3/2 Model}
 
   \subsection{Orenstein-Uhlenbeck Process}
+
+    For the Orenstein-Uhlenbeck process,
+    \begin{equation}
+      dx_t = \kappa\left(\theta-x_t\right)dt+\sigma dW_t,
+    \end{equation}
+    the solution to the above SDE is given by
+    \begin{equation}
+      x_T=x_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right)+\sigma\int_t^Te^{-\kappa(T-s)}dW_s.
+    \end{equation}
+    From Ito's isometry,
+    \begin{equation}
+      {\rm Var}[x_T]=\sigma^2\int_t^Te^{-2\kappa(T-s)}ds=\frac{\sigma^2}{2\kappa}\left(1-e^{-2\kappa(T-t)}\right),
+    \end{equation}
+    then $x_T$ is normally distributed,
+    \begin{equation}
+      x_T\sim N\left(x_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right),
+                    \quad \frac{\sigma^2}{2\kappa}\left(1-e^{-2\kappa(T-t)}\right)\right).
+    \end{equation}
+    Therefore, the characteristic function becomes
+    \begin{eqnarray}
+      \varphi(u)&=&\frac{1}{2\pi\sigma_T^2}\int \exp\left\{iux-\frac{1}{2\sigma_T^2}
+                      \left[x-x_te^{-\kappa(T-t)}-\theta\left(1-e^{-\kappa(T-t)}\right)\right]^2\right\}dx\nonumber\\
+                &=&\exp\left(iu\left[x_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right)\right]
+                        -\frac{u^2\sigma^2}{4\kappa}\left(1-e^{-2\kappa(T-t)}\right)\right).
+      \label{OU}
+    \end{eqnarray}
 
 
 \section{Fourier Inversion Formula}
