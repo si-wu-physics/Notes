@@ -377,6 +377,29 @@
       V = \int_{-\infty}^{+\infty}f(x)g(x)dx.
     \end{equation}
 
+    \begin{equation}
+      g(x)=\left(e^x-e^k\right)^+
+    \end{equation}
+
+    \begin{eqnarray}
+      \hat{g}(u) &=& \int_{-\infty}^{+\infty}e^{iux}\left(e^x-e^k\right)^+dx=\int_{k}^{+\infty}e^{iux}\left(e^x-e^k\right)dx \nonumber\\
+                 &=& \left.\left(\frac{e^{(1+iu)x}}{1+iu}-\frac{e^{iux}e^k}{iu}\right)\right|_k^{+\infty}\nonumber\\
+                 &=& -\frac{e^{(1+iu)k}}{u(u-i)},
+    \end{eqnarray}
+
+    ${\rm Im}(u) > 1$
+
+    \begin{equation}
+      g(x)=\left(x-K\right)^+
+    \end{equation}
+
+    \begin{eqnarray}
+      \hat{g}(u) &=& \int_{-\infty}^{+\infty}e^{iux}\left(x-K\right)^+dx=\int_{K}^{+\infty}e^{iux}\left(x-K\right)dx \nonumber\\
+                 &=& -\frac{e^{iuK}}{u^2},
+    \end{eqnarray}
+
+    ${\rm Im}(u) > 0$
+
 
 \begin{thebibliography}{99}
   \bibitem{Heston}
