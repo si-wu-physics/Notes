@@ -454,33 +454,25 @@
                     + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds
                     + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
     \end{equation}
-    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample three components: (1) $v_T$;
-    (2) $\int_t^Tv_sds$; and (3) $\int_t^T\sqrt{v_s}dB_s$. Let us consider each term in the following.
-
-    \subsubsection{$v_T$}
-
-      As discussed in the previous section, $v_T$ can be sampled from a non-central chi-squared distribution exactly.
-
-    \subsubsection{$\int_t^Tv_sds$}
-
-      We need to sample $\int_t^Tv_sds$ conditioning on $v_t$ and $v_T$. To this end, we can use the characteristic function,
-      \begin{eqnarray}
-        \varphi(u) &=& {\rm E}\left[\left. \exp\left(iu\int_t^Tv_sds\right) \right|v_t,v_T\right] \nonumber\\
-                   &=& \frac{\gamma(u)e^{-(\gamma(u)-\kappa)(T-t)/2}(1-e^{-\kappa(T-t)})}{\kappa(1-e^{-\gamma(u)(T-t)})}\nonumber\\
-                   && \quad\quad\times 
-                        \exp\left\{\frac{v_t+v_T}{\sigma^2}\left[\frac{\kappa(1+e^{-\kappa(T-t)})}{1-e^{-\kappa(T-t)}}
-                                                -\frac{\gamma(u)(1+e^{-\gamma(u)(T-t)})}{1-e^{-\gamma(u)(T-t)}}\right]\right\} \nonumber\\
-                  && \quad\quad\times 
-                  \frac{\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\gamma(u)e^{-\gamma(u)(T-t)/2}}{\sigma^2(1-e^{-\gamma(u)(T-t)})}\right]}
-                       {\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\kappa e^{-\kappa(T-t)/2}}{\sigma^2(1-e^{-\kappa(T-t)})}\right]},
-      \end{eqnarray}
-      where $\gamma(u)=\sqrt{\kappa^2-2iu\sigma^2}$. Then, for $\int_t^Tv_sds$, its distribution can be inverted from the
-      above characteristic function, and it can be sampled from this distribution.
-
-    \subsubsection{$\int_t^T\sqrt{v_s}dB_s$}
-
-      Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed 
-      with mean 0, and variance $\int_t^Tv_sds$, which has been sampled from the previous step. 
+    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample the following three components: 
+    \begin{enumerate}[noitemsep]
+      \item $v_T$. As discussed in the previous section, $v_T$ can be sampled from a non-central chi-squared distribution exactly.
+      \item $\int_t^Tv_sds$. We need to sample $\int_t^Tv_sds$ conditioning on $v_t$ and $v_T$. To this end, we can use the characteristic function,
+        \begin{eqnarray}
+          \varphi(u) &=& {\rm E}\left[\left. \exp\left(iu\int_t^Tv_sds\right) \right|v_t,v_T\right] \nonumber\\
+                     &=& \frac{\gamma(u)e^{-(\gamma(u)-\kappa)(T-t)/2}(1-e^{-\kappa(T-t)})}{\kappa(1-e^{-\gamma(u)(T-t)})}\nonumber\\
+                     && \quad\quad\times 
+                          \exp\left\{\frac{v_t+v_T}{\sigma^2}\left[\frac{\kappa(1+e^{-\kappa(T-t)})}{1-e^{-\kappa(T-t)}}
+                                                  -\frac{\gamma(u)(1+e^{-\gamma(u)(T-t)})}{1-e^{-\gamma(u)(T-t)}}\right]\right\} \nonumber\\
+                    && \quad\quad\times 
+                    \frac{\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\gamma(u)e^{-\gamma(u)(T-t)/2}}{\sigma^2(1-e^{-\gamma(u)(T-t)})}\right]}
+                         {\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\kappa e^{-\kappa(T-t)/2}}{\sigma^2(1-e^{-\kappa(T-t)})}\right]},
+        \end{eqnarray}
+        where $\gamma(u)=\sqrt{\kappa^2-2iu\sigma^2}$. Then, for $\int_t^Tv_sds$, its distribution can be inverted from the
+        above characteristic function, and it can be sampled from this distribution.
+      \item $\int_t^T\sqrt{v_s}dB_s$. Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed 
+                with mean 0, and variance $\int_t^Tv_sds$, which has been sampled from the previous step. 
+    \end{enumerate}
 
     Finally, $\log X_T$ is normally distributed, conditioning on $\log X_t$ and one realization of the variance path $v_t$,
     \begin{equation}
