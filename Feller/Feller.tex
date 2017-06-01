@@ -290,7 +290,7 @@
   \subsection{Reflecting boundary condition}
 
     If $c>0$, we can impose the reflecting boundary condition on Eq. (\ref{FP4}), $f(t)\equiv 0$, which will render a positive
-    and norm preserving solution. To find the 
+    and norm preserving solution. To find the
     explicit form of the fundamental solution, we can apply the inverse Laplace transform on Eq. (\ref{FP4}), with $f(t)\equiv 0$.
     Use the same substitution as in Eq. (\ref{sub}),
     we have
@@ -304,7 +304,7 @@
       &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(\frac{bx}{Aa(e^{bt}-1)}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(2\left(\frac{Abx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
       &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right),
     \end{eqnarray}
-    where we have use the fact that the inverse Laplace transform of $e^{A/z}/z^{1+\nu}$ is $(x/A)^{\nu/2}I_{\nu}(2\sqrt{Ax})$, 
+    where we have use the fact that the inverse Laplace transform of $e^{A/z}/z^{1+\nu}$ is $(x/A)^{\nu/2}I_{\nu}(2\sqrt{Ax})$,
     and the fundamental solution is then given by
     \begin{equation}
       u(t,x)=\frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
@@ -450,40 +450,169 @@
     \end{equation}
     Therefore,
     \begin{equation}
-      \log X_T = \log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right) 
+      \log X_T = \log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right)
                     + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds
                     + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
+      \label{logStock}
     \end{equation}
-    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample the following three components: 
+    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample the following three components:
     \begin{enumerate}[noitemsep]
       \item $v_T$. As discussed in the previous section, $v_T$ can be sampled from a non-central chi-squared distribution exactly.
       \item $\int_t^Tv_sds$. We need to sample $\int_t^Tv_sds$ conditioning on $v_t$ and $v_T$. To this end, we can use the characteristic function,
         \begin{eqnarray}
           \varphi(u) &=& {\rm E}\left[\left. \exp\left(iu\int_t^Tv_sds\right) \right|v_t,v_T\right] \nonumber\\
                      &=& \frac{\gamma(u)e^{-(\gamma(u)-\kappa)(T-t)/2}(1-e^{-\kappa(T-t)})}{\kappa(1-e^{-\gamma(u)(T-t)})}\nonumber\\
-                     && \quad\quad\times 
+                     && \quad\quad\times
                           \exp\left\{\frac{v_t+v_T}{\sigma^2}\left[\frac{\kappa(1+e^{-\kappa(T-t)})}{1-e^{-\kappa(T-t)}}
                                                   -\frac{\gamma(u)(1+e^{-\gamma(u)(T-t)})}{1-e^{-\gamma(u)(T-t)}}\right]\right\} \nonumber\\
-                    && \quad\quad\times 
+                    && \quad\quad\times
                     \frac{\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\gamma(u)e^{-\gamma(u)(T-t)/2}}{\sigma^2(1-e^{-\gamma(u)(T-t)})}\right]}
                          {\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\kappa e^{-\kappa(T-t)/2}}{\sigma^2(1-e^{-\kappa(T-t)})}\right]},
         \end{eqnarray}
         where $\gamma(u)=\sqrt{\kappa^2-2iu\sigma^2}$. Then, for $\int_t^Tv_sds$, its distribution can be inverted from the
         above characteristic function, and it can be sampled from this distribution.
-      \item $\int_t^T\sqrt{v_s}dB_s$. Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed 
-                with mean 0, and variance $\int_t^Tv_sds$, which has been sampled from the previous step. 
+      \item $\int_t^T\sqrt{v_s}dB_s$. Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed
+                with mean 0, and variance $\int_t^Tv_sds$, which has been sampled from the previous step.
     \end{enumerate}
 
     Finally, $\log X_T$ is normally distributed, conditioning on $\log X_t$ and one realization of the variance path $v_t$,
     \begin{equation}
-      \log X_T \sim N\left(\log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right) 
+      \log X_T \sim N\left(\log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right)
                     + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds, \quad (1-\rho^2)\int_t^Tv_sds\right).
     \end{equation}
     The simulation for the forward and the variance is exact, in the price of numerical complexity.
 
   \subsection{Quadratic exponential scheme for the variance process \cite{Andersen}}
 
-    Even though we can exactly simulate the variance process following the schemes described earlier, its usage is quite limited.
+    The variance process can be efficiently simulated with approximation of the non-central chi-squared distribution, depending on the non-centraliy
+    parameter. The approximated distribution can be determined by matching the moments of the conditional mean and variance of the varaince process.
+    To this end, notice that the solution of Eq. (\ref{CIR}) is
+    \begin{equation}
+      v_T=v_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right)+\sigma\int_t^Te^{-\kappa(T-s)}\sqrt{v_s}dW_s.
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      {\rm E}\left[\left. v_T\right|v_t\right] = v_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right),
+    \end{equation}
+    and, using Ito's isometry,
+    \begin{eqnarray}
+      {\rm Var}\left[\left. v_T\right|v_t\right] &=& \sigma^2\int_t^Te^{-2\kappa(T-s)}{\rm E}\left[\left. v_s\right|v_t\right]ds \nonumber\\
+                &=& \sigma^2\int_t^Te^{-2\kappa(T-s)}\left(v_te^{-\kappa(s-t)}+\theta\left(1-e^{-\kappa(s-t)}\right)\right)ds \nonumber\\
+                &=& \frac{\sigma^2\theta}{2\kappa}\left(1-e^{-\kappa(T-t)}\right)^2 + \frac{\sigma^2v_te^{-\kappa(T-t)}}{\kappa}\left(1-e^{-\kappa(T-t)}\right).
+    \end{eqnarray}
+
+    For large non-centrality parameter, the non-central chi-squared random variable can be approximated by a power function applied to the
+    standard normal variable,
+    \begin{equation}
+      v_T=a\left(b+Z_v\right)^2.
+      \label{Gaussian}
+    \end{equation}
+    Here, a quadratic form is used to ensure positivity of the random variable. It can be easily shown, that the mean and variance of this
+    approximation are given by
+    \begin{equation}
+      {\rm E}[v_T]=a(1+b^2),
+    \end{equation}
+    and
+    \begin{equation}
+      {\rm Var}[v_T]=2a^2(1+2b^2).
+    \end{equation}
+    Now, denote the conditional mean and variance of the real non-central chi-squared random variable as
+    \begin{equation}
+      m={\rm E}\left[\left. v_T\right|v_t\right], \quad\quad s^2 = {\rm Var}\left[\left. v_T\right|v_t\right],
+    \end{equation}
+    then it can be shown that
+    \begin{equation}
+      b=\sqrt{\frac{2}{\psi}-1+\sqrt{\frac{2}{\psi}\left(\frac{2}{\psi}-1\right)}}, \quad\quad a = \frac{m}{1+b^2},
+      \label{QE1}
+    \end{equation}
+    where $\psi=s^2/m^2$. To ensure the existence of solutions for $a$ and $b$, the condition $\psi\le 2$ must be satisfied.
+
+    For small non-centrality parameter, the non-central chi-squared density can be approximated by
+    \begin{equation}
+      P\left(v_T\in[x,x+dx]\right)=\left(p\delta(0)+(1-p)\beta e^{-\beta x}\right)dx,
+    \end{equation}
+    where $\delta(x)$ is the Dirac $\delta$-function. The inverse cumulative distribution function for this approximate density
+    is given by
+    \begin{equation}
+      \label{inverseCDF}
+      \Psi^{-1}(u)=
+      \begin{cases}
+        0 & 0 \le u < p, \\
+        \displaystyle \frac{1}{\beta}\log\left(\frac{1-p}{1-u}\right) & p\le u\le 1.
+      \end{cases}
+    \end{equation}
+    Similarly, the mean and variance of the above approximate distribution are given by
+    \begin{equation}
+      {\rm E}[v_T]=\frac{1-p}{\beta},
+    \end{equation}
+    and
+    \begin{equation}
+      {\rm Var}[v_T]=\frac{1-p^2}{\beta^2}.
+    \end{equation}
+    Mathcing with the real distribution, we have
+    \begin{equation}
+      p=\frac{\psi-1}{\psi+1}, \quad\quad \beta=\frac{1-p}{m},
+      \label{QE2}
+    \end{equation}
+    where $\psi\ge 1$ must be satisfied.
+
+    Therefore, we have the restriction that $1 \le \psi \le 2$, and we can choose a critical value in the range of $[0,2]$,
+    for example, $\psi_c=1.5$, to switch between the two approximations for simulation. The simulation procedure for the variance
+    process is summarised as follows:
+    \begin{enumerate}[noitemsep]
+      \item Given $v_t$, calculate $m$, $s^2$, and $\psi=s^2/m^2$;
+      \item Draw a random number $U_v$ from the uniform distribution on $[0,1]$;
+      \item If $\psi > \psi_c$, compute $p$ and $\beta$ from Eq. (\ref{QE2}). Define $v_T=\Psi^{-1}(U_v)$ as in Eq. (\ref{inverseCDF});
+      \item If $\psi \le \psi_c$, compute $a$ and $b$ from Eq. (\ref{QE1}), and $Z_v=\Phi^{-1}(U_v)$, where $\Phi(x)$ is the cumulative distribution
+            function for the standard normal distrubtion. Define $v_T=a\left(b+Z_v\right)^2$ as in Eq. (\ref{Gaussian});
+    \end{enumerate}
+
+  \subsection{Simulation of the forward price process}
+
+    For the simulation of the forward price process, we can use the equivalent log forward process, Eq. (\ref{logStock}). Since we have
+    obtained $v_T$ from the quadratic exponential scheme, we only need to determine the two integrals in Eq. (\ref{logStock}). Define
+    $\tau=T-t$, approximate the integrals as
+    \begin{equation}
+      \int_t^Tv_sds\simeq\left(\gamma_1v_t+\gamma_2v_T\right)\tau,
+    \end{equation}
+    and
+    \begin{equation}
+      \int_t^T\sqrt{v_s}dB_s\simeq\sqrt{\gamma_1v_t+\gamma_2v_T}\sqrt{\tau}Z_v,
+    \end{equation}
+    where $Z_v$ is a standard normal random variable. Using these approximate results, Eq. (\ref{logStock}) becomes
+    \begin{equation}
+      \log X_T = \log X_t + K_0 + K_1v_t + K_2v_T + \sqrt{K_3v_t + K_4v_T}Z_v,
+      \label{logStock2}
+    \end{equation}
+    where
+    \begin{eqnarray}
+      && K_0 = -\frac{\kappa\rho\theta}{\sigma}\tau,\quad\quad
+         K_1 = \left(\frac{\kappa\rho}{\sigma}-\frac{1}{2}\right)\gamma_1\tau-\frac{\rho}{\sigma}, \quad\quad
+         K_2 = \left(\frac{\kappa\rho}{\sigma}-\frac{1}{2}\right)\gamma_2\tau+\frac{\rho}{\sigma}, \nonumber\\
+      && K_3 = (1-\rho^2)\gamma_1\tau, \quad\quad
+         K_4 = (1-\rho^2)\gamma_2\tau.
+    \end{eqnarray}
+    Here, $\gamma_1$ and $\gamma_2$ can be set to arbitrary numbers as in various numerical integration schemes.
+
+    By exponentiating Eq. (\ref{logStock2}), the forward price is given by
+    \begin{equation}
+      X_T = X_t \exp\left(K_0 + K_1v_t + K_2v_T + \sqrt{K_3v_t + K_4v_T}Z_V\right).
+    \end{equation}
+    Clearly, this discretized forward process is not a martingale, even though the deviation is minor. To fix this
+    issue, we can replace $K_0$ with
+    \begin{equation}
+      K_0^* = -\log M -\left(K_1+\frac{1}{2}K_3\right)v_t.
+    \end{equation}
+    Denote $A=K_2+K_4/2$, the martingale correction term $M$ can be expressed in terms of $A$, depending on the
+    approximate scheme used for sampling $v_T$. If $\psi\le\psi_c$, set
+    \begin{equation}
+      M=\frac{\displaystyle \exp\left(\frac{Ab^2a}{1-2Aa}\right)}{\sqrt{1-2Aa}},
+    \end{equation}
+    as long as $A<(2a)^{-1}$. If $\psi>\psi_c$, we have
+    \begin{equation}
+      M=p + \frac{\beta(1-p)}{\beta-A},
+    \end{equation}
+    for $A<\beta$.
 
 
 \begin{thebibliography}{99}
@@ -497,7 +626,7 @@
     See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
 
   \bibitem{BK}
-    M. Broadie and \"{O}. Kaya, {\it Exact Simulation of Stochastic Volatility and Other Affine Jump Diffusion Processes}, 
+    M. Broadie and \"{O}. Kaya, {\it Exact Simulation of Stochastic Volatility and Other Affine Jump Diffusion Processes},
     Operations Research {\bf 54} (2), 217 (2006).
 
   \bibitem{Andersen}
