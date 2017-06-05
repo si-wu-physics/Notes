@@ -372,33 +372,37 @@
 
   \subsection{Lewis \cite{Lewis}}
 
-    Denote the payoff the contingent claim at maturity as $g(x)$, then the value of the derivative is given by
+    Denote the payoff of the contingent claim at maturity as $g(x)$, then the value of the derivative is given by
     \begin{equation}
-      V = \int_{-\infty}^{+\infty}f(x)g(x)dx.
+      V = \int_{-\infty}^{+\infty}f(x)g(x)dx，
     \end{equation}
-
+    where $f(x)$ is the terminal distribution of the state variable $x$ at maturity. Then, by Parseval's identity, we have
     \begin{equation}
-      g(x)=\left(e^x-e^k\right)^+
+      V = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(-u)\hat{g}(u)du,
+      \label{Parseval}
     \end{equation}
-
+    where $\varphi(u)$ is the characetristic function for $x$ at maturity, and $\hat{g}(u)$ is the Fourier transform of
+    the payoff. Since most payoff functions are not $L^1$ integrable, the integration contour in Eq. (\ref{Parseval}) has
+    to be confined in a strip in the complex plane. For example, for the call payoff,
+    \begin{equation}
+      g(x)=\left(e^x-e^k\right)^+,
+    \end{equation}
+    its Fourier transfrom is given by
     \begin{eqnarray}
       \hat{g}(u) &=& \int_{-\infty}^{+\infty}e^{iux}\left(e^x-e^k\right)^+dx=\int_{k}^{+\infty}e^{iux}\left(e^x-e^k\right)dx \nonumber\\
                  &=& \left.\left(\frac{e^{(1+iu)x}}{1+iu}-\frac{e^{iux}e^k}{iu}\right)\right|_k^{+\infty}\nonumber\\
                  &=& -\frac{e^{(1+iu)k}}{u(u-i)},
     \end{eqnarray}
-
-    ${\rm Im}(u) > 1$
-
+    where ${\rm Im}(u) > 1$ is required for the integration to converge. If the call payoff is given in another form,
     \begin{equation}
-      g(x)=\left(x-K\right)^+
+      g(x)=\left(x-K\right)^+,
     \end{equation}
-
+    the corresponding Fourier transform is given by
     \begin{eqnarray}
       \hat{g}(u) &=& \int_{-\infty}^{+\infty}e^{iux}\left(x-K\right)^+dx=\int_{K}^{+\infty}e^{iux}\left(x-K\right)dx \nonumber\\
                  &=& -\frac{e^{iuK}}{u^2},
     \end{eqnarray}
-
-    ${\rm Im}(u) > 0$
+    where ${\rm Im}(u) > 0$.
 
 
 \begin{thebibliography}{99}
