@@ -23,7 +23,7 @@
   A stochastic process $X_t$ is called a {\it L\'{e}vy process} if it has the following properties:
   \begin{enumerate}[noitemsep]
     \item $X_0=0$ almost surealy;
-    \item {\it Independence of increments}. For any $0\le t_1 < t_2 < \cdots < t_n < +\infty$, $X_{t_2}-X_{t_1}$, 
+    \item {\it Independence of increments}. For any $0\le t_1 < t_2 < \cdots < t_n < +\infty$, $X_{t_2}-X_{t_1}$,
           $X_{t_3}-X_{t_2}$, $\cdots$, $X_{t_n}-X_{t_{n-1}}$ are independent;
     \item {\it Stationary increments}. For any $s<t$, $X_t-X_s$ is equal in distribution to $X_{t-s}$;
     \item {\it Continuity in probability}. For any $\epsilon>0$ and $t\ge 0$, $\lim_{h\rightarrow 0}P(|X_{t+h}-X_t>\epsilon|)=0$.
@@ -39,11 +39,11 @@
 
   \subsection{Black-Scholes Model}
 
-    For the Black-Scholes model, 
+    For the Black-Scholes model,
     \begin{equation}
       dS_t=(r-q)S_tdt+\sigma S_tdW_t,
     \end{equation}
-    we can define 
+    we can define
     \begin{equation}
       \varphi(u; x_t)={\rm E}\left[\left.\exp\left(iux_T\right)\right|x_t\right],
       \label{char00}
@@ -52,7 +52,7 @@
     \begin{equation}
       dx_t = \left(r-q-\frac{1}{2}\sigma^2\right) dt + \sigma dW_t.
     \end{equation}
-    Therefore, 
+    Therefore,
     \begin{equation}
       x_T\sim N\left(x_t+\left(r-q-\frac{1}{2}\sigma^2\right)\tau, \sigma^2\tau\right),
     \end{equation}
@@ -67,7 +67,7 @@
 
     \begin{remark}
       In many applications, the characteristic function is alternatively defined as (\ref{char00}), which is related
-      to (\ref{char}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which 
+      to (\ref{char}) by a factor, $\exp\left[iu(\log S_0 +(r-q)t)\right]$. We will use these two definitions interchangeably, and which
       definition is used is clear from the context.
     \end{remark}
 
@@ -139,12 +139,12 @@
     \end{equation}
 
     \begin{remark}
-      When the characteristic function for the log stock price is needed, we can simply set $u_2=0$ in the 
+      When the characteristic function for the log stock price is needed, we can simply set $u_2=0$ in the
       above bivariate characteristic function.
     \end{remark}
 
     \begin{remark}
-      For numerical integration, the {\it Little Heston Trap} trick is generally applied to the argument of the 
+      For numerical integration, the {\it Little Heston Trap} trick is generally applied to the argument of the
       complex logarithm, to remove the discountinuities. Define
       \begin{equation}
         G=\frac{1}{K}=\frac{\beta-d-iu_2\sigma^2}{\beta+d-iu_2\sigma^2},
@@ -195,9 +195,8 @@
     \begin{equation}
       P(\tau) = iu_2, \quad\quad Q(\tau)=-\kappa, \quad\quad R(\tau)=\frac{1}{2}\sigma^2.
     \end{equation}
+    From here, the characteristic function can be found the same way as the Heston one.
 
-
-  % \subsection{3/2 Model}
 
   \subsection{Orenstein-Uhlenbeck Process}
 
@@ -230,7 +229,7 @@
 
 \section{Fourier Inversion Formula}
 
-  Consider the problem of finding the cumulative density function from its characteristic function. 
+  Consider the problem of finding the cumulative density function from its characteristic function.
   In particular, we want to find the probability of $X>k$, {\it i.e.}, $P(X>k)$, which is given by
   \begin{equation}
     P(X > k)=\int_k^{+\infty}f(x)dx.
@@ -374,26 +373,51 @@
 
     Denote the payoff of the contingent claim at maturity as $g(x)$, then the value of the derivative is given by
     \begin{equation}
-      V = \int_{-\infty}^{+\infty}f(x)g(x)dx，
+      V = e^{-r(T-t)}\int_{-\infty}^{+\infty}f(x)g(x)dx，
     \end{equation}
     where $f(x)$ is the terminal distribution of the state variable $x$ at maturity. Then, by Parseval's identity, we have
     \begin{equation}
-      V = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\varphi(-u)\hat{g}(u)du,
+      V = \frac{e^{-r(T-t)}}{2\pi}\int_{-\infty}^{+\infty}\varphi(-u)\hat{g}(u)du,
       \label{Parseval}
     \end{equation}
     where $\varphi(u)$ is the characetristic function for $x$ at maturity, and $\hat{g}(u)$ is the Fourier transform of
-    the payoff. Since most payoff functions are not $L^1$ integrable, the integration contour in Eq. (\ref{Parseval}) has
-    to be confined in a strip in the complex plane. For example, for the call payoff,
+    the payoff. Since most payoff functions are not $L^1$ integrable, the original integration contour in Eq. (\ref{Parseval}) has
+    to be confined in a strip in the complex plane. We consider two examples in the following.
+
+    If the call payoff is given by
     \begin{equation}
       g(x)=\left(e^x-e^k\right)^+,
     \end{equation}
-    its Fourier transfrom is given by
+    its Fourier transfrom can shown to be
     \begin{eqnarray}
       \hat{g}(u) &=& \int_{-\infty}^{+\infty}e^{iux}\left(e^x-e^k\right)^+dx=\int_{k}^{+\infty}e^{iux}\left(e^x-e^k\right)dx \nonumber\\
                  &=& \left.\left(\frac{e^{(1+iu)x}}{1+iu}-\frac{e^{iux}e^k}{iu}\right)\right|_k^{+\infty}\nonumber\\
                  &=& -\frac{e^{(1+iu)k}}{u(u-i)},
+      \label{call11}
     \end{eqnarray}
-    where ${\rm Im}(u) > 1$ is required for the integration to converge. If the call payoff is given in another form,
+    where ${\rm Im}(u) > 1$ is required for the integration to converge. Therefore, the value of the call option can be written as
+    \begin{equation}
+      V = \frac{e^{-r(T-t)}}{2\pi}\int_{-\infty+ia}^{+\infty+ia}\varphi(-u)\hat{g}(u)du,
+    \end{equation}
+    with $a>1$. Now, we can shift the integration contour around on the complex plane. For the Fourier tranform of the call payoff (\ref{call11}),
+    it has two poles at $u=0$ and $u=i$. If the integration contour is shifted to be the straight line parallel to the real axis, with imaginary
+    part between 0 and 1, then we have
+    \begin{eqnarray}
+      e^{r(T-t)}V &=& -\frac{1}{2\pi}\int_{-\infty+ib}^{+\infty+ib}\varphi(-u)\hat{g}(u)du - 2\pi i {\rm Res}_{u=i}\left[-\frac{e^{(1+iu)k}\varphi(-u)}{2\pi u(u-i)}\right] \nonumber\\
+        &=& \varphi(-i) - \frac{1}{2\pi}\int_{-\infty+ib}^{+\infty+ib}\varphi(-u)\hat{g}(u)du,
+    \end{eqnarray}
+    with $0<b<1$. From the definition of the characteristic function, we have
+    \begin{equation}
+      \varphi(-i) = {\rm E}[S_T]=S_te^{(r-q)(T-t)}.
+    \end{equation}
+    Also, we can set $b=1/2$ in the above integral, finally will have
+    \begin{equation}
+      V = S_te^{-q(T-t)} - \frac{\sqrt{K}e^{-r(T-t)}}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{iuk}\varphi\left(-u-i/2\right)}{u^2+1/4}du.
+      \label{call12}
+    \end{equation}
+
+
+    If the call payoff is given in another form,
     \begin{equation}
       g(x)=\left(x-K\right)^+,
     \end{equation}
@@ -403,6 +427,56 @@
                  &=& -\frac{e^{iuK}}{u^2},
     \end{eqnarray}
     where ${\rm Im}(u) > 0$.
+
+    \begin{remark}
+      In the original formulation of \cite{Lewis}, the characteristic function is defined as
+      \begin{equation}
+        \phi(u)={\rm E}[e^{iu\log X_T}],
+      \end{equation}
+      where $S_T=S_te^{(r-q)(T-t)}X_T$. Then, the Fourier transform of the call option payoff is given by
+      \begin{equation}
+        -S_te^{(r-q)(T-t)}\frac{e^{(1+iu)k}}{u(u-i)},
+      \end{equation}
+      with
+      \begin{equation}
+        k=\log\frac{K}{S_te^{(r-q)(T-t)}}.
+      \end{equation}
+      For the call option price (\ref{call12}), we can get the following equivalent formula,
+      \begin{equation}
+        V = S_te^{-q(T-t)} - \frac{\sqrt{KS_t}e^{-(r+q)(T-t)/2}}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{iuk}\phi\left(-u-i/2\right)}{u^2+1/4}du.
+      \end{equation}
+      This result can also be obtained by noticing that
+      \begin{equation}
+        \varphi\left(-u-\frac{i}{2}\right)=\sqrt{S_t}e^{(r-q)(T-t)/2}\exp\Big(-iu\big[\log S_t+(r-q)(T-t)\big]\Big)\phi\left(-u-\frac{i}{2}\right).
+      \end{equation}
+    \end{remark}
+
+    \begin{remark}
+      For numerial implementation of Eq. (\ref{call12}), we can introduce a control variate to reduce the discretization error for the calculation
+      of the integral. For a call option in the Black-Scholes world, its price is given by
+      \begin{equation}
+        V_{BS} = S_te^{-q(T-t)} - \frac{\sqrt{K}e^{-r(T-t)}}{2\pi}\int_{-\infty}^{+\infty}\frac{e^{iuk}\varphi_{BS}\left(-u-i/2\right)}{u^2+1/4}du,
+      \end{equation}
+      where $\varphi_{BS}$ is the characteristic function of the Black-Scholes model. Then, for an arbitrary model with closed form characteristic
+      function, the call option price is given by
+      \begin{equation}
+        V = V_{BS} - \frac{\sqrt{K}e^{-r(T-t)}}{2\pi}\int_{-\infty}^{+\infty}
+            \frac{e^{iuk}\left[\phi\left(-u-i/2\right)-\varphi_{BS}\left(-u-i/2\right)\right]}{u^2+1/4}du.
+      \end{equation}
+    \end{remark}
+
+\section{Barrier option pricing with characteristic functions}
+
+
+
+\section{Monte Carlo simulation with characteristic functions}
+
+
+
+\appendix
+
+\section{Sinc numerical method}
+
 
 
 \begin{thebibliography}{99}
