@@ -2,6 +2,9 @@
 \usepackage{amsfonts}
 \usepackage[hscale=0.8,vscale=0.8]{geometry}
 \usepackage{hyperref}
+\usepackage{amsmath}
+
+\allowdisplaybreaks
 
 \begin{document}
 
@@ -264,7 +267,7 @@
       v=\int_t^T\left|\sigma_P(s,T+\tau)-\sigma_P(s,T)\right|^2ds.
     \end{equation}
 
-  \subsection{Futures}
+  \subsection{Eurodaollar Futures}
 
     The futures rate is a martingale under the risk neutral measure, {\it i.e.}, $F(t,T,T+\tau)=E_t^Q[L(T,T,T+\tau)]$.
     This is equivalent to
@@ -276,7 +279,8 @@
       d\left(\frac{1}{P(t,T,T+\tau)}\right)&=&-\frac{dP(t,T,T+\tau)}{P^2(t,T,T+\tau)}+\frac{\left(dP(t,T,T+\tau)\right)^2}{P^3(t,T,T+\tau)}\nonumber\\
                 &=&\frac{1}{P(t,T,T+\tau)}\Big(\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]\sigma_P(t,T)dt\nonumber\\
                 && \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ +\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]dW(t)\Big)\nonumber\\
-                && + \frac{1}{P(t,T,T+\tau)}\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]\left[\sigma_P(t,T+\tau)-\sigma_P(t,T)\right]dt\nonumber\\
+                && + \frac{1}{P(t,T,T+\tau)}\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]\nonumber\\
+                && \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \times\left[\sigma_P(t,T+\tau)-\sigma_P(t,T)\right]dt\nonumber\\
                 &=&\frac{1}{P(t,T,T+\tau)}\Big(\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]\sigma_P(t,T+\tau)dt\nonumber\\
                 && \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\left[\sigma_P(t,T+\tau)^{\top}-\sigma_P(t,T)^{\top}\right]dW(t)\Big).
     \end{eqnarray}
@@ -315,7 +319,75 @@
     \end{eqnarray}
     then we will obtain the same result, except that the spot lag has been explicitly included \cite{MH}.
 
-  \subsection{Option on futures}
+  \subsection{Option on Eurodollar futures}
+
+    For a call option written on a Eurodollar futures rate, spanning the time period from $T$ to $T+\tau$, with strike $K=1-X$ and expiry $t$,
+    its price is
+    \begin{equation}
+      C = {\rm E}^Q\left[\frac{\left(X-F(t,T,T+\tau)\right)^+}{B(t)}\right]
+        = {\rm E}^Q\left[\frac{1}{B(t)}\left(X+\frac{1}{\tau}-\frac{e^{\Omega(t,T_0)}}{\tau}\frac{P(t,T)}{P(t,T+\tau)}\right)\right],
+      \label{FuturesCall}
+    \end{equation}
+    under the risk neutral measure. Notice Eqs. (\ref{bond10}) and (\ref{reconstitution00}), we have
+    \begin{equation}
+      \frac{1}{B(t)} = P(0,t)\exp\left(-X_2-\frac{1}{2}\sigma_2^2\right),
+    \end{equation}
+    and
+    \begin{equation}
+      \frac{P(t,T)}{P(t,T+\tau)} = \frac{P(0,T)}{P(0,T+\tau)}\exp\left(X_1-\frac{1}{2}\sigma_1^2+\alpha\right).
+    \end{equation}
+    Here,
+    \begin{equation}
+      X_1=\int_0^t\left[\sigma_P(u,T+\tau)^{\top}-\sigma_P(u,T)^{\top}\right]dW(u), \quad\quad X_2=\int_0^t\sigma_P(u,T)^{\top}dW(u),
+    \end{equation}
+    are jointly normal with covariance matrix
+    \begin{equation}
+      \Sigma = \left(
+        \begin{array}{cc}
+          \sigma_1^2 & \sigma_{12} \\
+          \sigma_{12} & \sigma_2^2
+        \end{array}\right),
+    \end{equation}
+    where
+      \begin{align*}
+        \sigma_1^2 &= \int_0^t\left[\sigma_P(u,T+\tau)^{\top}-\sigma_P(u,T)^{\top}\right]\left[\sigma_P(u,T+\tau)-\sigma_P(u,T)\right]du,\\
+        \sigma_2^2 &= \int_0^t\sigma_P(u,t)^{\top}\sigma_P(u,t)du,\\
+        \sigma_{12} &= \int_0^t\sigma_P(u,t)^{\top}\left[\sigma_P(u,T+\tau)-\sigma_P(u,T)\right]du,
+      \end{align*}
+    and
+    \begin{equation}
+      \alpha = \int_0^t\sigma_P(u,T+\tau)^{\top}\left[\sigma_P(u,T+\tau)-\sigma_P(u,T)\right]du.
+    \end{equation}
+    Now, the expectation in Eq. (\ref{FuturesCall}) can be calculated by direct integration,
+    \begin{eqnarray}
+      C &=& \frac{P(0,t)}{2\pi\sqrt{{\rm det}\Sigma}}\int\left(X+\frac{1}{\tau}-\frac{e^{\Omega(t,T_0)}}{\tau}
+                \frac{P(0,T)}{P(0,T+\tau)}\exp\left(x_1-\frac{1}{2}\sigma_1^2+\alpha\right)\right)^+ \nonumber\\
+                && \quad\quad\quad\quad\times
+                    \exp\left(-x_2-\frac{1}{2}\sigma_2^2\right)\exp\left(-\frac{1}{2}{\bf x}^{\top}\Sigma^{-1}{\bf x}\right)d^2x.
+    \end{eqnarray}
+    Denote the solution of the equation
+    \begin{equation}
+      X+\frac{1}{\tau}-\frac{e^{\Omega(t,T_0)}}{\tau}\frac{P(0,T)}{P(0,T+\tau)}\exp\left(x_1-\frac{1}{2}\sigma_1^2+\alpha\right)=0
+    \end{equation}
+    as $X_1=-\kappa\sigma_1$, then the above integration is nonzero only if $x_1<-\kappa\sigma_1$. Take this into account, the integration
+    is unrestricted in the $x_2$ direction, which can be exactly calculated, since
+    \begin{equation}
+      \frac{1}{\sqrt{2\pi}}\int\exp\left(-x_2-\frac{1}{2}{\bf x}^{\top}\Sigma^{-1}{\bf x}\right)dx_2
+        = \frac{\sqrt{{\rm det}\Sigma}}{\sigma_1}\exp\left(-\frac{1}{2\sigma_1^2}\left[\left(x_1+\sigma_{12}\right)^2-\sigma_1^2\sigma_2^2\right]\right).
+    \end{equation}
+    Then, the integration in the $x_1$ direction becomes
+    \begin{eqnarray}
+      C &=& \frac{P(0,t)}{\sigma_1\sqrt{2\pi}}\int_{-\infty}^{-\kappa\sigma_1}\Bigg[\left(X+\frac{1}{\tau}\right)
+                      \exp\left(-\frac{1}{2\sigma_1^2}\left(x_1+\sigma_{12}\right)^2\right) \nonumber\\
+        && \quad\quad\quad\quad - \frac{e^{\Omega(t,T_0)}}{\tau}\frac{P(0,T)}{P(0,T+\tau)}e^{\alpha-\sigma_{12}}
+                                  \exp\left(-\frac{1}{2\sigma_1^2}\left(x_1+\sigma_{12}-\sigma_1^2\right)^2\right)\Bigg]dx_1,
+    \end{eqnarray}
+    which finally leads to \cite{MH}
+    \begin{equation}
+      C = P(0,t)\left[\left(X+\frac{1}{\tau}\right)N\left(-\kappa+\frac{\sigma_{12}}{\sigma_1}\right)
+                      -\frac{e^{\Omega(t,T_0)}}{\tau}\frac{P(0,T)}{P(0,T+\tau)}e^{\alpha-\sigma_{12}}
+                       N\left(-\kappa-\sigma_1+\frac{\sigma_{12}}{\sigma_1}\right)\right].
+    \end{equation}
 
   \subsection{European Swaption - Jamshidian Decomposition}
 
