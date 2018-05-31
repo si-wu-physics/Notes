@@ -124,6 +124,76 @@
   For down-and-out options, the replication strategy can be obtained from the difference between a vanilla option and a down-and-in option with the same barrier
   as the down-and-out option. The is due to the fact that a vanilla option can be decomposed into a down-and-out and a down-and-in options with same features.
 
+\section{Variance swap}
+
+  \subsection{Profit and loss of a delta-hedged option}
+
+    Consider the price of an option, $V_{BS}(t,S_t;\sigma_{BS})$, where a constant volatility is assumed throughout the life time of the option.
+    For the discounted option price, $f(t)=e^{-rt}V_{BS}(t,S_t;\sigma_{BS})$, we have
+    \begin{equation}
+      f(T)=f(0)+\int_0^Tdf(t)=f(0)+\int_0^Te^{-rt}\left[\left(-rV_{BS}+\frac{\partial V_{BS}}{\partial t}\right)dt+\frac{\partial V_{BS}}{\partial S}dS_t
+              +\frac{1}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(dS_t\right)^2\right].
+    \end{equation}
+    Assume that the underlying follows a geometric Brownian motion,
+    \begin{equation}
+      dS_t = \left(r-q\right)S_tdt + \sigma_tS_tdW_t,
+    \end{equation}
+    then
+    \begin{eqnarray}
+      f(T)&=&f(0)+\int_0^Te^{-rt}\left(-rV_{BS}+\frac{\partial V_{BS}}{\partial t}+\left(r-q\right)S_t\frac{\partial V_{BS}}{\partial S}
+                                +\frac{1}{2}\sigma_t^2S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}\right)dt\nonumber\\
+          &&\quad\quad\quad+\int_0^Te^{-rt}\sigma_tS_t\frac{\partial V_{BS}}{\partial S}dW_t.
+    \end{eqnarray}
+    Notice that the option price $V(t,S_t;\sigma_{BS})$ satisfies the Black-Scholes PDE,
+    \begin{equation}
+      \frac{\partial V_{BS}}{\partial t}+\left(r-q\right)S\frac{\partial V_{BS}}{\partial S}+\frac{1}{2}\sigma_{BS}^2S^2\frac{\partial^2 V_{BS}}{\partial S^2}
+      =rV_{BS},
+    \end{equation}
+    and finally, we have
+    \begin{equation}
+      f(T)=f(0)+\int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(\sigma_t^2-\sigma_{BS}^2\right)dt+\int_0^Te^{-rt}\sigma_tS_t\frac{\partial V_{BS}}{\partial S}dW_t.
+    \end{equation}
+    The expected value of the hedged option is given by
+    \begin{equation}
+      E\left[f(T)\right]=f(0)+E\left[\int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(\sigma_t^2-\sigma_{BS}^2\right)dt\right].
+    \end{equation}
+    From this, it can be seen that, a delta-hedged option is sensitive to the difference between realized and implied variances. However, if one want to trade
+    the realized variance, the delta-hedged option is not a good choice, since the dollar gamma is peaked at the strike price. It can be shown, for a portfolio
+    of options weighted by their inversed strike squared, $1/K^2$, the portfolio will be insensitive to the stock price move.
+
+    As a side result, notice that, in an arbitrage free world, we have
+    \begin{equation}
+      E\left[f(T)\right]=f(0),
+    \end{equation}
+    which leads to
+    \begin{equation}
+      \sigma_{BS}^2=\frac{\displaystyle E\left[\int_0^Te^{-rt}\sigma_t^2S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}dt\right]}
+                         {\displaystyle E\left[\int_0^Te^{-rt}S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}dt\right]}.
+    \end{equation}
+    This result implies that, the implied variance is the average of realized variance, weighted by dollar gamma. It can lead to interesting approximation for the implied
+    volatility, for example, the so called ``most likely path" method. However, in practice, the approximation is rather crude.
+
+  \subsection{Static replication of variance swap}
+
+    Results from last subsection relies on the Black-Scholes assumption. Here, we will consider a more general problem of static replication of the realized variance in a model-free way.
+    Consider any continuous stochastic process for the underlying,
+    \begin{equation}
+      \frac{dS_t}{S_t}=rdt+\sigma_tdW_t,
+    \end{equation}
+    applying the Ito's lemma, we have
+    \begin{equation}
+      d\log S_t = \left(r-\frac{1}{2}\sigma_t^2\right)dt+\sigma_tdW_t,
+    \end{equation}
+    where the result holds for either deterministic or stochastic volatility $\sigma_t$. For the annualized realized variance, we have
+    \begin{equation}
+      E\left[\frac{1}{T}\int_0^T\sigma_t^2dt\right]= 2r - \frac{2}{T}E\left[\log\left(\frac{S_T}{S_0}\right)\right].
+    \end{equation}
+    Therefore, the realized variance can be replicated by a log contract. The log contract can be replicated by a portfolio of vanilla options, as shown in the first
+    section.
+
+
+  \subsection{Discretely observed variance swap}
+
 
 \begin{thebibliography}{99}
   \bibitem{CarrChou}
