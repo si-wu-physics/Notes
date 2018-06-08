@@ -143,6 +143,7 @@
   A variance swap is a forward contract on future realized variance. At maturity, the floating leg pays
   \begin{equation}
     A\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right),
+    \label{VarSwapPayoff}
   \end{equation}
   where $A$ is the notional amount of the variance swap, $N$ is an annualization factor and is usually set to
   252, $n$ is the number of monitor dates, and $S$ is the stock price at market close. The fixed leg payment is
@@ -305,6 +306,13 @@
 
   \subsection{Corridor variance swap}
 
+    The floating leg payment of the corridor variance swap is
+    \begin{equation}
+      A\times\frac{N}{n}\sum_{i=1}^{n}\mathcal{I}_{L\leq S_i \leq H}\log^2\left(\frac{S_i}{S_{i-1}}\right),
+    \end{equation}
+    {\it i.e.}, the contribution to the realized variance is only taken into account if the stock price falls
+    in the corridor $[L,H]$.
+
     Take
     \begin{equation}
       \phi(S) = 2\left[\log\left(\frac{F}{S^{\prime}}\right)+S\left(\frac{1}{F}-\frac{1}{S^{\prime}}\right)\right],
@@ -317,36 +325,89 @@
 
   \subsection{Gamma swap}
 
+    The floating leg payment of the gamma swap is
+    \begin{equation}
+      A\times\frac{N}{n}\sum_{i=1}^{n}\frac{S_i}{S_0}\log^2\left(\frac{S_i}{S_{i-1}}\right).
+    \end{equation}
+
+    Take
+    \begin{equation}
+      \phi(S) = \frac{2}{S_0}\left[S\log\left(\frac{S}{F}\right)-S+F\right],
+    \end{equation}
+    then
+
 
 \section{Volatility swap}
 
+  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies close 
+  to the variance swap, and the floating leg payment is
   \begin{equation}
-    F^{BS}\left(s, \sigma, \omega\right) = \int_0^{+\infty}F(sy,\omega)\frac{1}{y\sqrt{2\pi\sigma^2}}\exp\left(-\frac{\left(y+\sigma^2/2\right)^2}{2\sigma^2}\right)dy,
+    A\sqrt{\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right)},
   \end{equation}
+  {\it i.e.}, the square root of Eq. (\ref{VarSwapPayoff}). Due to the square root, volatility swap is more complicated
+  than variance swap in valuation and hedging. The valuation of a volatility swap generally requires a stochastic volatility
+  model. However, as shown by Carr and Lee, there ...
 
-  \begin{equation}
-    dS_t=\sqrt{1-\rho^2}\sigma_tS_tdW_{1t}+\rho\sigma_tS_tdW_{2t},
-  \end{equation}
+  \subsection{Valuation under stoachstic volatility}
+    For a European payoff $F(S,\omega)$, where $\omega$ represents other stochastic factors that affect the payoff,
+    define 
+    \begin{equation}
+      F^{BS}\left(S, \sigma, \omega\right) = \int_0^{+\infty}F(Sy,\omega)
+                          \frac{1}{y\sqrt{2\pi\sigma^2}}\exp\left(-\frac{\left(y+\sigma^2/2\right)^2}{2\sigma^2}\right)dy.
+    \end{equation}
+    This gives the Black-Scholes result if there is no $\omega$ dependence. 
 
-  \begin{equation}
-    E_t\left[F(S_T)\right]=E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right],
-  \end{equation}
+    Consider the following stochastic process for an underlying,
+    \begin{equation}
+      dS_t=\sqrt{1-\rho^2}\sigma_tS_tdW_{1t}+\rho\sigma_tS_tdW_{2t},
+    \end{equation}
+    where the volatility process $\sigma_t$ is independent on the Brownian motion $W_1$, and the underlying is correlated
+    with the volatility with correlation $\rho$. Let $X_t\equiv\log(S_t/S_0)$, then
+    \begin{equation}
+      dX_t=-\frac{1-\rho^2}{2}\sigma_t^2dt+\sqrt{1-\rho^2}\sigma_tdW_{1t}-\frac{\rho^2}{2}\sigma_t^2dt+\rho\sigma_tS_tdW_{2t}.
+    \end{equation}
+    Conditioning on $W_1$, $X_t$ is normally distributed,
+    \begin{equation}
+      X_T\sim N\left(X_t+\log M_{t,T}(\rho)-\frac{1-\rho^2}{2}\bar\sigma_{t,T}^2dt, \sqrt{1-\rho^2}\bar\sigma_{t,T}\right),
+    \end{equation}
+    where
+    \begin{equation}
+      M_{t,T}(\rho) = \exp\left(-\frac{\rho^2}{2}\int_t^T\sigma_u^2du+\rho\int_t^T\sigma_udW_u\right),
+    \end{equation}
+    and
+    \begin{equation}
+      \bar\sigma_{t,T}^2=\int_t^T\sigma_u^2du.
+    \end{equation}
+    Now, apply repeated expectation, we have
+    \begin{equation}
+      E_t\left[F(S_T)\right]=E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right].
+    \end{equation}
+    Clearly, this result depends on the correlation $\rho$. If we can find a payoff $F(S)$ which can render a correlation-insensitive
+    result, or at least correlation-insensitive locally around $\rho=0$, then we can have (nearly) model-free valuation for the volatility
+    swap. This can be achieved by expanding the above result around $\rho=0$,
+    \begin{eqnarray}
+             E_t\left[F(S_T)\right]
+      &=&E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right]\nonumber\\
+      &=&E_t\left[F^{BS}(S_t,\bar\sigma_{t,T})\right]
+              + \rho S_tE_t\left[\frac{\partial F^{BS}(S_t,\bar\sigma_{t,T})}{\partial S}
+                              \int_t^T\sigma_udW_u\right].
+    \end{eqnarray}
+    If $\partial F^{BS}/\partial S$ does not depend on $\bar\sigma_{t,T}$, then the expectation in the last line will be zero,
+    and the above result will be correlation-insensitive, with an error of order $O(\rho^2)$.
 
-  \begin{equation}
-    M_{t,T}(\rho) = \exp\left(-\frac{\rho^2}{2}\int_t^T\sigma_u^2du+\rho\int_t^T\sigma_udW_u\right),
-  \end{equation}
-
-  \begin{equation}
-    \bar\sigma_{t,T}^2=\int_t^T\sigma_u^2du.
-  \end{equation}
-
-  \begin{eqnarray}
-           E_t\left[F(S_T)\right]
-    &=&E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right]\nonumber\\
-    &=&E_t\left[F^{BS}(S_t,\bar\sigma_{t,T})\right]
-              + \rho S_tE_t\left[\frac{\partial F^{BS}(S_t,\bar\sigma_{t,T})}{\partial s}\int_t^T\sigma_udW_u\right],
-  \end{eqnarray}
-
+    \subsection{Characteristic function of realized variance}
+    Define
+    \begin{equation}
+      X_t\equiv\log\frac{S_t}{S_0},
+    \end{equation}
+    and
+    \begin{equation}
+      \langle X \rangle_t\equiv\int_0^t\sigma_u^2du,
+    \end{equation}
+    these are related by
+    \begin{equation}
+      \langle X \rangle_t=-2X_t+\int_0^t\frac{2}{S_u}dS_u.
+    \end{equation}
   \begin{equation}
     X_T-X_t=-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right) + \int_t^T\sigma_udW_u,
   \end{equation}
