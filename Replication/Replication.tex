@@ -13,14 +13,14 @@
 
 \begin{document}
 
-\title{Notes on Static Hedging}
+\title{Notes on Static Replication}
 \date{Dec. 32, 2999}
 
 \maketitle
 
-\section{Replication of European Payoff}
+\section{Replication of a European Payoff}
 
-  For a European call option with spot price $S_t$, strike $K$, expiration $T$, its value at $t$ can be determined by
+  For a vanilla European call option with spot price $S_t$, strike $K$, expiration $T$, its value at $t$ can be determined by
   \begin{equation}
     C(K) = e^{-r\tau}\int_{0}^{+\infty}(S_T-K)^+p(t,S_t;T,S_T)dS_T = e^{-r\tau}\int_{K}^{+\infty}(S_T-K)p(t,S_t;T,S_T)dS_T,
   \end{equation}
@@ -46,7 +46,7 @@
     \frac{\partial^2P(K)}{\partial K^2}=e^{-r\tau}p(t,S_t;T,K).
   \end{equation}
 
-  Given the transition density, the price of a European option with arbitrary payoff $f(S_T)$ at maturity is given by
+  Given the transition density, the price of a European contract with arbitrary payoff $f(S_T)$ at maturity is given by
   \begin{equation}
     V = e^{-r\tau}\int_{0}^{+\infty}f(K)p(t,S_t;T,K)dK.
   \end{equation}
@@ -58,6 +58,7 @@
   \begin{equation}
     V = e^{-r\tau}f(F) + f^{\prime}(F)\big[e^{-q\tau}S_t-e^{-r\tau}F\big] +
            \int_{0}^{F}f^{\prime\prime}(K)P(K)dK + \int_{F}^{+\infty}f^{\prime\prime}(K)C(K)dK.
+    \label{replication}
   \end{equation}
   Here, we have used the call-put parity,
   \begin{equation}
@@ -68,11 +69,17 @@
     V = e^{-r\tau}f(F_T) +
            \int_{0}^{F_T}f^{\prime\prime}(K)P(K)dK + \int_{F_T}^{+\infty}f^{\prime\prime}(K)C(K)dK.
   \end{equation}
-  This means that we can replicate a European option with arbitry payoff with plain vanilla options. The above intergrals in
-  strike have to be discretized in reality, which will introduce some replication errors.
+  This means that we can replicate a European option with arbitry payoff with plain vanilla options.
+
+  Another usefull representation of the static replication is given by
+  \begin{eqnarray}
+    f(S_T)&=&f(F)+f^{\prime}(F)\left[\left(S_T-F\right)^+-\left(F-S_T\right)^+\right]\nonumber\\
+            &&\ \ \ \ \ +\int_0^Ff^{\prime\prime}(K)\left(F-S_T\right)^+dK+\int_F^{\infty}f^{\prime\prime}(K)\left(S_T-F\right)^+dK,
+  \end{eqnarray}
+  where $F$ is an arbitrary value. This can be viewed as the forward version of Eq. (\ref{replication}).
 
 
-\section{Static Hedging of Barrier Options}
+\section{Static Replication of Barrier Options}
 
   Consider a down-and-in barrier option with barrier level $H < S_t$ with terminal payoff $f(S_T)$, the option price is given by
   \begin{equation}
@@ -100,9 +107,9 @@
   From Eq. (\ref{density}), we have
   \begin{eqnarray}
       && \left(\frac{H}{K}\right)^2p\left(\delta,H;T,\frac{H^2}{K}\right) \nonumber\\
-    = && \left(\frac{H}{K}\right)^2\frac{1}{\displaystyle \frac{H^2}{K}\sqrt{2\pi\sigma^2\tau}}
+    = && \left(\frac{H}{K}\right)^2\frac{1}{\displaystyle \frac{H^2}{K}\sqrt{2\pi\sigma^2\left(T-\delta\right)}}
     \exp\left(-\frac{\displaystyle \left(\log\left(\frac{H}{K}\right)-\left(r-q-\frac{\sigma^2}{2}\right)(T-\delta)\right)^2}{2\sigma^2(T-\delta)}\right) \nonumber\\
-    = && \left(\frac{K}{H}\right)^k\frac{1}{\displaystyle K\sqrt{2\pi\sigma^2\tau}}
+    = && \left(\frac{K}{H}\right)^k\frac{1}{\displaystyle K\sqrt{2\pi\sigma^2\left(T-\delta\right)}}
     \exp\left(-\frac{\displaystyle \left(\log\left(\frac{K}{H}\right)-\left(r-q-\frac{\sigma^2}{2}\right)(T-\delta)\right)^2}{2\sigma^2(T-\delta)}\right) \nonumber\\
     = && \left(\frac{K}{H}\right)^kp\left(\delta,H;T,K\right),
   \end{eqnarray}
@@ -119,7 +126,7 @@
   \begin{equation}
     \hat{f}(K) = \left[f(K) + \left(\frac{K}{H}\right)^kf\left(\frac{H^2}{K}\right)\right]\mathcal{I}_{K<H}
   \end{equation}
-  at maturity. We can use the exact result from the previous section to further replicate this European option with plain vanilla ones.
+  at maturity. We can use the exact result from the previous section to further replicate this European payoff with vanilla options.
 
   For down-and-out options, the replication strategy can be obtained from the difference between a vanilla option and a down-and-in option with the same barrier
   as the down-and-out option. The is due to the fact that a vanilla option can be decomposed into a down-and-out and a down-and-in options with same features.
@@ -193,6 +200,114 @@
 
 
   \subsection{Discretely observed variance swap}
+
+    \begin{equation}
+      V = \frac{N}{n}\sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)
+    \end{equation}
+
+    \begin{equation}
+      R_i=\frac{S_i-S_{i-1}}{S_i}
+    \end{equation}
+
+    \begin{equation}
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}R_i^2+\frac{1}{3}R_i^3
+    \end{equation}
+
+    \begin{equation}
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=R_i^2-R_i^3
+    \end{equation}
+
+    \begin{equation}
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}\log^2\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{6}R_i^3
+    \end{equation}
+
+    \begin{equation}
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=2R_i-2\log\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{3}R_i^3
+    \end{equation}
+
+    \begin{equation}
+      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)=\sum_{i=1}^n\frac{2}{S_{i-1}}(S_i-S_{i-1})-2\log\left(\frac{S_n}{S_0}\right)-\frac{1}{3}\sum_{i=1}^nR_i^3
+    \end{equation}
+
+
+
+\section{Volatility swap}
+
+  \begin{equation}
+    F^{BS}\left(s, \sigma, \omega\right) = \int_0^{+\infty}F(sy,\omega)\frac{1}{y\sqrt{2\pi\sigma^2}}\exp\left(-\frac{\left(y+\sigma^2/2\right)^2}{2\sigma^2}\right)dy,
+  \end{equation}
+
+  \begin{equation}
+    dS_t=\sqrt{1-\rho^2}\sigma_tS_tdW_{1t}+\rho\sigma_tS_tdW_{2t},
+  \end{equation}
+
+  \begin{equation}
+    E_t\left[F(S_T)\right]=E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right],
+  \end{equation}
+
+  \begin{equation}
+    M_{t,T}(\rho) = \exp\left(-\frac{\rho^2}{2}\int_t^T\sigma_u^2du+\rho\int_t^T\sigma_udW_u\right),
+  \end{equation}
+
+  \begin{equation}
+    \bar\sigma_{t,T}^2=\int_t^T\sigma_u^2du.
+  \end{equation}
+
+  \begin{eqnarray}
+           E_t\left[F(S_T)\right]
+    &=&E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right]\nonumber\\
+    &=&E_t\left[F^{BS}(S_t,\bar\sigma_{t,T})\right]
+              + \rho S_tE_t\left[\frac{\partial F^{BS}(S_t,\bar\sigma_{t,T})}{\partial s}\int_t^T\sigma_udW_u\right],
+  \end{eqnarray}
+
+  \begin{equation}
+    X_T-X_t=-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right) + \int_t^T\sigma_udW_u,
+  \end{equation}
+
+  \begin{equation}
+    X_T-X_t\sim N\left(-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right), \langle X \rangle_T - \langle X \rangle_t\right)
+  \end{equation}
+
+  \begin{equation}
+    E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] = E_t\left[\exp\left\{\frac{1}{2}\left(p^2-p\right)\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right]
+  \end{equation}
+
+  $\lambda=(p^2-p)/2$
+
+  $p=\frac{1}{2}\pm\sqrt{\frac{1}{4}+2\lambda}$
+
+
+  \begin{equation}
+    \sqrt{q} = \frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\frac{1-2^{-zq}}{z^{3/2}}dz
+  \end{equation}
+
+  \begin{eqnarray}
+                      E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
+    &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\left(1-\exp\left\{-z\left(\langle X \rangle_T - \langle X \rangle_t+q\right)\right\}\right)\right]\frac{dz}{z^{3/2}}\nonumber\\
+    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right]\right)\frac{dz}{z^{3/2}}\nonumber\\
+    &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right)\frac{dz}{z^{3/2}}\right]
+  \end{eqnarray}
+
+  $\theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}$
+
+  \begin{equation}
+    E_t\left[\langle X \rangle_T\right] = E_t\left[G_{SVS}\left(S_T,S_t,\langle X \rangle_t\right)\right]
+  \end{equation}
+
+  \begin{equation}
+    G_{SVS}\left(S_T,S_t,q\right) = \frac{1}{2\sqrt{\pi}}\int_t^{+\infty}\left(\theta_+\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_+}\right]
+                                                                            + \theta_-\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_-}\right]\right)\frac{dz}{z^{3/2}}
+  \end{equation}
+
+  \begin{equation}
+    E_0\left[\langle X \rangle_T\right] = E_0\left[\psi(S_T)\right]
+  \end{equation}
+
+  $\psi(S)=\phi(\log(S/S_0))$
+
+  \begin{equation}
+    \phi(x)=\sqrt{\frac{\pi}{2}}e^{x/2}\left|xI_0\left(\frac{x}{2}\right)-xI_1\left(\frac{x}{2}\right)\right|
+  \end{equation}
 
 
 \begin{thebibliography}{99}
