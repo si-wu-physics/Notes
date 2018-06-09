@@ -360,6 +360,7 @@
     Consider the following stochastic process for an underlying,
     \begin{equation}
       dS_t=\sqrt{1-\rho^2}\sigma_tS_tdW_{1t}+\rho\sigma_tS_tdW_{2t},
+      \label{BS1}
     \end{equation}
     where the volatility process $\sigma_t$ is independent on the Brownian motion $W_1$, and the underlying is correlated
     with the volatility with correlation $\rho$. Let $X_t\equiv\log(S_t/S_0)$, then
@@ -402,39 +403,62 @@
     \end{equation}
     and
     \begin{equation}
-      \langle X \rangle_t\equiv\int_0^t\sigma_u^2du,
+      \langle X \rangle_t\equiv\int_0^t\sigma_u^2du.
     \end{equation}
-    these are related by
+    Assuming the underlying process Eq. (\ref{BS1}), these are related by
     \begin{equation}
       \langle X \rangle_t=-2X_t+\int_0^t\frac{2}{S_u}dS_u.
     \end{equation}
-  \begin{equation}
-    X_T-X_t=-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right) + \int_t^T\sigma_udW_u,
-  \end{equation}
+    Consider the realized variance from $t$ to $T$,
+    \begin{equation}
+      X_T-X_t=-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right) + \int_t^T\sigma_udW_u,
+    \end{equation}
+    which means that $X_T-X_t$ is normally distributed, {\it i.e.},
+    \begin{equation}
+      X_T-X_t\sim N\left(-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right), \langle X \rangle_T - \langle X \rangle_t\right).
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] = 
+      E_t\left[\exp\left\{\frac{1}{2}\left(p^2-p\right)\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right].
+    \end{equation}
+    Denote $\lambda=(p^2-p)/2$, we can solve $p$ for $\lambda$, and get
+    \begin{equation}
+      p=\frac{1}{2}\pm\sqrt{\frac{1}{4}+2\lambda}.
+    \end{equation}
+    So, the characteristic function for the realized variance is
+    \begin{equation}
+    E_t\left[\exp\left\{\lambda\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right]
+       = E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right].
+    \end{equation}
 
-  \begin{equation}
-    X_T-X_t\sim N\left(-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right), \langle X \rangle_T - \langle X \rangle_t\right)
-  \end{equation}
+    \subsection{Correlation-insensitive replication of a volatility swap}
+      Now, let us consider the replication and valuation of the volatility swap. Use the following identity,
+      \begin{equation}
+        \sqrt{q} = \frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\frac{1-2^{-zq}}{z^{3/2}}dz,
+      \end{equation}
+      the floating leg payment of the volatility swap can be expressed as
+      \begin{equation}
+        E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
+          =\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}
+          \left(1-\exp\left\{-z\left(\langle X \rangle_T - \langle X \rangle_t+q\right)\right\}\right)\right]
+          \frac{dz}{z^{3/2}}.
+      \end{equation}
+      Here, we have considered a very general scenario, so that we can handle both a newly issued volatility
+      swap and a seasoned one.
 
-  \begin{equation}
-    E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] = E_t\left[\exp\left\{\frac{1}{2}\left(p^2-p\right)\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right]
-  \end{equation}
+      The integration and the expectation in the above equation can be exchanged, then
+      \begin{eqnarray}
+                          E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
+        &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right]\right)\frac{dz}{z^{3/2}}\nonumber\\
+        &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right)\frac{dz}{z^{3/2}}\right].
+      \end{eqnarray}
+      Here,
+      \begin{equation}
+        p_{\pm}=\frac{1}{2}\pm\sqrt{\frac{1}{4}-2z},
+      \end{equation}
+      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity. 
 
-  $\lambda=(p^2-p)/2$
-
-  $p=\frac{1}{2}\pm\sqrt{\frac{1}{4}+2\lambda}$
-
-
-  \begin{equation}
-    \sqrt{q} = \frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\frac{1-2^{-zq}}{z^{3/2}}dz
-  \end{equation}
-
-  \begin{eqnarray}
-                      E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
-    &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\left(1-\exp\left\{-z\left(\langle X \rangle_T - \langle X \rangle_t+q\right)\right\}\right)\right]\frac{dz}{z^{3/2}}\nonumber\\
-    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right]\right)\frac{dz}{z^{3/2}}\nonumber\\
-    &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right)\frac{dz}{z^{3/2}}\right]
-  \end{eqnarray}
 
   $\theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}$
 
