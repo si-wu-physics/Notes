@@ -79,6 +79,7 @@
   \begin{eqnarray}
     f(S_T)&=&f(F)+f^{\prime}(F)\left[\left(S_T-F\right)^+-\left(F-S_T\right)^+\right]\nonumber\\
             &&\ \ \ \ \ +\int_0^Ff^{\prime\prime}(K)\left(F-S_T\right)^+dK+\int_F^{\infty}f^{\prime\prime}(K)\left(S_T-F\right)^+dK.
+    \label{replication2}
   \end{eqnarray}
   This can be viewed as the forward version of Eq. (\ref{replication}).
 
@@ -135,7 +136,7 @@
 
   For down-and-out options, the replication strategy can be obtained from the difference between a
   vanilla option and a down-and-in option with the same barrier
-  as the down-and-out option. The is due to the fact that a vanilla option can be decomposed into a 
+  as the down-and-out option. The is due to the fact that a vanilla option can be decomposed into a
   down-and-out and a down-and-in options with same features.
 
 \section{Variance swap}
@@ -203,8 +204,11 @@
     weighted by dollar gamma. It can lead to interesting approximation for the implied
     volatility, for example, the so called ``most likely path" method. However, in practice, the approximation is rather crude.
 
-  \subsection{Static replication of variance swap}
+  \subsection{Replication of a continuously monitored variance swap}
 
+    In the limit of continuous monitoring, the floating leg payment of a variance swap becomes the integrated instantaneous
+    variance, $\int_0^T\sigma_u^2du$. We can use the result from previous section to determine the replication of a
+    continuously monitored variance swap.
     Suppose we risk manage our position with zero implied volatility, {\it i.e.}, $\sigma_{BS}=0$ in Eq. (\ref{average}). Then,
     Eq. (\ref{average}) can be written as
     \begin{equation}
@@ -214,7 +218,7 @@
     If we assume the underlying follows the stochastic process
     \begin{equation}
       dS_t=(r-q)S_tdt+\sigma_tS_tdW_t,
-    \end{equation}  
+    \end{equation}
     the last term becomes
     \begin{equation}
       \int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\sigma_t^2dt
@@ -258,6 +262,9 @@
                             && \ \ \ - 2\int_0^T\left[\frac{1}{F}-\frac{1}{S_t}\right]dS_t\nonumber\\
                            &=& 2\left[\log\left(\frac{S_0}{S_T}\right)+\int_0^T\frac{dS_t}{S_t}\right].
     \end{eqnarray}
+    This means that a continuously monitored variance swap can be replicated by a static position of a log contract,
+    and a dynamically traded underlying position.
+
     Now, write $\log(S_0/S_T)$ as $\log(S_0/S_*)+\log(S_*/S_T)$, and notice that the fair strike of the variance swap is
     the risk neutral expectation of time averaged realized variance, we have
     \begin{eqnarray}
@@ -267,36 +274,55 @@
     \end{eqnarray}
 
 
-  \subsection{Discretely observed variance swap}
+  \subsection{Discretely monitored variance swap}
 
+    Now, let us consider the floating leg payment of a discretely monitored variance swap \cite{CarrLee}
     \begin{equation}
-      V = \frac{N}{n}\sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)
+      V = \frac{N}{n}\sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right).
     \end{equation}
-
+    Define the simple return as
     \begin{equation}
-      R_i=\frac{S_i-S_{i-1}}{S_i}
+      R_i=\frac{S_i-S_{i-1}}{S_i},
     \end{equation}
-
+    the log return can be Taylor expanded to third order in terms of the simple return,
     \begin{equation}
-      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}R_i^2+\frac{1}{3}R_i^3
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}R_i^2+\frac{1}{3}R_i^3.
+      \label{Taylor}
     \end{equation}
-
+    Squaring both sides, we have
     \begin{equation}
-      \log^2\left(\frac{S_i}{S_{i-1}}\right)=R_i^2-R_i^3
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=R_i^2-R_i^3.
     \end{equation}
-
+    Solving for $R_i^2$ and plug back into Eq. (\ref{Taylor}),
     \begin{equation}
-      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}\log^2\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{6}R_i^3
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}\log^2\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{6}R_i^3,
     \end{equation}
-
+    which finally leads to
     \begin{equation}
-      \log^2\left(\frac{S_i}{S_{i-1}}\right)=2R_i-2\log\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{3}R_i^3
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=2R_i-2\log\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{3}R_i^3.
     \end{equation}
-
+    Therefore, the floating leg payment becomes
     \begin{equation}
-      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)=\sum_{i=1}^n\frac{2}{S_{i-1}}(S_i-S_{i-1})-2\log\left(\frac{S_n}{S_0}\right)-\frac{1}{3}\sum_{i=1}^nR_i^3
+      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)=\sum_{i=1}^n\frac{2}{S_{i-1}}(S_i-S_{i-1})-2\log\left(\frac{S_n}{S_0}\right)-\frac{1}{3}\sum_{i=1}^nR_i^3.
     \end{equation}
+    Using Eq. (\ref{replication2}), $\log S_n$ can be expanded around $S_0$,
+    \begin{equation}
+      \log S_n = \log S_0 +\frac{1}{S_0}\left(S_n-S_0\right)-\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2},
+    \end{equation}
+    we can obtain the desired decomposition,
+    \begin{eqnarray}
+      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
+    \end{eqnarray}
+    If the third order term sums to a negative number, the variance swap will be mispriced when only the first two terms are
+    taken into account for replication.
 
+    If we use the simple return in the variance swap floating leg payment, instead of the log return, we can obtain a similar decomposition,
+    \begin{eqnarray}
+      \sum_{i=1}^n\left(\frac{S_i}{S_{i-1}}\right)^2&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]+\frac{2}{3}\sum_{i=1}^nR_i^3,
+    \end{eqnarray}
+    which differs only by the third order term.
 
 
 \section{Weighted variance swap}
@@ -313,7 +339,7 @@
     {\it i.e.}, the contribution to the realized variance is only taken into account if the stock price falls
     in the corridor $[L,H]$.
 
-    Take
+    Take \cite{CarrMadan}
     \begin{equation}
       \phi(S) = 2\left[\log\left(\frac{F}{S^{\prime}}\right)+S\left(\frac{1}{F}-\frac{1}{S^{\prime}}\right)\right],
     \end{equation}
@@ -339,23 +365,23 @@
 
 \section{Volatility swap}
 
-  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies close 
+  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies close
   to the variance swap, and the floating leg payment is
   \begin{equation}
     A\sqrt{\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right)},
   \end{equation}
   {\it i.e.}, the square root of Eq. (\ref{VarSwapPayoff}). Due to the square root, volatility swap is more complicated
   than variance swap in valuation and hedging. The valuation of a volatility swap generally requires a stochastic volatility
-  model. However, as shown by Carr and Lee, there ...
+  model. However, as shown by Carr and Lee, there ... \cite{CarrLee2}
 
   \subsection{Valuation under stoachstic volatility}
     For a European payoff $F(S,\omega)$, where $\omega$ represents other stochastic factors that affect the payoff,
-    define 
+    define
     \begin{equation}
       F^{BS}\left(S, \sigma, \omega\right) = \int_0^{+\infty}F(Sy,\omega)
                           \frac{1}{y\sqrt{2\pi\sigma^2}}\exp\left(-\frac{\left(y+\sigma^2/2\right)^2}{2\sigma^2}\right)dy.
     \end{equation}
-    This gives the Black-Scholes result if there is no $\omega$ dependence. 
+    This gives the Black-Scholes result if there is no $\omega$ dependence.
 
     Consider the following stochastic process for an underlying,
     \begin{equation}
@@ -419,7 +445,7 @@
     \end{equation}
     Therefore,
     \begin{equation}
-      E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] = 
+      E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] =
       E_t\left[\exp\left\{\frac{1}{2}\left(p^2-p\right)\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right].
     \end{equation}
     Denote $\lambda=(p^2-p)/2$, we can solve $p$ for $\lambda$, and get
@@ -457,7 +483,7 @@
       \begin{equation}
         p_{\pm}=\frac{1}{2}\pm\sqrt{\frac{1}{4}-2z},
       \end{equation}
-      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity. 
+      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity.
 
 
   $\theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}$
@@ -485,6 +511,15 @@
 \begin{thebibliography}{99}
   \bibitem{CarrChou}
     Peter Carr and Andrew Chou, {\it Breaking Barriers}, Risk {\bf 10}(9), 139 (1997).
+
+  \bibitem{CarrLee}
+    Peter Carr and Roger Lee, {\it Volatility Derivatives}, Annu. Rev. Financ. Econ. {\bf 1}, 319 (2009).
+
+  \bibitem{CarrLee2}
+    Peter Carr and Roger Lee, {\it Robust Replication of Volatility Derivatives}, \url{https://math.uchicago.edu/~rl/rrvd.pdf}.
+
+  \bibitem{CarrMadan}
+    Peter Carr and Dilip Madan, {\it Towards a Theory of Volatility Trading}.
 
 \end{thebibliography}
 
