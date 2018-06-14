@@ -35,18 +35,42 @@
             \pm \frac{1}{2}\lambda^2b^2(T-t)\right),
   \end{equation}
   $S_t$ is the spot price of the underlying at time $t$, and the strike and the expiry
-  of the call option are $K$ and $T$, respectively.
+  of the call option are $K$ and $T$, respectively. The parameters $\lambda$ and $b$ are
+  responsible for the overall level and the slope of the implied volatility smile, respectively.
+
+\section{Stochastic Volatility Model}
+
+  We consider a stochastic volatility model in the following form,
+  \begin{eqnarray}
+    &&dS_t=\lambda \bigg(bS_t+\left(1-b\right)L\bigg)\sqrt{z_t}dW_t,\\
+    &&dz_t=\theta(z_0-z_t)dt+\eta\sqrt{z_t}dZ_t,
+  \end{eqnarray}
+  with $\langle dW_t, dZ_t \rangle = \rho dt$. If $b=1$, this model will reduce to the
+  Heston model. All the parameters have similar meaning as their counterparts of the
+  Heston model. Since we have already explicitly included the volatility $\lambda$ of the underlying
+  process, we can set $z_0=1$. The volatlity of variance $\eta$ is responsible for the
+  convexity of the implied volatility smile.
+
+  The volatility follows the Cox-Ingersoll-Ross (CIR) process. Its properties have
+  been discussed in \cite{Feller}, and will not be repeated here.
+
+  Define
+  \begin{equation}
+    X_t=\frac{bS_t+\left(1-b\right)L}{bS_0+\left(1-b\right)L},
+  \end{equation}
+  we have
+  \begin{equation}
+    \frac{dX_t}{X_t}=\lambda b\sqrt{z_t}dW_t,
+  \end{equation}
+  which has the following solution,
+  \begin{equation}
+    X_t=\exp\left(-\frac{1}{2}\lambda^2b^2\int_0^tz_udu+\lambda b\int_0^t\sqrt{z_u}dW_u\right).
+  \end{equation}
 
 
 \begin{thebibliography}{99}
-  \bibitem{Heston}
-    S. Heston, {\it A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options}, Review of Financial Studies {\bf 6}, 327 (1993).
-
-  \bibitem{CarrMadan}
-    P. Carr and D. Madan, {\it Option valuation using the fast Fourier transform}, The Journal of Computational Finance {\bf 2}, 61 (1999).
-
-  \bibitem{Lewis}
-    A. Lewis, {\it A Simple Option Formula for General Jump-Diffusion and Other Exponential Levy Processes}, \url{https://ssrn.com/abstract=282110}.
+  \bibitem{Feller}
+    {\it Notes on Feller Condition}, personal notes.
 
 \end{thebibliography}
 
