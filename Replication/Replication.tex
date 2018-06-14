@@ -75,13 +75,47 @@
   \end{equation}
   This means that we can replicate a European contract with arbitry payoff with plain vanilla options.
 
-  Another usefull representation of the static replication is given by
+  Another useful representation of the static replication is given by
   \begin{eqnarray}
     f(S_T)&=&f(F)+f^{\prime}(F)\left[\left(S_T-F\right)^+-\left(F-S_T\right)^+\right]\nonumber\\
             &&\ \ \ \ \ +\int_0^Ff^{\prime\prime}(K)\left(F-S_T\right)^+dK+\int_F^{\infty}f^{\prime\prime}(K)\left(S_T-F\right)^+dK.
     \label{replication2}
   \end{eqnarray}
   This can be viewed as the forward version of Eq. (\ref{replication}).
+
+  \subsection{An Exmaple: Libor-in-arrears}
+
+    For a Libor rate with a start date $T$ and an end date $M$, the forward Libor rate is given by
+    \begin{equation}
+      L(t)\equiv L(t,T,M)=\frac{1}{\tau}\left(\frac{P(t,T)}{P(t,M)}-1\right),
+    \end{equation}
+    where $P(t,T)$ is the time $t$ price of a zero-coupon bond maturing at $T$, and $\tau=M-T$. A standard Libor payment
+    will be on the end date of the related Libor rate, and the discounted cash flow is
+    \begin{eqnarray}
+       &&E^Q\left[\frac{B(0)}{B(M)}L(T)\right]=E^M\left[\frac{P(0,M)}{P(M,M)}L(T)\right]\nonumber\\
+      =&&P(0,M)E^M\left[L(T)\right]=P(0,M)L(0).
+      \label{Libor}
+    \end{eqnarray}
+    Here, $Q$ and $M$ stand for the risk neutral and $M$-forward measures, respectively. We have also used the fact that $L(t)$
+    is a martingale in the $M$-forward measure.
+
+    This relation does not hold any more for a Libor-in-arrears (LIA) payment, which pays immediately after the Libor rate
+    is fixed, {\it i.e.}, the discounted cash flow is
+    \begin{equation}
+      V_{LIA}(0)=E^Q\left[\frac{B(0)}{B(T)}L(T)\right],
+    \end{equation}
+    where the payment is on the start date $T$, rather than the end date $M$ as in Eq. (\ref{Libor}). If we apply the same
+    change-of-numeraire technique as before, and use $M$-forward measure for convenience, we will have
+    \begin{eqnarray}
+      V_{LIA}(0)&=&E^M\left[\frac{P(0,M)}{P(T,M)}L(T)\right]=P(0,M)E^M\left[\left(1+\tau L(T)\right)L(T)\right]\nonumber\\
+                &=&P(0,M)\left(L(0)+\tau E^M\left[L(T)^2\right]\right).
+    \end{eqnarray}
+    The $E^M\left[L(T)^2\right]$ term can be replicated with call and put options on the Libor rate, known as caplets and floorlets,
+    which leads to
+    \begin{equation}
+      E^M\left[L(T)^2\right] = L(0)^2 + 2\int_{-\infty}^{L(0)}p(0,L(0);T,K)dK + 2\int_{L(0)}^{+\infty}c(0,L(0);T,K)dK,
+    \end{equation}
+    where $c(0,L(0);T,K)$ and $p(0,L(0);T,K)$ are the undiscounted caplet and floorlet prices with maturity $T$ and strike $K$.
 
 
 \section{Static Replication of Barrier Options}
@@ -132,7 +166,9 @@
   \begin{equation}
     \hat{f}(S) = \left[f(S) + \left(\frac{S}{H}\right)^kf\left(\frac{H^2}{S}\right)\right]\mathcal{I}_{S<H}
   \end{equation}
-  at maturity. We can use the exact result from the previous section to replicate this European payoff with vanilla options.
+  at maturity.
+
+  Now, let us show that the replication of this terminal payoff will lead to the same expression for a down-and-in call option price.
 
   For down-and-out options, the replication strategy can be obtained from the difference between a
   vanilla option and a down-and-in option with the same barrier
@@ -322,7 +358,8 @@
       \sum_{i=1}^n\left(\frac{S_i}{S_{i-1}}\right)^2&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
           && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]+\frac{2}{3}\sum_{i=1}^nR_i^3,
     \end{eqnarray}
-    which differs only by the third order term.
+    which differs only by the third order term. We can see that, if the cubed simple return sums to a negative number and the variance swap is priced and risk
+    managed with static positions in options, then the variance swap with log return is preferred from a buyer's perspective.
 
 
 \section{Weighted variance swap}
@@ -345,9 +382,15 @@
     \end{equation}
     where
     \begin{equation}
-      S^{\prime} = S\mathcal{I}_{L\leq S \leq H}
+      S^{\prime} = {\rm max}\left[L, {\rm min}\left(S,H\right)\right]
     \end{equation}
     is floored at $L$ and capped at $H$, {\it i.e.}, the value of $S^{\prime}$ is restricted in the corridor $[L,H]$.
+    Following the same argument as for the variance swap, we have
+    \begin{eqnarray}
+      \int_0^T\sigma_t^2\mathcal{I}_{L\leq S \leq H}dt &=& 2\left[\log\left(\frac{F}{S_T^{\prime}}\right)+\frac{S_T^{\prime}}{F}-1\right]
+                                     - 2\left[\log\left(\frac{F}{S_0}\right)+\frac{S_0}{F}-1\right]\nonumber\\
+                            && \ \ \ - 2\int_0^T\left[\frac{1}{F}-\frac{1}{S_t^{\prime}}\right]dS_t.
+    \end{eqnarray}
 
   \subsection{Gamma swap}
 
@@ -361,18 +404,25 @@
       \phi(S) = \frac{2}{S_0}\left[S\log\left(\frac{S}{F}\right)-S+F\right],
     \end{equation}
     then
+    \begin{eqnarray}
+      \int_0^T\frac{S}{S_0}\sigma_t^2dt &=& \frac{2}{S_0}\left[S_T\log\left(\frac{S_T}{F}\right)-S_T+F\right]
+                                     - \frac{2}{S_0}\left[S_0\log\left(\frac{S_0}{F}\right)-S_0+F\right]\nonumber\\
+                            && \ \ \ - \frac{2}{S_0}\int_0^T\log\left(\frac{S_t}{F}\right)dS_t.
+    \end{eqnarray}
 
 
 \section{Volatility swap}
 
-  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies close
+  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies closely
   to the variance swap, and the floating leg payment is
   \begin{equation}
     A\sqrt{\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right)},
   \end{equation}
   {\it i.e.}, the square root of Eq. (\ref{VarSwapPayoff}). Due to the square root, volatility swap is more complicated
   than variance swap in valuation and hedging. The valuation of a volatility swap generally requires a stochastic volatility
-  model. However, as shown by Carr and Lee, there ... \cite{CarrLee2}
+  model, and depends on the correlation between the underlying and the stochastic volatility processes. However, as shown by
+  Carr and Lee \cite{CarrLee2}, there exists model-free replication strategies for the volatility swaps, insensitive to the correlation in
+  the first oder.
 
   \subsection{Valuation under stoachstic volatility}
     For a European payoff $F(S,\omega)$, where $\omega$ represents other stochastic factors that affect the payoff,
@@ -418,6 +468,7 @@
       &=&E_t\left[F^{BS}(S_t,\bar\sigma_{t,T})\right]
               + \rho S_tE_t\left[\frac{\partial F^{BS}(S_t,\bar\sigma_{t,T})}{\partial S}
                               \int_t^T\sigma_udW_u\right].
+      \label{immune}
     \end{eqnarray}
     If $\partial F^{BS}/\partial S$ does not depend on $\bar\sigma_{t,T}$, then the expectation in the last line will be zero,
     and the above result will be correlation-insensitive, with an error of order $O(\rho^2)$.
@@ -483,29 +534,46 @@
       \begin{equation}
         p_{\pm}=\frac{1}{2}\pm\sqrt{\frac{1}{4}-2z},
       \end{equation}
-      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity.
+      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity. With zero correlation, $\rho=0$,
+      $S_T$ is lognormally distributed. The expectation in the above equation can be transform into an integration with respect to a lognormal density with
+      parameters $(-v/2, v)$. Then, the derivative in Eq. (\ref{immune}) becomes
+      \begin{eqnarray}
+        \frac{\partial F^{BS}(S_t)}{\partial s} &=& \frac{1}{2\sqrt{\pi}}\left.\frac{\partial}{\partial s}\right|_{s=S_t}\int_0^{+\infty}
+                    \left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\left(sy/S_t\right)^{p_{\pm}}\right)\frac{dz}{z^{3/2}}\right]\phi_v(y)dy\nonumber\\
+                    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\int_0^{+\infty}\frac{-e^{-zq}\left(\theta_+ p_+ y^{p_+}+\theta_- p_- y^{p_-}\right)}{z^{3/2}}\phi_v(y)dzdy.
+      \end{eqnarray}
+      Since
+      \begin{equation}
+        \int_0^{+\infty}y^{p_+}\phi_v(y)dy = \int_0^{+\infty}y^{p_-}\phi_v(y)dy,
+      \end{equation}
+      the correlation immunity can be achieved by
+      \begin{equation}
+        \theta_+ p_+ + \theta_- p_- = 0,
+      \end{equation}
+      which leads to
+      \begin{equation}
+        \theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}.
+      \end{equation}
 
+      Finally, the correlation-immune price of a volatility swap is given by
+      \begin{equation}
+        E_t\left[\sqrt{\langle X \rangle_T}\right] = E_t\left[G_{SVS}\left(S_T,S_t,\langle X \rangle_t\right)\right],
+      \end{equation}
+      where
+      \begin{equation}
+        G_{SVS}\left(S_T,S_t,q\right) = \frac{1}{2\sqrt{\pi}}\int_t^{+\infty}\left(\theta_+\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_+}\right]
+                                                                                + \theta_-\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_-}\right]\right)\frac{dz}{z^{3/2}}.
+      \end{equation}
 
-  $\theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}$
-
-  \begin{equation}
-    E_t\left[\langle X \rangle_T\right] = E_t\left[G_{SVS}\left(S_T,S_t,\langle X \rangle_t\right)\right]
-  \end{equation}
-
-  \begin{equation}
-    G_{SVS}\left(S_T,S_t,q\right) = \frac{1}{2\sqrt{\pi}}\int_t^{+\infty}\left(\theta_+\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_+}\right]
-                                                                            + \theta_-\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_-}\right]\right)\frac{dz}{z^{3/2}}
-  \end{equation}
-
-  \begin{equation}
-    E_0\left[\langle X \rangle_T\right] = E_0\left[\psi(S_T)\right]
-  \end{equation}
-
-  $\psi(S)=\phi(\log(S/S_0))$
-
-  \begin{equation}
-    \phi(x)=\sqrt{\frac{\pi}{2}}e^{x/2}\left|xI_0\left(\frac{x}{2}\right)-xI_1\left(\frac{x}{2}\right)\right|
-  \end{equation}
+      At inception, the above expression can be simplified,
+      \begin{equation}
+        E_0\left[\sqrt{\langle X \rangle_T}\right] = E_0\left[\psi(S_T)\right],
+      \end{equation}
+      where $\psi(S)=\phi(\log(S/S_0))$, and
+      \begin{equation}
+        \phi(x)=\sqrt{\frac{\pi}{2}}e^{x/2}\left|xI_0\left(\frac{x}{2}\right)-xI_1\left(\frac{x}{2}\right)\right|.
+      \end{equation}
+      Here, $I_{\nu}$ is the modified Bessel function of order $\nu$.
 
 
 \begin{thebibliography}{99}
@@ -515,11 +583,11 @@
   \bibitem{CarrLee}
     Peter Carr and Roger Lee, {\it Volatility Derivatives}, Annu. Rev. Financ. Econ. {\bf 1}, 319 (2009).
 
-  \bibitem{CarrLee2}
-    Peter Carr and Roger Lee, {\it Robust Replication of Volatility Derivatives}, \url{https://math.uchicago.edu/~rl/rrvd.pdf}.
-
   \bibitem{CarrMadan}
     Peter Carr and Dilip Madan, {\it Towards a Theory of Volatility Trading}.
+
+  \bibitem{CarrLee2}
+    Peter Carr and Roger Lee, {\it Robust Replication of Volatility Derivatives}, \url{https://math.uchicago.edu/~rl/rrvd.pdf}.
 
 \end{thebibliography}
 
