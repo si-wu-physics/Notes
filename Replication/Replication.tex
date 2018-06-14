@@ -305,7 +305,7 @@
     the risk neutral expectation of time averaged realized variance, we have
     \begin{eqnarray}
       K_{var} &=& E\left[\frac{1}{T}\int_0^T\sigma_t^2dt\right]\nonumber\\
-              &=& \frac{2}{T}\Bigg[(r-q)T-\frac{S_0}{S_*}e^{(r-q)T}-1-\log\left(\frac{S_*}{S_0}\right)\nonumber\\
+              &=& \frac{2}{T}\Bigg[(r-q)T-\frac{S_0}{S_*}e^{(r-q)T}+1-\log\left(\frac{S_*}{S_0}\right)\nonumber\\
               &&\ \ \ \ +e^{rT}\int_0^{S_*}P(K)\frac{dK}{K^2}+e^{rT}\int_{S_*}^{+\infty}C(K)\frac{dK}{K^2}\Bigg].
     \end{eqnarray}
 
@@ -348,7 +348,7 @@
     we can obtain the desired decomposition,
     \begin{eqnarray}
       \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
-          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
     \end{eqnarray}
     If the third order term sums to a negative number, the variance swap will be mispriced when only the first two terms are
     taken into account for replication.
@@ -356,7 +356,7 @@
     If we use the simple return in the variance swap floating leg payment, instead of the log return, we can obtain a similar decomposition,
     \begin{eqnarray}
       \sum_{i=1}^n\left(\frac{S_i}{S_{i-1}}\right)^2&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
-          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]+\frac{2}{3}\sum_{i=1}^nR_i^3,
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]+\frac{2}{3}\sum_{i=1}^nR_i^3,
     \end{eqnarray}
     which differs only by the third order term. We can see that, if the cubed simple return sums to a negative number and the variance swap is priced and risk
     managed with static positions in options, then the variance swap with log return is preferred from a buyer's perspective.
@@ -540,7 +540,7 @@
       \begin{eqnarray}
         \frac{\partial F^{BS}(S_t)}{\partial s} &=& \frac{1}{2\sqrt{\pi}}\left.\frac{\partial}{\partial s}\right|_{s=S_t}\int_0^{+\infty}
                     \left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\left(sy/S_t\right)^{p_{\pm}}\right)\frac{dz}{z^{3/2}}\right]\phi_v(y)dy\nonumber\\
-                    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\int_0^{+\infty}\frac{-e^{-zq}\left(\theta_+ p_+ y^{p_+}+\theta_- p_- y^{p_-}\right)}{z^{3/2}}\phi_v(y)dzdy.
+                    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\int_0^{+\infty}\frac{-e^{-zq}\left(\theta_+ p_+ y^{p_+}+\theta_- p_- y^{p_-}\right)}{S_tz^{3/2}}\phi_v(y)dzdy.
       \end{eqnarray}
       Since
       \begin{equation}
