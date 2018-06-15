@@ -348,7 +348,7 @@
     we can obtain the desired decomposition,
     \begin{eqnarray}
       \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
-          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
     \end{eqnarray}
     If the third order term sums to a negative number, the variance swap will be mispriced when only the first two terms are
     taken into account for replication.
