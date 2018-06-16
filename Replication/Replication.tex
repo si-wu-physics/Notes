@@ -13,7 +13,7 @@
 
 \begin{document}
 
-\title{Notes on Static Replication}
+\title{Notes on Replication}
 \date{Dec. 32, 2999}
 
 \maketitle
@@ -166,14 +166,8 @@
   \begin{equation}
     \hat{f}(S) = \left[f(S) + \left(\frac{S}{H}\right)^kf\left(\frac{H^2}{S}\right)\right]\mathcal{I}_{S<H}
   \end{equation}
-  at maturity.
-
-  Now, let us show that the replication of this terminal payoff will lead to the same expression for a down-and-in call option price.
-
-  For down-and-out options, the replication strategy can be obtained from the difference between a
-  vanilla option and a down-and-in option with the same barrier
-  as the down-and-out option. The is due to the fact that a vanilla option can be decomposed into a
-  down-and-out and a down-and-in options with same features.
+  at maturity. It can be shown that this terminal payoff will lead to exactly the same expression for the
+  down-and-in call option price.
 
 \section{Variance swap}
 
@@ -307,8 +301,44 @@
       K_{var} &=& E\left[\frac{1}{T}\int_0^T\sigma_t^2dt\right]\nonumber\\
               &=& \frac{2}{T}\Bigg[(r-q)T-\frac{S_0}{S_*}e^{(r-q)T}+1-\log\left(\frac{S_*}{S_0}\right)\nonumber\\
               &&\ \ \ \ +e^{rT}\int_0^{S_*}P(K)\frac{dK}{K^2}+e^{rT}\int_{S_*}^{+\infty}C(K)\frac{dK}{K^2}\Bigg].
+      \label{VarSwapRate}
     \end{eqnarray}
 
+  \subsection{VIX}
+
+    In Eq. (\ref{VarSwapRate}), if we set the separator $S_*$ with the forward price of the underlying, {\it i.e.},
+    \begin{equation}
+      S_*=F_T=S_0e^{(r-q)T},
+    \end{equation}
+    the fair strike $K_{var}$ will become
+    \begin{eqnarray}
+      K_{var} &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{F_T}P(K)\frac{dK}{K^2}+\int_{F_T}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}
+                                        +\int_{K_0}^{F_T}\bigg(P(K)-C(K)\bigg)\frac{dK}{K^2}\Bigg]\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]
+                              +\frac{2}{T}\int_{K_0}^{F_T}\bigg(K-F_T\bigg)\frac{dK}{K^2}\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]
+                              -\frac{1}{T}\bigg(\frac{F_T}{K_0}-1\bigg)^2.
+    \end{eqnarray}
+    After discretization, the fair strike is
+    \begin{equation}
+       K_{var} = \frac{2e^{rT}}{T}\sum_i\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{T}\bigg(\frac{F_T}{K_0}-1\bigg)^2.
+    \end{equation}
+    Here, $F_T$ is the forward index value derived from option prices. Specifically, from a strip of option prices,
+    we determine the forward index value by identifying the strike price $K_c$ at which the absolute difference between
+    call and put option prices are the smallest. Here, the call and put option prices are taken to be the average of
+    the corresponding bid and ask values. Then, the forward can be determined by
+    \begin{equation}
+      F_T = K_c + e^{rT}\left(C(K_c)-P(K_c)\right),
+    \end{equation}
+    where $r$ is the prevailing risk-free rate for option expiry $T$, which is usually taken to be the corresponding
+    US treasury yield. $K_0$ will be set to the strike level immediately below the forward value, and $\Delta K_i$ is
+    half the difference between the two adjacent strikes below and above $K_i$, {\it i.e.}, $\Delta K_i=(K_{i+1}-K_{i-1})/2$.
+    For the highest and lowest strike to be used in the option strip, $\Delta K_i$ is calculated from only one side.
+    Now, for $K_i$ greater than $K_0$, $Q(K_i)$ will be set to the out-of-money call price with strike $K_i$. For $K_i$
+    less than $K_0$, the out-of-money put price is used. For $K_0$, it is the average of the call and put option prices.
+
+    This is the basic component for the VIX index. For more details, see the VIX White Paper. \cite{VIX}
 
   \subsection{Discretely monitored variance swap}
 
@@ -585,6 +615,9 @@
 
   \bibitem{CarrMadan}
     Peter Carr and Dilip Madan, {\it Towards a Theory of Volatility Trading}.
+
+  \bibitem{VIX}
+    {\it VIX White Paper}, \url{https://www.cboe.com/micro/vix/vixwhite.pdf}.
 
   \bibitem{CarrLee2}
     Peter Carr and Roger Lee, {\it Robust Replication of Volatility Derivatives}, \url{https://math.uchicago.edu/~rl/rrvd.pdf}.
