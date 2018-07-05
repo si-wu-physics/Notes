@@ -11,6 +11,8 @@
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 
+\allowdisplaybreaks
+
 \begin{document}
 
 \title{Notes on Replication}
@@ -167,7 +169,27 @@
     \hat{f}(S) = \left[f(S) + \left(\frac{S}{H}\right)^kf\left(\frac{H^2}{S}\right)\right]\mathcal{I}_{S<H}
   \end{equation}
   at maturity. It can be shown that this terminal payoff will lead to exactly the same expression for the
-  down-and-in call option price.
+  down-and-in call option price. In this case, set $f(S)=\max(S-K_c,0)$, and assume $K_c>H$, we can recover
+  the down-and-in price through Eq. (\ref{euro}), with the transition density (\ref{density}), {\it i.e.},
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-r\tau}\int_0^{H^2/K_C}\left(\frac{H^2}{K}\right)^k\left(\frac{H^2}{K}-K_c\right)\nonumber\\
+              &&\ \ \ \ \ \ \ \ \ \ \ \ \times\frac{1}{K\sqrt{2\pi\sigma^2\tau}}
+    \exp\left(-\frac{\displaystyle \left(\log\left(\frac{K}{S_t}\right)-\left(r-q-\frac{\sigma^2}{2}\right)\tau\right)^2}{2\sigma^2\tau}\right)dK.
+  \end{eqnarray}
+  By change of variable, $K=H^2/e^v$, the above integration can be transformed to
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-r\tau}H\int_{\log K_c}^{+\infty}e^{-ku}\left(e^u-K_c\right)\nonumber\\
+              &&\ \ \ \ \ \ \ \ \ \ \ \ \times\frac{1}{\sqrt{2\pi\sigma^2\tau}}
+    \exp\left(-\frac{\displaystyle \left(u-\log\left(\frac{H^2}{S_t}\right)+\left(r-q-\frac{\sigma^2}{2}\right)\tau\right)^2}{2\sigma^2\tau}\right)du.
+  \end{eqnarray}
+  Completing the squares, it can be shown that the down-and-in call price is
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-q\tau}S_t\left(\frac{S_t}{H}\right)^{k-2}
+              N\left(\frac{\displaystyle \log\left(\frac{H^2}{S_tK_c}\right)+\left(r-q+\frac{\sigma^2}{2}\right)\tau}{\sigma\sqrt{\tau}}\right)\nonumber\\
+            &&\ \ \ \ - e^{-r\tau}K_c\left(\frac{S_t}{H}\right)^{k}
+              N\left(\frac{\displaystyle \log\left(\frac{H^2}{S_tK_c}\right)+\left(r-q-\frac{\sigma^2}{2}\right)\tau}{\sigma\sqrt{\tau}}\right).
+  \end{eqnarray}
+
 
 \section{Variance swap}
 
@@ -604,6 +626,8 @@
         \phi(x)=\sqrt{\frac{\pi}{2}}e^{x/2}\left|xI_0\left(\frac{x}{2}\right)-xI_1\left(\frac{x}{2}\right)\right|.
       \end{equation}
       Here, $I_{\nu}$ is the modified Bessel function of order $\nu$.
+
+  \section{Realized variance and volatility options}
 
 
 \begin{thebibliography}{99}
