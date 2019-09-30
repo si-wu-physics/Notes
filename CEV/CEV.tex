@@ -29,7 +29,7 @@
     \label{initial}
   \end{equation}
   where $\delta(x)$ is the Dirac delta function. Since the CEV process is time homogeneous, we do not need
-  make the initial time explicit, and we will write $p(t,s)\equiv p(0,s_0;t,s)$.
+  to make the initial time explicit, and we will write $p(t,s)\equiv p(0,s_0;t,s)$.
 
   Define the Laplace transform of the forward transition density $p(t,s)$ as \cite{Lesniewski}
   \begin{equation}
@@ -84,6 +84,8 @@
     Y_{\nu}(x)=\frac{J_{\nu}(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)}.
   \end{equation}
 
+  The asysmptotics of $p(t,s)$ for small $s$ have the form of $p_A(t,s)\sim s^{1-2\beta}$ and $p_R(t,s)\sim s^{-2\beta}$.
+  The latter exists only $\beta < 1/2$. Otherwise, the norm will diverge around 0.
   Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current conservation form,
   \begin{equation}
     \frac{\partial p(t,s)}{\partial t} + \frac{\partial j(t,s)}{\partial s} = 0,
@@ -92,13 +94,9 @@
   \begin{equation}
     j(t,s) = -\frac{1}{2}\sigma^2\frac{\partial }{\partial s}\left(s^{2\beta}p(t,s)\right).
   \end{equation}
-  The common choices for the boundary condition can be either absorbing or reflective,
-  \begin{eqnarray}
-    s^{2\beta}p(t,s) \rightarrow 0,
-        && s\rightarrow 0,\quad\quad {\rm absorbing\quad boundary \quad condition}, \\
-    \frac{\partial}{\partial s}\left(s^{2\beta}p(t,s)\right) \rightarrow 0,
-        && s\rightarrow 0,\quad\quad {\rm reflecting \quad boundary \quad condition}.
-  \end{eqnarray}
+  With the asymptotics of $p(t,s)$, we can see that the current is a constant for $p_A(t,s)$, and vanishes for $p_R(t,s)$.
+  These correspond to an absorbing boundary condition for $p_A(t,s)$, and a reflecting boundary condition for $p_R(t,s)$.
+
   Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
   have
   \begin{equation}
