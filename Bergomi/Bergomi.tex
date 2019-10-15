@@ -5,564 +5,255 @@
 
 \begin{document}
 
-\title{Notes on CEV Model}
+\title{Notes on Forward Variance Models}
 \date{Dec. 32, 2999}
 
 \maketitle
 
-\section{Fokker-Planck Equation}
+\section{Power payoff}
 
-  Assume the forward process follows the CEV process,
+  Consider the power payoff, $S(T)^p$, for maturity $T$. Under the Black-Scholes (BS) dynamics,
   \begin{equation}
-    dS_t=\sigma S_t^{\beta}dW_t,
-    \label{CEV}
+    dS(t) = (r-q)S(t)dt+\sigma S(t)dW(t),
   \end{equation}
-  with $\beta < 1$, the corresponding Fokker-Planck equation is given by
+  where $r$ and $q$ are the constant risk free rate and repo rate, and $\sigma$ is the lognormal volatility of the
+  underlying, we have
   \begin{equation}
-    -\frac{\partial p(0,s_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
-    \left(s^{2\beta}p(0,s_0;t,s)\right) = 0,
-    \label{FP}
+    d\left(\log\left(S(t)^p\right)\right) = p\left(r-q-\frac{\sigma ^2}{2}\right)dt + p\sigma dW(t).
   \end{equation}
-  with the initial condition
+  This can be integrated to give
   \begin{equation}
-    p(0,s_0;0,s) = \delta(s-s_0),
-    \label{initial}
+    \log\left(\frac{S(T)}{S(t)}\right)^p = p\left(r-q-\frac{\sigma ^2}{2}\right)(T-t) + p\sigma\left(W(T)-W(t)\right),
   \end{equation}
-  where $\delta(x)$ is the Dirac delta function. Since the CEV process is time homogeneous, we do not need
-  to make the initial time explicit, and we will write $p(t,s)\equiv p(0,s_0;t,s)$.
+  and the discounted price of the power payoff, is
+  \begin{equation}
+    Q_p(t,T)=e^{-r(T-t)}{\mathrm E}\left[S(T)^p\right]=e^{-r(T-t)}F(t,T)^p\exp\left(\frac{p(p-1)}{2}\sigma^2(T-t)\right),
+    \label{power1}
+  \end{equation}
+  where we have defined the forward $F(t,T)=S(t)e^{(r-q)(T-t)}$.
 
-  Define the Laplace transform of the forward transition density $p(t,s)$ as \cite{Lesniewski}
-  \begin{equation}
-    p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda, s)d\lambda,
-    \label{Laplace}
-  \end{equation}
-  the Fokker-Planck equation (\ref{FP}) becomes
-  \begin{equation}
-    \frac{\partial^2g(\lambda,s)}{\partial s^2}+\frac{4\beta}{s}\frac{\partial g(\lambda,s)}{\partial s}
-    + \left(\frac{2\lambda}{\sigma^2 s^{2\beta}}+\frac{2\beta(2\beta-1)}{s^2}\right)g(\lambda, s) = 0.
-    \label{FP2}
-  \end{equation}
+  Given the market price of a power payoff, its implied volatility $\sigma_p(t,T)$ can be obtained by inverting
+  Eq. (\ref{power1}). This quantity is well-defined for $p\in (0,1)$ when the power payoff is concave, or
+  $p\in (-\infty, 0)\cup (1,+\infty)$ when the power payoff is convex. As long as $p\neq 0$ or 1, the implied volatility
+  can always be obtained.
 
-  Following \cite{Bessel}, if $u(x)$ satisfies the Bessel equation of order $\nu$,
-  \begin{equation}
-    u^{\prime\prime}+\frac{1}{x}u^{\prime}+\left(1-\frac{\nu^2}{x^2}\right)u=0,
-  \end{equation}
-  and let $y(x)=x^au(bx^c)$, then $y(x)$ satisfies
-  \begin{equation}
-    y^{\prime\prime}+\frac{1-2a}{x}y^{\prime}+\left(b^2c^2x^{2c-2}+\frac{a^2-\nu^2c^2}{x^2}\right)y=0.
-  \end{equation}
-  Comparing the coefficients with Eq. (\ref{FP2}), we have
-  \begin{equation}
-    a=\frac{1}{2}\left(1-4\beta\right),\quad\quad
-    b=\frac{2\nu\sqrt{2\lambda}}{\sigma}=\frac{\sqrt{2\lambda}}{\sigma(1-\beta)},\quad\quad
-    c=\frac{1}{2\nu}=1-\beta,\quad\quad
-    \nu=\frac{1}{2(1-\beta)}.
-  \end{equation}
-  Then, the general solution to Eq. (\ref{FP2}) is given by
-  \begin{equation}
-    g(\lambda, s)=s^{(1-4\beta)/2}\left[A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
-                                       +B_{\nu}(\lambda)Y_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\right],
-    \label{solution}
-  \end{equation}
-  where $J_{\nu}(x)$ and $Y_{\nu}(x)$ are the Bessel functions of the first and second kind, respectively. To determine the
-  coefficients $A_{\nu}(\lambda)$ and $B_{\nu}(\lambda)$, and subsequently the forward transition density $p(t,s)$, boundary condition
-  at $s=0$ is needed. To this end, we can write down the asymptotic expansion of Eq. (\ref{solution}),
-  \begin{eqnarray}
-    s^{2\beta}g(\lambda,s)&\sim& \left(\left(A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)\right)
-                  \left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{\nu}s\right)\left[\frac{1}{\Gamma(1+\nu)}
-              -\frac{1}{\Gamma(2+\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right]\nonumber\\
-              &&-\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{-\nu}
-              \left[\frac{1}{\Gamma(1-\nu)}
-              -\frac{1}{\Gamma(2-\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right].
-  \end{eqnarray}
-  Here, we have used the series representation of the Bessel function of the first and second kind
-  \begin{equation}
-    J_{\nu}(x)=\sum_{m=0}^{+\infty}\frac{(-1)^m}{m!\Gamma(m+\nu+1)}\left(\frac{x}{2}\right)^{2m+\nu},
-  \end{equation}
-  and
-  \begin{equation}
-    Y_{\nu}(x)=\frac{J_{\nu}(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)}.
-  \end{equation}
+  \subsection{Implied volatility}
 
-  The asysmptotics of $p(t,s)$ for small $s$ have the form of $p_A(t,s)\sim s^{1-2\beta}$ and $p_R(t,s)\sim s^{-2\beta}$.
-  The latter exists only $\beta < 1/2$. Otherwise, the norm will diverge around 0.
-  Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current conservation form,
-  \begin{equation}
-    \frac{\partial p(t,s)}{\partial t} + \frac{\partial j(t,s)}{\partial s} = 0,
-  \end{equation}
-  with the current given by
-  \begin{equation}
-    j(t,s) = -\frac{1}{2}\sigma^2\frac{\partial }{\partial s}\left(s^{2\beta}p(t,s)\right).
-  \end{equation}
-  With the asymptotics of $p(t,s)$, we can see that the current is a constant for $p_A(t,s)$, and vanishes for $p_R(t,s)$.
-  These correspond to an absorbing boundary condition for $p_A(t,s)$, and a reflecting boundary condition for $p_R(t,s)$.
+    The power payoff is European. According to the static replication method, it can be replicated by call and/or
+    put options with the same maturity but a continuum of strikes. For $p\in (0,1)$, the price $Q_p(t,T)$ of a power payoff
+    is always finite, and there exists an explicit formula which expresses the implied volatility as a weighted average of
+    vanilla implied volatilities.
 
-  Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
-  have
-  \begin{equation}
-    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2\int f(s)\frac{\partial^2}{\partial s^2}
-    \left(s^{2\beta}p(t,s)\right)ds.
-  \end{equation}
-  Integrating the right hand side by parts twice, we have
-  \begin{eqnarray}
-    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) &=& \frac{1}{2}\sigma^2\int f^{\prime\prime}(s)s^{2\beta}p(t,s)ds\nonumber \\
-          && + \left . \frac{1}{2}\sigma^2\left[f^{\prime}(s)s^{2\beta}p(t,s) - f(s)\frac{\partial}{\partial s}
-                \left(s^{2\beta}p(t,s)\right)\right]\right|_{s=0}.
-    \label{conservation}
-  \end{eqnarray}
-  Let $f(s)\equiv 1$, it can be seen that the right hand side of Eq. (\ref{conservation}) does not vanish for absorbing
-  boundary condition, and is zero for reflecting boundary condition. Therefore, the total probability is not conserved for
-  the absorbing boundary condition, and is conserved for the reflecting boundary condition.
-
-  Now consider $f(s)\equiv s$. The right hand side of Eq. (\ref{conservation}) will vanish for absorbing
-  boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflecting
-  boundary condition.
-
-  Finally, let us consider the call payoff, $f(s)=(s-K)^+$. Then, Eq. (\ref{conservation}) becomes
-  \begin{equation}
-    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2K^{2\beta}p(t,K),
-  \end{equation}
-  irrespective of the boundary condition, which gives the call option price as
-  \begin{equation}
-    C(t,S_t,T,K) = \int (s-K)^+p(T,s)ds = (S_t-K)^++\frac{1}{2}\sigma^2\int_t^T K^{2\beta}p(u,K)du.
-    \label{TimeValue}
-  \end{equation}
-  However, for the put payoff, there will be an additional boundary term for the reflecting boundary condition.
-
-
-
-\section{Absorbing boundary condition}
-
-  The absorbing boundary condition implies that $B_{\nu}(\lambda)=0$, which leads to
-  \begin{equation}
-    g(\lambda, s)=s^{(1-4\beta)/2}A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
-  \end{equation}
-  To determine the coefficient $A_{\nu}(\lambda)$, initial condition will be needed. From Eq. (\ref{Laplace}), the transition
-  density is given by
-  \begin{equation}
-    p_A(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda,s)d\lambda
-          =s^{(1-4\beta)/2}\int_0^{+\infty}e^{-\lambda t}
-          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
-  \end{equation}
-  Take into account of the initial condition (\ref{initial}), we have
-  \begin{equation}
-    \delta(s-s_0)=s^{(1-4\beta)/2}\int_0^{+\infty}
-          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
-  \end{equation}
-  Now, multiply both sides by
-  $$
-    \sqrt{s}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right),
-  $$
-  and integrate over $s$, we will have
-  \begin{eqnarray}
-      \sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)
-    &=&  \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
-         \int_0^{+\infty}ds s^{1-2\beta}
-         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}s^{\frac{1}{2\nu}}\right)
-         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\nonumber\\
-    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
-         \int_0^{+\infty}du u
-         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}u\right)
-         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}u\right) \nonumber\\
-    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
-          \frac{\displaystyle \delta\left(\frac{2\nu\sqrt{2\lambda}}{\sigma} - \frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}\right)}
-            {\displaystyle \frac{2\nu\sqrt{2\lambda}}{\sigma}}\nonumber\\
-    &=& \frac{\sigma^2}{2\nu}\int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
-          \delta(\lambda - \lambda^{\prime})\nonumber\\
-    &=& \frac{\sigma^2}{2\nu}A_{\nu}(\lambda).
-  \end{eqnarray}
-  Here, we have used the Hankel transform
-  \begin{equation}
-    \int_0^{+\infty}rJ_{\nu}(kr)J_{\nu}(k^{\prime}r)=\frac{\delta(k-k^{\prime})}{k},
-  \end{equation}
-  and the property of delta function,
-  \begin{equation}
-    \delta\left(f(x)\right)=\frac{\delta(x)}{|f^{\prime}(0)|}.
-  \end{equation}
-  Now, we have
-  $$
-    A_{\nu}(\lambda)=\frac{2\nu}{\sigma^2}\sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right),
-  $$
-  the transition density can be calculated,
-  \begin{eqnarray}
-    p_A(t,s) &=& \frac{2\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-\lambda t}
-                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
-                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)d\lambda\nonumber\\
-           &=& \frac{4\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-tu^2} u
-                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s^{\frac{1}{2\nu}}u\right)
-                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s_0^{\frac{1}{2\nu}}u\right)du\nonumber\\
-           &=& \frac{2\nu}{\sigma^2t}\left(s_0s^{1-4\beta}\right)^{1/2}
-               \exp\left(-\frac{2\nu^2}{\sigma^2t}\left(s_0^{\frac{1}{\nu}}+s^{\frac{1}{\nu}}\right)\right)
-               I_{\nu}\left(\frac{4\nu^2}{\sigma^2t}\left(s_0s\right)^{\frac{1}{2\nu}}\right),
-    \label{density1}
-  \end{eqnarray}
-  where we have used the result \cite{DLMF1}
-  \begin{equation}
-    \int_0^{+\infty}e^{-tu^2}uJ_{\nu}(au)J_{\nu}(bu)du=\frac{1}{2t}\exp\left(-\frac{a^2+b^2}{4t}\right)I_{\nu}\left(\frac{ab}{2t}\right),
-  \end{equation}
-  and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
-
-  Finally, the transion density is given by
-  \begin{equation}
-    p_A(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
-    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
-    I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
-  \end{equation}
-
-
-
-\section{Reflecting boundary condition}
-
-  Consider the reflecting boundary condition. It can be shown, to impose this boundary condition, we must have
-  \begin{equation}
-    A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)=0,
-  \end{equation}
-  and
-  \begin{equation}
-    \frac{1}{\nu}-1\geq 0,
-  \end{equation}
-  which is equivalent to
-  \begin{equation}
-    \beta \leq \frac{1}{2}.
-  \end{equation}
-  Now, we have
-  \begin{equation}
-    g(\lambda,x)=-s^{(1-4\beta)/2}\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}J_{-\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
-  \end{equation}
-  Proceed in the same way as the absorbing boundary condition, the transition density is then given by
-  \begin{equation}
-    p_R(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
-    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
-    I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
-  \end{equation}
-
-
-% \section{European option pricing}
-
-
-\section{Integral representation of European call option price}
-
-  To preclude arbitrage opportunity, we are going to consider the European call option price under the absorbing boundary condition.
-  The price for a European call option with expiry $T$, forward $S$, and strike $K$ is given by
-  \begin{equation}
-    C_A(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp_A(0,S;\tau,K)d\tau,
-    \label{callprice}
-  \end{equation}
-  with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
-  Bessel function \cite{DLMF2},
-  \begin{equation}
-    I_{\nu}(z) = \frac{1}{\pi}\int_0^{\pi}e^{z\cos\phi}\cos(\nu\phi)d\phi
-                - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}e^{-z\cosh \psi - \nu \psi}d\psi
-  \end{equation}
-  Define
-  \begin{equation}
-    q_S=\frac{S^{1-\beta}}{1-\beta}, \quad q_K=\frac{K^{1-\beta}}{1-\beta},
-  \end{equation}
-  the integration term of Eq. (\ref{callprice}) becomes
-  \begin{eqnarray}
-    && \nu\sqrt{SK}\int_0^T\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\sigma^2\tau}\right)
-    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\sigma^2\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
-    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
-            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\sigma^2\tau}\right)e^{-\nu \psi}d\psi\Bigg)\nonumber\\
-    = && \nu\sqrt{SK}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
-    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
-    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
-            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\tau}\right)e^{-\nu \psi}d\psi\Bigg).
-  \end{eqnarray}
-  Now, consider the first integration of the above expression. Change the variable $y=q_Kq_S/\tau$, define
-  $b=(q_K^2+q_S^2)/2q_Kq_S$, and integrate by parts, we have
-  \begin{eqnarray}
-    && \frac{\nu\sqrt{SK}}{\pi}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
-       \int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
-    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{dy}{y}
-       \int_0^{\pi}e^{-(b-\cos\phi)y}d\sin(\nu\phi)\nonumber\\
-    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}dy
-         \left[\left.\frac{\sin(\nu\phi)}{y}e^{-(b-\cos\phi)y}\right|_0^{\pi}
-              +\int_0^{\pi}\sin\phi\sin(\nu\phi)e^{-(b-\cos\phi)y}d\phi\right]\nonumber\\
-    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
-      && \quad\quad\quad\quad+ \frac{\sqrt{SK}}{\pi}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi.
-  \end{eqnarray}
-  Similarly, the second integration can be manipulated to give
-  \begin{eqnarray}
-    && -\frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
-      && \quad\quad\quad\quad+ \frac{\sqrt{SK}\sin(\nu\pi)}{\pi}\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi.
-  \end{eqnarray}
-  Finally, the call option price is
-  \begin{eqnarray}
-    C_A(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
-    \label{CEVAbsorbingCall}
-  \end{eqnarray}
-
-  For completeness, we also record the result for reflecting boundary condition as
-  \begin{eqnarray}
-    C_R(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{\nu \psi}\sinh \psi}{b+\cosh \psi}
-       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
-  \end{eqnarray}
-
-
-
-
-\section{SABR}
-
-  The SABR model is characterized by the following stochastic process,
-  \begin{eqnarray}
-    && dS_t=\sigma_t S_t^{\beta}dW_t,\nonumber\\
-    && d\sigma_t=\gamma\sigma_tdZ_t,\\
-    && {\mathrm E}[dW_tdZ_t]=\rho dt,\nonumber
-  \end{eqnarray}
-  where the volatility of the forward process is now stochastic, $\gamma$ is the volatility of volatility (volvol),
-  and $\rho$ is the correlation. The initial volatility of $\sigma_t$ is assumed to be $\sigma_0$. We also assume that
-  the absorbing boundary condition is imposed for the forward process to preserve the martingale property.
-  In the following, we will first consider the zero correlation model, then map the non-zero
-  correlation model to the zero correlation one. \footnote{Simply record the known result here.}
-
-  \subsection{Zero correlation}
-
-    As in the last section, define
+    Define the characteristic function for $S(t)$ as
     \begin{equation}
-      q_S=\frac{S^{1-\beta}}{1-\beta}, \quad q_K=\frac{K^{1-\beta}}{1-\beta},
-      \quad \bar{q}=q_Sq_K, \quad b=\frac{q_S^2+q_K^2}{2q_Sq_K},
+      L(p)={\mathrm E}[e^{px}],
     \end{equation}
-    the call option price is given by
+    with $x=\log(S(T)/F(t,T))$, and the undiscounted price of a power payoff is related to this characteristic function by the
+    following,
+    \begin{equation}
+      L(p)={\mathrm E}\left[\left(\frac{S(T)}{F(t,T)}\right)^p\right]=e^{r(T-t)}\frac{Q_p(t,T)}{F(t,T)^p}
+          =\exp\left(\frac{p(p-1)}{2}\sigma_p(t,T)^2(T-t)\right).
+    \end{equation}
+    Using the terminal distribution of the underlying, the characteristic function can be expressed as an integral,
+    \begin{equation}
+      L(p)=\int_0^{+\infty}\rho(K)\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK.
+    \end{equation}
+    Denote the time $t$ price of a call option with maturity $T$ and strike $K$ as $C_{{\rm BS}}(T,K)$,
+    then the terminal distribution is given by the second derivative of the option price with respect to the strike, {\it i.e.},
+    \begin{equation}
+      \rho(K)=\frac{\partial^2V(T,K)}{\partial K^2},
+    \end{equation}
+    where $V(T,K) = e^{r(T-t)}C_{{\rm BS}}(T,K)$ is the undiscounted, or forward, option price. Now, the characteristic function becomes
     \begin{eqnarray}
-      C(T,S,K) &=& (S-K)^+ \nonumber\\
-               &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                          \frac{G(\gamma^2T,s(\phi))}{\cosh\left(s(\phi)\right)}d\phi\nonumber\\
-               &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
-         \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}d\psi\Bigg),
-      \label{SABRZC}
+      L(p) &=& \int_0^{+\infty}\frac{\partial^2V(T,K)}{\partial K^2}\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK \nonumber \\
+           &=& - \int_0^{+\infty}\frac{\partial V(T,K)}{\partial K }\frac{p}{K}\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK,
     \end{eqnarray}
-    where
+    by intgration by parts. Define
+    \begin{equation}
+      z(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}-\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2},
+    \end{equation}
+    where $\sigma_{{\rm BS}}(T,K)$ is the implied BS volatility of the vanilla option. This is a monotonic function, and allows an
+    inverse for $K$ as a function of $z$. The vanilla option price and the greeks can be expressed with $z(K)$. In particular, for undiscounted
+    call option price,
+    \begin{equation}
+      V(T,K) =  F(t,T)N\left(z(K)+\sigma_{{\rm BS}}(T,K)\sqrt{T}\right) - KN(z(K)),
+    \end{equation}
+    we have
+    \begin{equation}
+      \frac{\partial V(T,K)}{\partial K} = Kn(z(K))\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}-N(z(K)),
+    \end{equation}
+    where $n(x)$ and $N(x)$ are the Gaussian distribution and the cumulated Gaussian distribution, respectively. The characteristic function
+    becomes
     \begin{eqnarray}
-      && \sinh\left(s(\phi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b-\cos\phi)}, \nonumber\\
-      && \sinh\left(s(\psi)\right) =\frac{\gamma}{\sigma_0}\sqrt{2\bar{q}(b+\cosh\psi)}.
+      L(p) &=& \int_0^{+\infty}\left[N(z(K))-Kn(z(K))\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}\right]\frac{p}{K}
+                     \exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK \nonumber\\
+           &=& -\int_0^{+\infty}n(z(K))\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)\left[\frac{dz}{dK}
+                                   + p\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}\right]dK,
     \end{eqnarray}
-    Here,
+    where we have again performed the integration by parts for the first term. Define $w(z)=\sigma_{{\rm BS}}(T,z(K))\sqrt{T}$, and notice that
     \begin{equation}
-      G(t,s)=\frac{2e^{-t/8}}{t\sqrt{\pi t}}\int_s^{+\infty}ue^{-u^2/2t}\sqrt{\cosh u - \cosh s}du,
-    \end{equation}
-    is an integration kernel, which has a highly accurate series expansion approximation,
-    \begin{equation}
-      G(t,s)=\sqrt{\frac{\sinh s}{s}}e^{-\frac{s^2}{2t}-\frac{t}{8}}\left(R(t,s)+\delta R(t,s)\right),
-    \end{equation}
-    where
-    \begin{equation}
-      R(t,s)=1+\frac{3tg(s)}{8s^2}-\frac{5t^2(-8s^2+3g^2(s)+24g(s))}{128s^4}
-              +\frac{35t^3(-40s^2+3g^3(s)+24g^2(s)+120g(s))}{1024s^6},
-    \end{equation}
-    with $g(s)=s\coth(s)-1$, and
-    \begin{equation}
-      \delta R(t,s)=e^{\frac{t}{8}}-\frac{3072+384t+24t^2+t^3}{3072}.
-    \end{equation}
-    In the limit of $s\rightarrow 0$, $G(t,s)$ has the following MacLaurin expansion,
-    \begin{equation}
-      G(t,s)=e^{-\frac{s^2}{2t}}\left(1+\left(\frac{1}{12}-\frac{2688+80t^2+21t^3}{322560}e^{-\frac{t}{8}}\right)s^2\right).
-    \end{equation}
-
-
-
-  \subsection{Non-zero correlation}
-
-    For non-zero correlation model, we need to map it to a zero correlation model. Denote the mapped parameters with a tilde,
-    then the mapped $\beta$ and $\gamma$ can be chosen as
-    \begin{equation}
-      \tilde{\beta} = \beta, \quad
-      \tilde{\gamma}^2 = \gamma^2 - \frac{3}{2}\bigg(\gamma^2\rho^2+\sigma_0\gamma\rho(1-\beta)S^{\beta-1}\bigg).
-    \end{equation}
-    Then, the mapped initial volatility can be expressed as an expansion in maturity
-    \begin{equation}
-      \tilde{\sigma}_0=\tilde{\sigma}_0^{(0)}+T\tilde{\sigma}_0^{(1)}.
-    \end{equation}
-    The zeroth order term is given by
-    \begin{equation}
-      \tilde{\sigma}_0^{(0)}=\frac{2\Phi\delta\tilde{q}\tilde{\gamma}}{\Phi^2-1},
-    \end{equation}
-    where
-    \begin{equation}
-      \Phi=\left(\frac{\sigma_{{\rm min}}+\rho\sigma_0+\gamma\delta q}{(1+\rho)\sigma_0}\right)^{\frac{\tilde{\gamma}}{\gamma}},
+      \log\left(\frac{K}{F(t,T)}\right)=-\left(\frac{w^2}{2}+wz\right),
     \end{equation}
     and
     \begin{equation}
-      \delta q = \frac{K^{1-\beta}-S^{1-\beta}}{1-\beta},\quad
-      \delta \tilde{q} = \frac{K^{1-\tilde{\beta}}-S^{1-\tilde{\beta}}}{1-\tilde{\beta}} = \delta q,
+      \frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T} = \frac{\partial w}{\partial z}\frac{dz}{dK},
     \end{equation}
-    since $\tilde{\beta} = \beta$. Also,
+    the characteristic function can be finally written as
     \begin{equation}
-      \sigma_{{\rm min}}^2=\gamma^2\delta q^2+2\rho\gamma\delta q\sigma_0+\sigma_0^2.
+      L(p) = \int_{-\infty}^{+\infty}\frac{e^{-z^2/2}}{\sqrt{2\pi}}e^{-p(w^2/2+wz)}\left(1+p\frac{\partial w}{\partial z}\right)dz.
     \end{equation}
-
-    The first order term is given by
+    Introduce another variable
     \begin{equation}
-      \frac{\tilde{\sigma}_0^{(1)}}{\tilde{\sigma}_0^{(0)}}=\tilde{\gamma}^2\sqrt{1+\tilde{R}^2}
-      \frac{\displaystyle \frac{1}{2}\log\left(\frac{\sigma_0\sigma_{{\rm min}}}{\tilde{\sigma}_0^{(0)}\tilde{\sigma}_{{\rm min}}}\right)
-                                                -\mathcal{B}_{{\rm min}}}
-      {\tilde{R}\log\bigg(\tilde{R}+\sqrt{\tilde{R}^2+1}\bigg)},
+      y = z + pw(z),
     \end{equation}
-    where
+    the characteristic function can be transformed to a simpler form,
     \begin{equation}
-      \tilde{R} = \frac{\delta q\tilde{\gamma}}{\tilde{\sigma}_0^{(0)}},\quad
-      \tilde{\sigma}_{{\rm min}}^2 = \tilde{\gamma}^2\delta q^2+\left(\tilde{\sigma}_0^{(0)}\right)^2,
+      L(p) = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}\exp\left(\frac{p(p-1)}{2}\sigma_{{\rm BS}}(T,K(y))^2(T-t)\right)dy.
     \end{equation}
-    and $\mathcal{B}_{{\rm min}}$ is given by
+    Finally, the relation between the vanilla and the power payoff implied volatilities is
     \begin{equation}
-      \mathcal{B}_{{\rm min}}=-\frac{1}{2}\frac{\beta}{1-\beta}\frac{\rho}{\sqrt{1-\rho^2}}
-      \left(\pi-\varphi_0-\arccos\rho-I\right).
+      \exp\left(\frac{p(p-1)}{2}\sigma_p(t,T)^2(T-t)\right)
+      = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+        \exp\left(\frac{p(p-1)}{2}\sigma_{{\rm BS}}(T,K(y,p))^2(T-t)\right)dy.
+      \label{implied}
     \end{equation}
-    Here,
-    \begin{equation}
-      \varphi_0=\arccos\left(-\frac{\gamma\delta q+\rho\sigma_0}{\sigma_{{\rm min}}}\right),\quad
-      L=\frac{\sigma_{{\rm min}}}{\gamma q_K\sqrt{1-\rho^2}},
-    \end{equation}
-    and
-    \begin{eqnarray}
-      I=\frac{2}{\sqrt{1-L^2}}\left(\arctan\left(\frac{u_0+L}{\sqrt{1-L^2}}\right)
-                    -\arctan\left(\frac{L}{\sqrt{1-L^2}}\right)\right)       && \quad L < 1 \\
-      I=\frac{1}{\sqrt{L^2-1}}\log\left(\frac{1+u_0\left(L+\sqrt{L^2-1}\right)}
-                                               {1+u_0\left(L-\sqrt{L^2-1}\right)}\right)  && \quad L > 1
-    \end{eqnarray}
-    with the limit $I(L=1)=2u_0/(1+u_0)$, where
-    \begin{equation}
-      u_0=\frac{\delta q \gamma\rho+\sigma_0-\sigma_{{\rm min}}}{\delta q \gamma\sqrt{1-\rho^2}}.
-    \end{equation}
-
-    Finally, the call option price of the non-zero correlation model can be obtained by replace the parameters
-    in Eq. (\ref{SABRZC}) with the mapped parameters.
 
     \subsubsection{Limiting cases}
 
-      In the following limiting cases, the mapped $\gamma$ parameter will be simplified.
+      Now, let us consider two limiting cases of the above result.
 
-      {\it i) At-the-money strike.} For $K=S$, we have
+      {\it i) p=0.} For $p\rightarrow 0$, we have $S^p\rightarrow 1 + p\log S$, and $\sigma_p(t,T)$ becomes the implied volatility of the log contract.
+      Expanding both sides of Eq. (\ref{implied}), we have
       \begin{equation}
-        \tilde{\sigma}_0^{(0)}=\sigma_0,
+        1 + \frac{p}{2}\sigma_0(t,T)^2(T-t)
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \left(1 + \frac{p}{2}\sigma_{{\rm BS}}(T,K(y,0))^2(T-t)\right)dy.
       \end{equation}
-      and
+      Thus, the implied volatility of a log contract is given by
       \begin{equation}
-        \frac{\tilde{\sigma}_0^{(1)}}{\tilde{\sigma}_0^{(0)}}=\frac{1}{12}
-        \left(1-\frac{\tilde{\gamma}^2}{\gamma^2}-\frac{3}{2}\rho^2\right)\gamma^2
-        +\frac{1}{4}\beta\rho\gamma\sigma_0S^{\beta -1}.
+        \sigma_{\log}(t,T)^2
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \sigma_{{\rm BS}}(T,K(y))^2dy,
       \end{equation}
-
-      {\it ii) Negative $\tilde{\gamma}^2$.} If the mapping of $\tilde{\gamma}$ leads to a
-      negative $\tilde{\gamma}^2$, we can set $\tilde{\gamma}=0$, and the mapped $\tilde{\sigma}_0$
-      will take the following limiting form,
+      with
       \begin{equation}
-        \tilde{\sigma}_0^{(0)}=\frac{\gamma\delta\tilde{q}}
-        {\displaystyle \log\left(\frac{\sigma_{{\rm min}}+\rho\sigma_0+\gamma\delta q}{(1+\rho)\sigma_0}\right)},
+        y(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}-\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2}.
       \end{equation}
-      and
+
+      {\it ii) p=1.} For $p\rightarrow 1$, set $p=1-\epsilon$, with $\epsilon\rightarrow 0$. Then, we have $S^p\rightarrow S - \epsilon S\log S$,
+      and $\sigma_p(t,T)$ becomes the implied volatility of a $S\log S$ contract. Expanding both sides of Eq. (\ref{implied}), we have
       \begin{equation}
-        \frac{\tilde{\sigma}_0^{(1)}}{\tilde{\sigma}_0^{(0)}}=\frac{\gamma^2}
-        {\displaystyle \log^2\left(\frac{\sigma_{{\rm min}}+\rho\sigma_0+\gamma\delta q}{(1+\rho)\sigma_0}\right)}
-        \left(\frac{1}{2}\log\left(\frac{\sigma_0\sigma_{{\rm min}}}{\tilde{\sigma}_0^{(0)}\tilde{\sigma}_{{\rm min}}}\right)
-                                                -\mathcal{B}_{{\rm min}}\right).
+        1 - \frac{\epsilon}{2}\sigma_0(t,T)^2(T-t)
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \left(1 - \frac{\epsilon}{2}\sigma_{{\rm BS}}(T,K(y,0))^2(T-t)\right)dy.
       \end{equation}
-      Since $\tilde{\gamma}=0$, the mapped model will degenerate to the CEV model, and the call option price
-      can be obtained by replacing the parameters in Eq. (\ref{CEVAbsorbingCall}) with the mapped parameters.
+      Thus, the implied volatility of a $S\log S$ contract is given by
+      \begin{equation}
+        \sigma_{S\log S}(t,T)^2
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \sigma_{{\rm BS}}(T,K(y))^2dy,
+      \end{equation}
+      with
+      \begin{equation}
+        y(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}+\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2}.
+      \end{equation}
+
+
+
+  \subsection{Forward variance and its dynamics}
+
+    For power payoffs with $p\neq 0$ or 1, the implied volatilities can always be solved from market prices, and satisfy the convex order
+    condition (see appendix or reference), {\it i.e.},
+    \begin{equation}
+      \sigma_p(t,T_1)^2\left(T_1-t\right) \leq \sigma_p(t,T_2)^2\left(T_2-t\right),\quad\quad {\rm for} \quad T_1 \leq T_2.
+    \end{equation}
+    Therefore, we can define the continuous forward variance,
+    \begin{equation}
+      \xi_p(t,T) = \frac{d}{dT}\left(\sigma_p(t,T)^2\left(T-t\right)\right),
+    \end{equation}
+    which is positive by the convex order condition.
+
+    In the following, we will consider the joint dynamics of the underlying and the forward variance. For simplicity, we will assume zero
+    risk free rate and repo rate. In this case, the drift of the price of power payoffs will vanish. We can use this condition
+    to determine the drift and diffusion of the forward variance.
+
+    Let us assume the SDE for the underlying and the forward variance is given by
+    \begin{eqnarray}
+      dS(t) &=& \sigma(t)S(t)dW^S(t),\nonumber\\
+      d\xi_p(t,T) &=& \mu_p(t,T)dt + \lambda_p(t,T)dW^T(t),\nonumber
+    \end{eqnarray}
+    with the correlations between the underlying and the forward variance and between different forward variances given by
+    \begin{equation}
+      \rho^{ST} = \frac{\langle dW^S(t)dW^T(t)\rangle}{dt}, \quad\quad \rho^{uv} = \frac{\langle dW^u(t)dW^v(t)\rangle}{dt},
+    \end{equation}
+    respectively.
+
+    The price of a power payoff is
+    \begin{equation}
+      Q_p(t,T)=S(t)^p\exp\left(\frac{p(p-1)}{2}\int_t^T\xi_p(t,\tau)d\tau\right).
+    \end{equation}
+    Applying the Ito lemma,
+    \begin{eqnarray}
+      dQ_p(t,T) &=& \frac{Q_p(t,T)}{S(t)}\cdot pdS(t) + \frac{Q_p(t,T)}{S(t)^2}\cdot\frac{p(p-1)}{2}dS(t)dS(t)\nonumber\\
+                &+& Q_p(t,T)\cdot \frac{p(p-1)}{2} d\left(\int_t^T\xi_p(t,\tau)d\tau\right)\nonumber\\
+                &+& Q_p(t,T)\cdot \frac{p^2(p-1)^2}{8} d\left(\int_t^T\xi_p(t,u)du\right)d\left(\int_t^T\xi_p(t,v)dv\right) \nonumber\\
+                &+& \frac{Q_p(t,T)}{S(t)}\cdot pdS(t) \cdot \frac{p(p-1)}{2} d\left(\int_t^T\xi_p(t,\tau)d\tau\right),
+    \end{eqnarray}
+    which is equivalent to
+    \begin{eqnarray}
+      \frac{dQ_p(t,T)}{Q_p(t,T)}
+                &=& p\sigma(t)dW^S(t) + \frac{p(p-1)}{2}\sigma(t)^2dt\nonumber\\
+                &+& \frac{p(p-1)}{2}\left(-\xi_p(t,t) + \int_t^T\left(d\xi_p(t,\tau)\right)d\tau\right)\nonumber\\
+                &+& \frac{p^2(p-1)^2}{8} \int_t^Tdu\int_t^Tdvd\xi_p(t,u)d\xi_p(t,v) \nonumber\\
+                &+& \frac{p^2(p-1)}{2}\int_t^TdS(t)d\xi_p(t,\tau)d\tau \nonumber\\
+                &=& \Bigg[\frac{p(p-1)}{2}\left(\sigma(t)^2 - \xi_p(t,t)\right) + \frac{p(p-1)}{2}\int_t^T \mu_p(t,\tau)d\tau \nonumber\\
+                && \quad + \quad \frac{p^2(p-1)}{2}\sigma(t)\int_t^T\rho^{S\tau}\lambda_p(t,\tau)d\tau \nonumber\\
+                && \quad + \quad \frac{p^2(p-1)^2}{8} \int_t^Tdu\int_t^Tdv\rho^{uv}\lambda_p(t,u)\lambda_p(t,v)\Bigg]dt\nonumber\\
+                &+& \left[p\sigma(t)dW^S(t) + \frac{p(p-1)}{2}\left(\int_t^T\lambda_p(t,\tau)d\tau\right)dW^{\tau}(t)\right].
+    \end{eqnarray}
+    Since the drift term needs to vanish for all $T$, we can take the derivative of the drift term with respect to $T$, which leads to
+    \begin{equation}
+      \frac{p(p-1)}{2}\mu_p(t,T) + \frac{p^2(p-1)}{2}\rho^{ST}\sigma(t)\lambda_p(t,T)
+           + \frac{p^2(p-1)^2}{4} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv = 0,
+    \end{equation}
+    or,
+    \begin{equation}
+      \mu_p(t,T) = -\left(p\rho^{ST}\sigma(t)\lambda_p(t,T) + \frac{p(p-1)}{2} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv\right).
+    \end{equation}
+    Also, in the limit of $T\rightarrow t$, we are left with a term proportional to $\sigma(t)^2 - \xi_p(t,t)$. Therefore, the diffusion of
+    the underlying must satisfy an extra condition,
+    \begin{equation}
+      \sigma(t) = \sqrt{\xi_p(t,t)},
+    \end{equation}
+    for all values of $p$.
+
+    The final joint dynamics of the underlying and the forward variance is now given by
+    \begin{eqnarray}
+      dS(t) &=& \sqrt{\xi_p(t,t)}S(t)dW^S(t),\\
+      d\xi_p(t,T) &=& -\left(p\rho^{ST}\sqrt{\xi_p(t,t)}\lambda_p(t,T) + \frac{p(p-1)}{2} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv\right)dt \nonumber\\
+                  &&  + \quad\lambda_p(t,T)dW^T(t).
+    \end{eqnarray}
+
+
+  \section{Variance swap}
+
+
+
+
+  \section{Heston model}
 
 
 
 
 
-\section{Free boundary CEV}
+  \section{Forward variance model}
 
-  The CEV process (\ref{CEV}) can be modified to allow negative forward in the following way,
-  \begin{equation}
-    dS_t=\sigma \left|S_t\right|^{\beta}dW_t,
-    \label{FreeBoundaryCEV}
-  \end{equation}
-  with $0<\beta<1/2$. The corresponding Fokker-Planck equation is then given by
-  \begin{equation}
-    -\frac{\partial p(t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
-    \left(\left|s\right|^{2\beta}p(t,s)\right) = 0,
-    \label{FBCEVFP}
-  \end{equation}
-  with initial condition (\ref{initial}). The solution to the Fokker-Planck equation (\ref{FBCEVFP})
-  can be constructed as
-  \begin{equation}
-    p(t,s)=\frac{1}{2}\bigg(p_R\left(t,\left|s\right|\right)+{\rm sgn}(s)p_A\left(t,\left|s\right|\right)\bigg),
-  \end{equation}
-  where $p_A(t,s)$ and $p_R(t,s)$ are the solution to the Fokker-Plack equation (\ref{FP}) under
-  the absorbing and reflecting boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
-  it can be shown that the call option price in the free boundary CEV model is
-  \begin{eqnarray}
-    C(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                        \exp\left(-\frac{\bar{q}\left(b-\cos\phi\right)}{\sigma^2T}\right)d\phi\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
-                \frac{d\psi}{b+\cosh \psi}
-       \exp\left(-\frac{\bar{q}\left(b+\cosh \psi\right)}{\sigma^2T}\right)\nonumber\\
-             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
-                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg),
-  \end{eqnarray}
-  where
-  \begin{equation}
-    \bar{q}=q_Kq_S,\quad b=\frac{q_K^2+q_S^2}{2q_Kq_S},\quad q_K=\frac{|K|^{1-\beta}}{1-\beta},
-    \quad q_S=\frac{|S|^{1-\beta}}{1-\beta}.
-  \end{equation}
-
-
-
-\section{Free boundary SABR}
-
-  Similar to the free boundary CEV process, the forward process of the SABR model can also be modified to allow negative
-  forward in the following way,
-  \begin{equation}
-    dS_t=\sigma \left|S_t\right|^{\beta}dW_t,
-    \label{FreeBoundarySABR}
-  \end{equation}
-  with $0<\beta<1/2$, which becomes the free boundary SABR model. When the correlation is zero, $\rho=0$, the call option
-  value has the similar form to the SABR model,
-  \begin{eqnarray}
-    C(T,S,K) &=& (S-K)^+ \nonumber\\
-             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
-                        \frac{G(\gamma^2T,s(\phi))}{\cosh\left(s(\phi)\right)}d\phi\nonumber\\
-             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
-                \frac{d\psi}{b+\cosh \psi}
-       \frac{G(\gamma^2T,s(\psi))}{\cosh\left(s(\psi)\right)}\nonumber\\
-             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
-                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg).
-  \end{eqnarray}
-  For non-zero correlation, the parameters can be mapped to those of a zero correlation model as in the SABR case. The only difference is
-  that
-  \begin{equation}
-      \delta q = \frac{|k|^{1-\beta}-|S|^{1-\beta}}{1-\beta},\quad
-      \delta \tilde{q} = \frac{|k|^{1-\tilde{\beta}}-|S|^{1-\tilde{\beta}}}{1-\tilde{\beta}} = \delta q,
-  \end{equation}
-  where
-  \begin{equation}
-    k={\rm max}(K,0.1S)
-  \end{equation}
-  and
-  \begin{equation}
-    L=\frac{\sigma_{{\rm min}}(1-\beta)}{\gamma k^{1-\beta}\sqrt{1-\rho^2}},
-  \end{equation}
-  If the mapped $\tilde{\gamma}^2$ is negative, we can similarly set $\tilde{\gamma}$ to 0, and the free boundary SABR model
-  will degenerate to the corresponding free boundary CEV model.
 
 
 
 \begin{thebibliography}{99}
-  \bibitem{Lesniewski}
-    See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
-
-  \bibitem{Bessel}
-    See \url{http://mathworld.wolfram.com/BesselDifferentialEquation.html}.
-
-  \bibitem{DLMF1}
-    See \url{http://dlmf.nist.gov/10.22.E67}.
-
-  \bibitem{DLMF2}
-    See \url{http://dlmf.nist.gov/10.32.E4}.
+  \bibitem{Bergomi}
+    Lorenzo Bergomi, {\it Stochastic Volatility Modeling}, Chapman Hall/CRC Press, 2016.
 \end{thebibliography}
 
 
