@@ -202,11 +202,12 @@
   \end{equation}
   and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
 
-  Finally, the transion density is given by
+  Finally, the transition density is given by
   \begin{equation}
     p_A(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
     I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
+    \label{pA}
   \end{equation}
 
 
@@ -234,10 +235,128 @@
     p_R(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
     \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
     I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
+    \label{pR}
   \end{equation}
 
+\section{Normalization}
 
-% \section{European option pricing}
+  Given the transition densities, (\ref{pA}) and (\ref{pR}), the normalization can be obtained by a simple integration with respect to $s$.
+  To see that the total density is preserved for the reflecting boundary condition, introduce the following variables,
+  \begin{equation}
+    \alpha = \frac{2\nu}{\sigma\sqrt{t}},\quad b = \alpha s_0^{{\frac{1}{2\nu}}}, \quad c = \alpha s^{{\frac{1}{2\nu}}}.
+  \end{equation}
+  Notice that
+  \begin{equation}
+    ds=\frac{2\nu}{\alpha^{2\nu}}c^{2\nu-1}dc,
+  \end{equation}
+  integration of (\ref{pR}) becomes
+  \begin{eqnarray}
+      \int_0^{+\infty}p_R(t,s)ds
+    &=&  \frac{s_0^{1/2}}{(1-\beta)\sigma^2t}
+         \exp\left(-\frac{s_0^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right) \nonumber\\
+      && \quad\times \int_0^{+\infty}s^{1-4\beta}\exp\left(-\frac{s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+         I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right)ds \nonumber\\
+    &=&  \frac{\alpha^2}{2\nu}\left(\frac{b}{\alpha}\right)^{\nu}e^{-b^2/2}\int_0^{+\infty}\left(\frac{c}{\alpha}\right)^{2-3\nu}
+         e^{-c^2/2}I_{-\nu}\bigg(bc\bigg)\cdot \frac{2\nu}{\alpha^{2\nu}}c^{2\nu-1}dc \nonumber\\
+    &=&  b^{\nu}e^{-b^2/2}\int_0^{+\infty}c^{1-\nu}
+         e^{-c^2/2}I_{-\nu}\bigg(bc\bigg)dc.
+  \end{eqnarray}
+  From the identity,
+  \begin{equation}
+    \int_0^{+\infty}t^{\nu+1}e^{-p^2t^2}I_{\nu}\bigg(bt\bigg)dt = \frac{b^v}{\left(2p^2\right)^{\nu+1}}\exp\left(\frac{b^2}{4p^2}\right),
+  \end{equation}
+  it can be easily verified that the transition density under the reflecting boundary condition is indeed normalized to 1.
+
+  Similarly, for (\ref{pA}), we have
+  \begin{equation}
+    \int_0^{+\infty}p_A(t,s)ds = b^{\nu}e^{-b^2/2}\int_0^{+\infty}c^{1-\nu}e^{-c^2/2}I_{\nu}\bigg(bc\bigg)dc.
+  \end{equation}
+  The only difference is the sign of the order of the modified Bessel function, which prevents us from applying the above identity.
+  To this end, we can expand $I_{\nu}(x)$ into a series,
+  \begin{equation}
+    I_{\nu}\bigg(bc\bigg)=\sum_{k=0}^{\infty}\frac{1}{k!\Gamma\left(k+\nu+1\right)}\left(\frac{bc}{2}\right)^{2k+\nu},
+  \end{equation}
+  and the integral becomes
+  \begin{eqnarray}
+    \int_0^{+\infty}p_A(t,s)ds &=& b^{\nu}e^{-b^2/2}\sum_{k=0}^{\infty}\frac{1}{k!\Gamma\left(k+\nu+1\right)}\left(\frac{b}{2}\right)^{2k+\nu}
+                                   \int_0^{+\infty}c^{2k+1}e^{-c^2/2}dc \nonumber\\
+                               &=& e^{-b^2/2}\sum_{k=0}^{\infty}\frac{1}{\Gamma\left(k+\nu+1\right)}\left(\frac{b^2}{2}\right)^{k+\nu}\nonumber\\
+                               &=& \frac{1}{\Gamma(\nu)}\gamma\left(\nu, \frac{b^2}{2}\right)\nonumber\\
+                               &=& 1 - \frac{1}{\Gamma(\nu)}\Gamma\left(\nu, \frac{s_0^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right).
+  \end{eqnarray}
+  Here, the lower incomplete gamma function is defined as
+  \begin{equation}
+    \gamma(\nu,x) = \Gamma(\nu)e^{-x}\sum_{k=0}^{\infty}\frac{x^{k+\nu}}{\Gamma(k+\nu+1)},
+  \end{equation}
+  and is related to the upper incomplete gamma function by
+  \begin{equation}
+    \gamma(\nu,x) + \Gamma(\nu, x) = \Gamma(\nu).
+  \end{equation}
+  Therefore, under the absorbing boundary condition, the transition density is not normalized to 1, and there is a finite probability of
+  absorption at 0.
+
+
+\section{European option pricing}
+
+  The European option prices can be obtained from the transition densities at the option epxiry by integrating with respect to the
+  option payoff. For example, for a call option under absorbing boundary condition, we have
+  \begin{equation}
+    C_A(T,K)=\int_0^{+\infty}p_A(T,S)(S-K)^+dS = \int_K^{+\infty}Sp_A(T,S)dS - K\int_K^{+\infty}p_A(T,S)dS.
+  \end{equation}
+  Notice that the probability density function of a non-central $\chi^2$ distribution with $r$ degrees of freedom and the non-centrality
+  parameter $\lambda$ is given by
+  \begin{equation}
+    f(x;r,\lambda) = \frac{1}{2}\left(\frac{x}{\lambda}\right)^{(r-2)/4}\exp\left(-\frac{x+\lambda}{2}\right)I_{(r-2)/2}\left(\sqrt{\lambda x}\right),
+  \end{equation}
+  and the transition density can be written as
+  \begin{equation}
+    p_A(T,S) = \frac{4\nu s_0 S^{1/\nu-2}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
+  With this, the first term in the above integral can be easily calculated by a change of variable
+  \begin{eqnarray}
+      && \int_K^{+\infty}\frac{4\nu s_0 S^{1/\nu-1}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)dS\nonumber\\
+    = && s_0\int_K^{+\infty}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)d\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T}\right)\nonumber\\
+    = && s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right),
+  \end{eqnarray}
+  where $F(x;r,\lambda)$ is the cumulative density function of the non-central $\chi^2$ distribution.
+  For the second term, we can use the following symmetry property of the non-central $\chi^2$ distribution
+  \begin{equation}
+    \int_x^{+\infty}f(y;r-2,\lambda)dy + \int_{\lambda}^{+\infty}f(x;r,\mu)d\mu = 1,
+  \end{equation}
+  to show that
+  \begin{eqnarray}
+      && \int_K^{+\infty}\frac{4\nu s_0 S^{1/\nu-2}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)dS\nonumber\\
+    = && \int_K^{+\infty}\frac{s_0}{S}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)d\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T}\right)\nonumber\\
+    = && \int_q^{+\infty}\left(\frac{\lambda}{z}\right)^{\nu}f\left(z;2\nu+2,\lambda\right)dz \nonumber\\
+    = && \int_q^{+\infty}f\left(\lambda;2\nu+2,z\right)dz \nonumber\\
+    = && 1 - \int_{\lambda}^{+\infty}f\left(z;2\nu,q\right)dz \nonumber\\
+    = && F(\lambda; 2\nu, q),
+  \end{eqnarray}
+  where we have defined
+  \begin{equation}
+    \lambda = \frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}, \quad\quad q = \frac{4\nu^2K^{1/\nu}}{\sigma^2T}.
+  \end{equation}
+  Finally, the call option price under the absorbing boundary condition is given by
+  \begin{equation}
+    C_A(T,K)=s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right)
+             - KF\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};2\nu,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
+  The put option can be simply obtained by call-put parity
+  \begin{equation}
+    P_A(T,K)=s_0F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)
+             - K\left(1-F\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};2\nu,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right)\right).
+  \end{equation}
+
+  The option prices under the reflecting boundary condition can be calculated in a similar fashion. With repeating, they are given by
+  \begin{equation}
+    C_R(T,K)=s_0F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};-2\nu,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)
+             - K\left(1-F\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};-2\nu+2,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right)\right),
+  \end{equation}
+  and
+  \begin{equation}
+    P_R(T,K)=s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};-2\nu,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right)
+             - KF\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};-2\nu+2,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
 
 
 \section{Integral representation of European call option price}
@@ -344,6 +463,8 @@
     \bar{q}=q_Kq_S,\quad b=\frac{q_K^2+q_S^2}{2q_Kq_S},\quad q_K=\frac{|K|^{1-\beta}}{1-\beta},
     \quad q_S=\frac{|S|^{1-\beta}}{1-\beta}.
   \end{equation}
+
+\section{Implied volatility expansion}
 
 
 
