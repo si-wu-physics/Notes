@@ -298,7 +298,8 @@
 
 \section{European option pricing}
 
-  The European option prices can be obtained from the transition densities at the option epxiry by integrating with respect to the
+  The forward, or undiscounted, European option prices can be obtained from the transition
+  densities at the option epxiry by integrating with respect to the
   option payoff. For example, for a call option under absorbing boundary condition, we have
   \begin{equation}
     C_A(T,K)=\int_0^{+\infty}p_A(T,S)(S-K)^+dS = \int_K^{+\infty}Sp_A(T,S)dS - K\int_K^{+\infty}p_A(T,S)dS.
@@ -469,10 +470,169 @@
   In this section, we will consider two expansion results for the implied volatilities of local volatility models,
   whose local volatility functions do not explicitly contain time dependence, {\it i.e.},
   \begin{equation}
-    dS_t=\lambda\varphi(S_t)dW_t.
+    dS_t=\sigma\varphi(S_t)dW_t.
+    \label{expansion1}
   \end{equation}
+  The Black-Scholes equation for the forward call option price under this local volatility model is given by
+  \begin{equation}
+    \frac{\partial C}{\partial t} +\frac{\sigma^2}{2}S^2\frac{\partial^2C}{\partial S^2} = 0,
+  \end{equation}
+  where $C(t,S;T,K)$ is the forward value of a call option with terminal payoff of $f(S)=(S-K)^+$ at $T$. Write
+  $C(t,S;T,K)$ as $g(\tau,S)$, with $\tau=\sigma^2(T-t)$, then the Black-Scholes equation becomes
+  \begin{equation}
+    \frac{\partial g}{\partial \tau} -\frac{1}{2}S^2\frac{\partial^2g}{\partial S^2} = 0.
+    \label{expansion2}
+  \end{equation}
+  This will be the starting point for our expansion of the implied volatility.
+
 
   \subsection{Small expiry expansion}
+
+    Let us expand around a shifted lognormal model,
+    \begin{equation}
+      dS_t=\lambda(\beta+\zeta S_t)dW_t,
+    \end{equation}
+    with $\lambda, \zeta\neq 0$. The forward call option price under this model is given by
+    \begin{equation}
+      C(t,S;T,K)=\left(S+\frac{\beta}{\zeta}\right)N(d_+) - \left(K+\frac{\beta}{\zeta}\right)N(d_-),
+    \end{equation}
+    where
+    \begin{equation}
+      d_{\pm} = \frac{\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\pm \frac{1}{2}\lambda^2\zeta^2(T-t)}
+                     {|\lambda\zeta|\sqrt{T-t}},
+    \end{equation}
+    and $N(x)$ is the cumulative density function of the standard normal distribution, which is related to the probability
+    density function,
+    \begin{equation}
+      n(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}},
+    \end{equation}
+    by $N(x)=\int_{-\infty}^xn(u)du$.
+
+    For the local volatility model (\ref{expansion1}), we can guess the forward call option price to be given by the
+    following form,
+    \begin{equation}
+      g(\tau,S)=\left(S+\frac{\beta}{\zeta}\right)N(z_+) - \left(K+\frac{\beta}{\zeta}\right)N(z_-),
+    \end{equation}
+    where
+    \begin{equation}
+      z_{\pm} = \frac{\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\pm \frac{1}{2}\Omega(\tau,S)^2}
+                     {\Omega(\tau,S)}.
+      \label{expansion3}
+    \end{equation}
+    Notice that
+    \begin{eqnarray}
+      \frac{\partial g}{\partial \tau}
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial z_+}{\partial\tau}
+        - \left(K+\frac{\beta}{\zeta}\right)n(z_-)\frac{\partial z_-}{\partial\tau} \nonumber\\
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\left(\frac{\partial z_+}{\partial\tau}
+                                                     - \frac{\partial z_-}{\partial\tau}\right) \nonumber\\
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial \Omega}{\partial\tau},
+    \end{eqnarray}
+    \begin{eqnarray}
+      \frac{\partial g}{\partial S}
+      &=& N(z_+) + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial z_+}{\partial S}
+        - \left(K+\frac{\beta}{\zeta}\right)n(z_-)\frac{\partial z_-}{\partial S} \nonumber\\
+      &=& N(z_+) + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial \Omega}{\partial S},
+    \end{eqnarray}
+    and
+    \begin{eqnarray}
+      \frac{\partial^2 g}{\partial S^2}
+      &=& n(z_+)\frac{\partial z_+}{\partial S} + n(z_+)\frac{\partial \Omega}{\partial S}
+        + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial^2 \Omega}{\partial S^2}
+        - \left(S+\frac{\beta}{\zeta}\right)n(z_+)z_+\frac{\partial z_+}{\partial S}\frac{\partial \Omega}{\partial S}\nonumber\\
+      &=& n(z_+)\left(\frac{\partial z_+}{\partial S} + \frac{\partial \Omega}{\partial S}
+        + \left(S+\frac{\beta}{\zeta}\right)\frac{\partial^2 \Omega}{\partial S^2}
+        - \left(S+\frac{\beta}{\zeta}\right)z_+\frac{\partial z_+}{\partial S}\frac{\partial \Omega}{\partial S}\right),
+    \end{eqnarray}
+    where we have used the fact that
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)n(z_+) = \left(K+\frac{\beta}{\zeta}\right)n(z_-).
+    \end{equation}
+    Also, we have
+    \begin{equation}
+      \frac{\partial z_+}{\partial S} = \frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}\frac{\partial\Omega}{\partial S},
+    \end{equation}
+    therefore
+    \begin{eqnarray}
+      \frac{\partial^2 g}{\partial S^2}
+      &=& n(z_+)\Bigg(\frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}\frac{\partial\Omega}{\partial S} + \frac{\partial \Omega}{\partial S}
+          + \left(S+\frac{\beta}{\zeta}\right)\frac{\partial^2 \Omega}{\partial S^2}\nonumber\\
+      &&  \quad\quad\quad - \left(S+\frac{\beta}{\zeta}\right)z_+\left(\frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}
+                            \frac{\partial\Omega}{\partial S}\right) \frac{\partial \Omega}{\partial S}\Bigg).
+    \end{eqnarray}
+    Substituting (\ref{expansion3}) into (\ref{expansion2}), and taking into account of the derivatives above, we have
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)^2\Omega\frac{\partial \Omega}{\partial\tau} =
+      \frac{1}{2}\varphi(S)^2\left[\left(S+\frac{\beta}{\zeta}\right)^2\Omega\frac{\partial^2 \Omega}{\partial S^2}
+                                   +(1-h_{-3})-h_1(1-h_{-1})\right],
+      \label{expansion4}
+    \end{equation}
+    where
+    \begin{equation}
+      h_i=\left(S+\frac{\beta}{\zeta}\right)\frac{\partial \Omega}{\partial S}
+          \left[\frac{1}{\Omega}\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)+\frac{1}{2}i\Omega\right],\quad
+          i=-3,-1,1.
+    \end{equation}
+    Now, we seek a small expiry expansion in the form of
+    \begin{equation}
+      \Omega(\tau,S)=\sum_{i=0}^{\infty}\tau^{i+1/2}\Omega_i(S).
+    \end{equation}
+    Expanding to $O(\tau^2)$, we have
+    \begin{eqnarray}
+      \Omega\frac{\partial \Omega}{\partial\tau} &=& \left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)
+                                                     \left(\frac{1}{2}\Omega_0\tau^{-1/2}+\frac{3}{2}\Omega_1\tau^{1/2}+\cdots\right)\nonumber\\
+                                                 &=& \frac{1}{2}\Omega_0^2 + 2\Omega_0\Omega_1\tau + O(\tau^2),
+    \end{eqnarray}
+    \begin{eqnarray}
+      \Omega\frac{\partial^2 \Omega}{\partial S^2} &=& \left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)
+                                                     \left(\Omega_0^{\prime\prime}\tau^{1/2}
+                                                     +\Omega_1^{\prime\prime}\tau^{3/2}+\cdots\right)\nonumber\\
+                                                 &=& \Omega_0\Omega_0^{\prime\prime}\tau + O(\tau^2),
+    \end{eqnarray}
+    \begin{eqnarray}
+      h_i &=& \left(S+\frac{\beta}{\zeta}\right)\left(\Omega_0^{\prime}\tau^{1/2}+\Omega_1^{\prime}\tau^{3/2}+\cdots\right) \nonumber\\
+          && \times\left[\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                         \left(\frac{1}{\Omega_0}\tau^{-1/2}-\frac{\Omega_1}{\Omega_0^2}\tau^{1/2}+\cdots\right)
+                         +\frac{1}{2}i\left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)\right] \nonumber\\
+          &=& \left(S+\frac{\beta}{\zeta}\right)\Bigg[\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                                                      \frac{\Omega_0^{\prime}}{\Omega_0}\nonumber\\
+          && \quad\quad\quad\quad\quad\quad +\left(\frac{1}{2}i\Omega_0\Omega_0^{\prime}
+                                   +\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                                    \left(\frac{\Omega_1^{\prime}}{\Omega_0}-\frac{\Omega_1\Omega_0^{\prime}}{\Omega_0^2}\right)\right)\tau
+                                   +O(\tau^2)\Bigg]
+    \end{eqnarray}
+    and
+    \begin{equation}
+      h_1h_{-1} =
+    \end{equation}
+    Matching terms of order $O(1)$, we have
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)^2\Omega_0^2 =
+      \varphi(S)^2\left(1-\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+      \frac{\Omega_0^{\prime}}{\Omega_0}\right)^2.
+    \end{equation}
+    Taking square root, and retain only the positive solution, the above ODE will become a Bernoulli one,
+    \begin{equation}
+      \Omega_0^{\prime} = \frac{\Omega_0}{\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)}
+                        - \frac{\Omega_0^2}{\varphi(S)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)}.
+    \end{equation}
+    Define $\psi=\Omega_0^{-1}$, the above ODE will be reduced to
+    \begin{equation}
+      \left(\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\psi\right)^{\prime} = \frac{1}{\varphi(S)},
+    \end{equation}
+    which can be directly integrated,
+    \begin{equation}
+      \psi(S) = \left(\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\right)^{-1}\int_K^S\frac{du}{\varphi(u)}.
+    \end{equation}
+    Thus, the leading order in the implied volatility expansion is given by
+    \begin{equation}
+      \Omega_0(S) = \log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\left(\int_K^S\frac{du}{\varphi(u)}\right)^{-1}.
+    \end{equation}
+
+
+
+
+  \subsection{Singular perturbation expansion}
 
 \section{A final remark}
 
