@@ -629,10 +629,31 @@
       \Omega_0(S) = \log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\left(\int_K^S\frac{du}{\varphi(u)}\right)^{-1}.
     \end{equation}
 
+    For the $O(\tau)$ term, we have the following ODE,
+    \begin{eqnarray}
+      2\left(S+\frac{\beta}{\zeta}\right)\Omega_1 &=&
+      \frac{1}{2}\varphi(S)^2\left(\left(S+\frac{\beta}{\zeta}\right)\Omega_0^{\prime\prime}+\Omega_0^{\prime}\right) \nonumber\\
+      &&\quad\quad\quad\quad - \varphi(S)\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                       \left(\frac{\Omega_1^{\prime}}{\Omega_0}-\frac{\Omega_1\Omega_0^{\prime}}{\Omega_0^2}\right),
+    \end{eqnarray}
+    whose solution is given by
+    \begin{equation}
+      \Omega_1(S) = -\frac{\Omega_0(S)}{\left(\int_K^S\frac{du}{\varphi(u)}\right)^2}\log\left(\Omega_0(S)
+                    \left(\frac{(S+\beta / \zeta)(K+\beta / \zeta)}{\varphi(S)\varphi(K)}\right)^{1/2}\right).
+    \end{equation}
+
+    Up to $O\left(\tau^{5/2}\right)$, the small expiry expansion of the implied volatility is
+    \begin{equation}
+      \Omega(\tau,S)=\Omega_0(S)\tau^{1/2}+\Omega_1(S)\tau^{3/2}+O\left(\tau^{5/2}\right),
+    \end{equation}
+    where $\Omega_0(S)$ and $\Omega_1(S)$ are given above.
+
 
 
 
   \subsection{Singular perturbation expansion}
+
+
 
 \section{A final remark}
 
