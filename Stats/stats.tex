@@ -7,9 +7,13 @@
 \usepackage{enumitem}
 
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{remark}{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
 
 \begin{document}
 
@@ -22,16 +26,37 @@
 
   \subsection{Random samples and statistics}
 
-    The random variables $X_1,\cdots,X_n$ are called a ramdom sample of 
-    size $n$ from the population $f(x)$ if they are independent and identically
-    distributed with pdf or pmf $f(x)$, or iid random
-    variables. Let $T(x_1,\cdots,x_n)$ be a real-valued or vector-valued
-    function whose domain includes of sample space of $(X_1,\cdots,X_n)$,
-    then the random variable or random vector $Y=T(X_1,\cdots,X_n)$ is called 
-    a statistic, whose distribution is called the sampling distribution of $Y$.
+    \begin{definition}
+      The random variables $X_1,\cdots,X_n$ are called a ramdom sample of 
+      size $n$ from the population $f(x)$ if they are independent and identically
+      distributed with pdf or pmf $f(x)$, or iid random
+      variables. Let $T(x_1,\cdots,x_n)$ be a real-valued or vector-valued
+      function whose domain includes of sample space of $(X_1,\cdots,X_n)$,
+      then the random variable or random vector $Y=T(X_1,\cdots,X_n)$ is called 
+      a statistic, whose distribution is called the sampling distribution of $Y$.
+    \end{definition}
+
+    \begin{theorem}
+      This is another theorem.
+    \end{theorem}
+    \begin{proof}
+      This proves the theorem.
+    \end{proof}
+
+    \begin{example}
+      This is an example.
+    \end{example}
 
 
 \section{Point estimation}
+
+  \begin{example}
+    This is another example.
+  \end{example}
+
+  \begin{remark}
+    This is just a remark.
+  \end{remark}
 
 \section{Hypothesis testing}
 
@@ -55,7 +80,9 @@
                  (h_{1i}(u_1,\cdots,u_n),\cdots,h_{ni}(u_1,\cdots,u_n))\left|J_i\right|,
     \end{equation}
 
-  \section{Two useful relatios}
+  \section{Cochran's theorem}
+
+  \section{Two useful relations}
 
 \begin{thebibliography}{99}
 \end{thebibliography}
