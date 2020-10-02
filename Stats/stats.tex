@@ -82,6 +82,21 @@
 
   \section{Cochran's theorem}
 
+    \begin{theorem}[Cochran]
+      Let $X_1$, $X_2$, $\cdots$, $X_n$ be i.i.d. $N(0,\sigma^2)$ distributed random
+      variables, and suppose that
+      \[\sum_{i=1}^n X_i^2 = \sum_{j=1}^k Q_j, \]
+      where $Q_1$, $Q_2$, $\cdots$, $Q_k$ are positive semi-definite quadratic forms in
+      $X_1$, $X_2$, $\cdots$, $X_n$, {\it i.e.},
+      \[ Q_j = {\bf X}^{\top}{\bf A}_j{\bf X},\quad j=1,2,\cdots,k. \]
+      Let $r_j={\rm rank}({\bf A}_j)$ be the rank of the matrix ${\bf A}_j$. If $\sum_{j=1}^kr_j=n$,
+      then
+      \begin{itemize}
+        \item $Q_1$, $Q_2$, $\cdots$, $Q_k$ are independent;
+        \item $Q_j \sim \sigma^2\chi^2(r_j)$.
+      \end{itemize}
+    \end{theorem}
+
   \section{Two useful relations}
 
 \begin{thebibliography}{99}
