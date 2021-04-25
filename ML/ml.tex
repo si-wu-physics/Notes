@@ -17,94 +17,12 @@
 
 \begin{document}
 
-\title{Notes on Statistics}
+\title{Notes on Machine Learning Algorithms}
 \date{Dec. 32, 2999}
 
 \maketitle
 
-\section{Distributions from random samples}
-
-  \subsection{Random samples and statistics}
-
-    \begin{definition}
-      The random variables $X_1,\cdots,X_n$ are called a ramdom sample of 
-      size $n$ from the population $f(x)$ if they are independent and identically
-      distributed with pdf or pmf $f(x)$, or iid random
-      variables. Let $T(x_1,\cdots,x_n)$ be a real-valued or vector-valued
-      function whose domain includes of sample space of $(X_1,\cdots,X_n)$,
-      then the random variable or random vector $Y=T(X_1,\cdots,X_n)$ is called 
-      a statistic, whose distribution is called the sampling distribution of $Y$.
-    \end{definition}
-
-    \begin{theorem}
-      This is another theorem.
-    \end{theorem}
-    \begin{proof}
-      This proves the theorem.
-    \end{proof}
-
-    \begin{example}
-      This is an example.
-    \end{example}
-
-
-\section{Point estimation}
-
-  \begin{example}
-    This is another example.
-  \end{example}
-
-  \begin{remark}
-    This is just a remark.
-  \end{remark}
-
-\section{Hypothesis testing}
-
-\section{Interval estimation}
-
-\section{A complete example}
-
-\section{More examples}
-
-\section{Analysis of variance}
-
-\section{Linear regression}
-
-\appendix
-
-  \section{Distribution of transformations of random variables}
-  \label{tf}
-
-    \begin{equation}
-      f_{{\bf U}}(u_1,\cdots,u_n)=\sum_{i}f_{{\bf X}}
-                 (h_{1i}(u_1,\cdots,u_n),\cdots,h_{ni}(u_1,\cdots,u_n))\left|J_i\right|,
-    \end{equation}
-
-  \section{Cochran's theorem}
-
-    \begin{theorem}[Cochran]
-      Let $X_1$, $X_2$, $\cdots$, $X_n$ be i.i.d. $N(0,\sigma^2)$ distributed random
-      variables, and suppose that
-      \[\sum_{i=1}^n X_i^2 = \sum_{j=1}^k Q_j, \]
-      where $Q_1$, $Q_2$, $\cdots$, $Q_k$ are positive semi-definite quadratic forms in
-      $X_1$, $X_2$, $\cdots$, $X_n$, {\it i.e.},
-      \[ Q_j = {\bf X}^{\top}{\bf A}_j{\bf X},\quad j=1,2,\cdots,k. \]
-      Let $r_j={\rm rank}({\bf A}_j)$ be the rank of the matrix ${\bf A}_j$. If $\sum_{j=1}^kr_j=n$,
-      then
-      \begin{itemize}
-        \item $Q_1$, $Q_2$, $\cdots$, $Q_k$ are independent;
-        \item $Q_j \sim \sigma^2\chi^2(r_j)$.
-      \end{itemize}
-    \end{theorem}
-
-    From linear algebra, we know that if a matrix \({\bf A}\) is symmetric and idempotent,
-    then \({\rm rank}({\bf A}) = {\rm tr}({\bf A})\). Since \({\bf A}\) is idempotent, {\it i.e.},
-    \({\bf A}^2 = {\bf A}\), the eigenvalues of the matrix \({\bf A}\) are either 0 or 1. Therefore,
-    the rank of the matrix is equal to the sum of its eigenvalues. We will use this fact to determine
-    the degrees of freedom for the \(\chi^2\) distributions corresponding to the quadratic forms.
-    In this case, we will only need to verify that the matrices are idempotent.
-
-  \section{Two useful relations}
+\section{Support Vector Machines}
 
 \begin{thebibliography}{99}
 \end{thebibliography}
