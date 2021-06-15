@@ -1,0 +1,638 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[hscale=.8,vscale=.8]{geometry}
+\usepackage{hyperref}
+
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\begin{document}
+
+\title{Notes on Feller Condition}
+\date{Dec. 32, 2999}
+
+\maketitle
+
+\section{Fokker-Planck Equation}
+
+  Consider the following parabolic partial differential equation (PDE) \cite{Feller}
+  \begin{equation}
+    \frac{\partial u(t,x)}{\partial t} = -\frac{\partial}{\partial x}\left((bx+c)u(t,x)\right)
+                                       + \frac{\partial^2}{\partial x^2}\left(axu(t,x)\right),
+    \label{FP}
+  \end{equation}
+  with $x>0$. This can be viewed as the corresponding Fokker-Planck equation for the Cox-Ingersoll-Ross (CIR)
+  process
+  \begin{equation}
+    \label{CIR}
+    dv_t=\kappa(\theta-v_t)dt + \sigma\sqrt{v_t}dW_t,
+  \end{equation}
+  with $a=\sigma^2/2$, $b=-\kappa$, and $c=\kappa\theta$.
+
+  We want to find the solution of the PDE (\ref{FP}), with certain initial condition,
+  \begin{equation}
+    u(0,x) = \phi(x).
+    \label{init0}
+  \end{equation}
+  In addition, we want the solution to be positive, $u(t,x)\ge 0$, and norm preserving or decreasing, that is
+  \begin{equation}
+    \int_0^{+\infty}u(t,x)dx \le \int_0^{+\infty}\phi(x)dx.
+  \end{equation}
+  In particular, we are
+  interested in the fundamental solution of the PDE (\ref{FP}), {\it i.e.}, the initial condition is given
+  by
+  \begin{equation}
+    u(0,x)=\delta(x-\xi),
+    \label{init}
+  \end{equation}
+  where $\delta(x)$ is the Dirac delta function. To this end, introduce the Laplace transform of $u(t,x)$ as
+  \begin{equation}
+    v(t,\lambda)=\int_0^{+\infty}e^{-\lambda x}u(t,x)dx,
+  \end{equation}
+  for $\lambda > 0$. We denote the Laplace transform of the initial condition as
+  \begin{equation}
+    \pi(\lambda) = \int_0^{+\infty}e^{-\lambda x}\phi(x)dx,
+  \end{equation}
+  and for the fundamental solution, $\pi(\lambda) = e^{-\lambda \xi}$.
+  Consider the Laplace transform of the right hand side of Eq. (\ref{FP}),
+  \begin{eqnarray}
+      && \int_0^{+\infty} e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{xx}-\big((bx+c)u(t,x)\big)_x\bigg]dx \nonumber\\
+    = && \left. e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{x}-\big((bx+c)u(t,x)\big)\bigg]\right|_0^{+\infty}\nonumber\\
+      && \quad\quad +\lambda \int_0^{+\infty} e^{-\lambda x}\bigg[\big(axu(t,x)\big)_{x}-\big((bx+c)u(t,x)\big)\bigg]dx \nonumber\\
+    = && f(t) + \lambda(b-\lambda a)v_{\lambda} - c\lambda v,
+  \end{eqnarray}
+  where
+  \begin{equation}
+    f(t) = \lim_{x\rightarrow 0}\left[(bx+c)u-(axu)_x\right],
+  \end{equation}
+  is the flux at $x=0$ and generally cannot be arbitrarily specified.
+
+  After the Laplace transform, Eq. (\ref{FP}) becomes
+  \begin{equation}
+    v_t + \lambda(\lambda a - b) v_{\lambda} = f(t) - c\lambda v.
+    \label{FP2}
+  \end{equation}
+  This first order PDE can be solved by the method of characteristics.
+  The characteristics can be determined by integrating
+  \begin{equation}
+    dt = \frac{d\lambda}{\lambda(a\lambda - b)},
+  \end{equation}
+  which leads to the following characteristic
+  \begin{equation}
+    \label{char}
+    e^{-bt}\frac{a\lambda - b}{\lambda} = C_1,
+  \end{equation}
+  or equivalently,
+  \begin{equation}
+    \lambda(t) = -\frac{be^{-bt}}{C_1-ae^{-bt}}.
+  \end{equation}
+  Then, Eq. (\ref{FP2}) becomes an ordinary differential equation,
+  \begin{equation}
+    \frac{dv}{dt}-\frac{bce^{-bt}}{C_1-ae^{-bt}}v=f(t).
+  \end{equation}
+  It can be integrated,
+  \begin{equation}
+    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{C_2+\int_0^t\frac{f(\tau)}{\left|C_1-ae^{-b\tau}\right|^{c/a}}d\tau\right\}.
+  \end{equation}
+  To determine the unknown constants, assume $C_2=A(C_1)$, where $A(y)$ is an arbitrary function.
+  For the initial condition $v(0,\lambda)=\pi(\lambda)$,
+  we have
+  \begin{equation}
+    \pi(\lambda) = \left|\frac{b}{\lambda}\right|^{c/a}A\left(a-\frac{b}{\lambda}\right),
+  \end{equation}
+  which gives
+  \begin{equation}
+    A(y) = \left|a-y\right|^{-c/a}\pi\left(\frac{b}{a-y}\right).
+  \end{equation}
+  Now, we have
+  \begin{equation}
+    v(t,\lambda) = \left|C_1-ae^{-bt}\right|^{c/a}\left\{\left|a-C_1\right|^{-c/a}
+                    \pi\left(\frac{b}{a-C_1}\right)+\int_0^t
+                    \frac{f(\tau)}{\left|C_1-ae^{-b\tau}\right|^{c/a}}d\tau\right\}.
+  \end{equation}
+  Using Eq. (\ref{char}), the general solution becomes
+  \begin{equation}
+    v(t,\lambda)=\left(\frac{b}{\lambda a(e^{bt}-1)+b}\right)^{c/a}\pi\left(\frac{\lambda be^{bt}}{\lambda a(e^{bt}-1)+b}\right)
+                    +\int_0^tf(\tau)\left(\frac{b}{\lambda a(e^{b(t-\tau)}-1)+b}\right)^{c/a}d\tau.
+    \label{FP4}
+  \end{equation}
+
+\section{Some exact results}
+
+  In this section, we are going to gather some exact results regarding the general solution (\ref{FP4}) without proof.
+  The implication of these results will be discussed.
+
+  \begin{lemma}
+    If $c\le 0$, then $v(t,\lambda)$ in Eq. (\ref{FP4}) is the Laplace transform of a solution of $u(t,x)$ only if $f(t)$
+    satisfies
+    \begin{equation}
+      \label{current}
+      \pi\left(\frac{b}{a(1-e^{-bt})}\right)
+                    +\int_0^tf(\tau)\left(\frac{e^{bt}-1}{e^{b(t-\tau)}-1}\right)^{c/a}d\tau = 0.
+    \end{equation}
+  \end{lemma}
+  This is due to the fact that $u(t,x)$ is integrable near $x=0$, which is equivalent to $v(t,\lambda)\rightarrow 0$ as
+  $\lambda\rightarrow +\infty$. Then, there is only one solution for the original Fokker-Planck equation (\ref{FP}) with
+  arbitrary initial condition (\ref{init0}), with the boundary condition prescribed by (\ref{current}).
+
+  \begin{lemma}
+    If $c>0$ and $f(t)$ is continuous for $t\ge 0$, then $v(t,\lambda)$ in Eq. (\ref{FP4}) is the Laplace transform of a solution of $u(t,x)$ with initial valules $\phi(x)$.
+    The solution is positive preserving at least whenever $f(t)\ge 0$.
+  \end{lemma}
+
+  \begin{lemma}
+    If $c\ge 0$ and $\phi(x)$ is non-negative, then Eq. (\ref{FP4})
+    with $f(t)\equiv 0$ defines a non-negative solution $u(t,x)$ with
+    initial values $\phi(x)$. For this solution,
+    \begin{equation*}
+      \lim_{x\rightarrow 0}u(t,x)=
+      \begin{cases}
+        \infty & {\rm if} \quad 0<c<a, \\
+        0      & {\rm if} \quad c>a,   \\
+        \frac{b}{a(e^{bt}-1)}\pi\left(\frac{be^{bt}}{a(e^{bt}-1)}\right) & {\rm if} \quad c=a.
+      \end{cases}
+    \end{equation*}
+  \end{lemma}
+
+  \begin{lemma}
+    If $c>a$ and $f(t)\ge 0$ but $f(t)$ does not vanish identically, then solution $u(t,x)$ is norm increasing. If $f(t_0)<0$, the
+    $u(t_0,x)<0$.
+  \end{lemma}
+
+  From the above results, we can draw the following conclusions:
+  \begin{enumerate}[noitemsep]
+    \item If $c\le 0$, there is one solution for each initial condition $\phi(x)$. The solution is positive and norm decreasing, and is
+          absorbing at the $x=0$ boundary;
+
+    \item If $0<c<a$, there is one positive and norm preserving solution, with vanishing flux at the $x=0$ boundary, {\it i.e.}, the reflecting
+          boundary condition. There are infinitely many positive and norm decreasing solutions, with only one solution which is finite
+          at the $x=0$ boundary, {\it i.e.}, absorbing boundary condition;
+
+    \item If $c\ge a$, the exists one positive and norm preserving solution, with vanishing value and flux at the $x=0$ boundary.
+          No boundary condition can be specified at the $x=0$ boundary, and the boundary is unattainable.
+  \end{enumerate}
+
+\section{Fundamental solutions}
+
+  In the following, we will consider the absorbing and reflecting boundary conditions and find the explicit form of the
+  fundamental solutions to the Fokker-Planck equation (\ref{FP}) with initial condition (\ref{init}).
+
+  \subsection{Absorbing boundary condition}
+
+    If $c\le a$, we can impose the absorbing boundary condition, (\ref{current}).
+    For the fundamental solution, we have $\pi(\lambda)=e^{-\lambda\xi}$, and Eq. (\ref{current}) becomes
+    \begin{equation}
+      \int_0^tf(\tau)\left(\frac{e^{bt}-1}{e^{b(t-\tau)}-1}\right)^{c/a}d\tau = -\exp\left(-\frac{b\xi}{a(1-e^{-bt})}\right).
+      \label{current2}
+    \end{equation}
+    Define
+    \begin{equation}
+      \frac{1}{z}=1-e^{-bt}, \quad\quad \frac{1}{\zeta}=1-e^{-b\tau},
+    \end{equation}
+    Eq. (\ref{current2}) becomes
+    \begin{equation}
+      \int_z^{+\infty}f(\tau)\left(\frac{\zeta}{\zeta-z}\right)^{c/a}\frac{d\zeta}{b\zeta(\zeta-1)}=-\exp\left(-\frac{b\xi z}{a}\right).
+      \label{current3}
+    \end{equation}
+    Let
+    \begin{equation}
+      g(\zeta) = f(\tau)\frac{\zeta^{c/a}}{b\zeta(\zeta-1)},
+    \end{equation}
+    and let $g(\zeta)$ have the following functional form
+    \begin{equation}
+      g(\zeta) = Be^{-A\zeta},
+    \end{equation}
+    then the right hand side of  Eq. (\ref{current3}) becomes
+    \begin{equation}
+      B\int_z^{+\infty}e^{-A\zeta}(\zeta-z)^{-c/a}d\zeta = \frac{\displaystyle B\Gamma\left(1-\frac{c}{a}\right)}{\displaystyle A^{1-c/a}}e^{-Az}.
+    \end{equation}
+    Matching terms, we can see that
+    \begin{equation}
+      A = \frac{b\xi}{a}, \quad\quad B = -\frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{b\xi}{a}\right)^{1-c/a}.
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      f(t)=-\frac{b}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\frac{e^{-bt}}{1-e^{-bt}}\left(\frac{b\xi}{a(1-e^{-bt})}\right)^{1-c/a}
+            \exp\left(-\frac{b\xi}{a(1-e^{-bt})}\right).
+    \end{equation}
+
+    With some manipulation, the fundamental solution can be written in the following convenient form,
+    \begin{equation}
+      v(t,\lambda) = \left(\frac{b}{\lambda a(e^{bt}-1)+b}\right)^{c/a}\exp\left(-\frac{\lambda b\xi e^{bt}}{\lambda a(e^{bt}-1)+b}\right)
+                      \Gamma\left(1-\frac{c}{a};\frac{b\xi e^{bt}}{a(e^{bt}-1)}\frac{b}{\lambda a(e^{bt}-1)+b}\right),
+      \label{solution1}
+    \end{equation}
+    where
+    \begin{equation}
+      \Gamma(n;z)=\frac{1}{\Gamma(n)}\int_0^ze^{-x}x^{n-1}dx
+    \end{equation}
+    is the incomplete Gamma function. From this, we can see that
+    \begin{equation}
+      \int_0^{+\infty}u(t,x)dx = \lim_{\lambda\rightarrow 0}v(t,\lambda) = \Gamma\left(1-\frac{c}{a};\frac{\lambda b\xi e^{bt}}{a(e^{bt}-1)}\right),
+    \end{equation}
+    which is strictly less than 1. This means that the $x=0$ boundary serves as an absorbing boundary, and once it is hit, the solution will stay there.
+
+    We can also find the explicit form of the fundamental solution via inverse Laplace transform. Again, let
+    \begin{equation}
+      \label{sub}
+      A = \frac{b\xi e^{bt}}{a(e^{bt}-1)}, \quad\quad \frac{1}{z} = \frac{b}{\lambda a(e^{bt}-1)+b},
+    \end{equation}
+    the incomplete Gamma function in Eq. (\ref{solution1}) can be expressed as
+    \begin{eqnarray}
+      \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\int_0^{A/z}e^{-x}x^{n-1}dx
+      &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{A}{z}\right)^{1-c/a}\int_0^1 e^{-Au/z}u^{-c/a}du \nonumber\\
+      &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\left(\frac{A}{z}\right)^{1-c/a}e^{-A/z}\int_0^1 e^{Av/z}(1-v)^{-c/a}dv.
+    \end{eqnarray}
+    Then,
+    \begin{equation}
+      v(t,\lambda) = \frac{e^{-A}A^{1-c/a}}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\int_0^1 (1-v)^{-c/a}\frac{e^{Av/z}}{z}dv.
+    \end{equation}
+    The inverse Laplace transform can be applied to $e^{Av/z}/z$, which yields
+    \begin{eqnarray}
+      \int e^{\lambda x}\frac{e^{Av/z}}{z}d\lambda &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)
+                                                          \int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{Av/z}}{z}dz \nonumber\\
+                                                   &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(2\left(\frac{Avbx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
+                                                   &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)I_0\left(\frac{2b}{a(e^{bt}-1)}\left(e^{bt}\xi v x\right)^{1/2}\right),
+    \end{eqnarray}
+    where we have used the fact that the inverse Laplace transform of $e^{Av/z}/z$ is $I_0(2\sqrt{Avx})$, where $I_{\nu}(x)$ is the modified Bessel
+    function of order $\nu$. Finally, we have
+    \begin{eqnarray}
+      \label{solution4}
+      u(t,x) &=& \frac{1}{\displaystyle \Gamma\left(1-\frac{c}{a}\right)}\frac{b}{a(e^{bt}-1)}\left(\frac{b\xi}{a(1-e^{-bt})}\right)^{1-c/a}
+                 \exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right) \nonumber\\
+              && \times\int_0^1(1-v)^{-c/a}I_0\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi v x\right)^{1/2}\right)dv.
+    \end{eqnarray}
+    Using the series expansion of the modified Bessel function,
+    \begin{equation}
+      \label{modified}
+      I_{\nu}(x) = \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1+\nu)}\left(\frac{x}{2}\right)^{2r+\nu},
+    \end{equation}
+    the integral in (\ref{solution4}) can be written as
+    \begin{eqnarray}
+       && \int_0^1(1-v)^{-c/a}I_0\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi v x\right)^{1/2}\right)dv \nonumber\\
+      &=& \sum_{r=0}^{\infty}\frac{1}{r!\Gamma(r+1)}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r}\int_0^1(1-v)^{-c/a}v^rdv \nonumber\\
+      &=& \Gamma\left(1-\frac{c}{a}\right)\sum_{r=0}^{\infty}\frac{1}{\displaystyle r!\Gamma\left(r-\frac{c}{a}+2\right)}
+              \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right)^{2r} \nonumber\\
+      &=& \Gamma\left(1-\frac{c}{a}\right)\left(\frac{b}{a(1-e^{-bt})}\right)^{-1+c/a}\left(e^{-bt}\xi x\right)^{\frac{c-a}{2a}}I_{1-\frac{c}{a}}
+              \left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+    \end{eqnarray}
+    Then,
+    \begin{equation}
+      u(t,x) = \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)
+                \left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{1-\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+    \end{equation}
+
+  \subsection{Reflecting boundary condition}
+
+    If $c>0$, we can impose the reflecting boundary condition on Eq. (\ref{FP4}), $f(t)\equiv 0$, which will render a positive
+    and norm preserving solution. To find the
+    explicit form of the fundamental solution, we can apply the inverse Laplace transform on Eq. (\ref{FP4}), with $f(t)\equiv 0$.
+    Use the same substitution as in Eq. (\ref{sub}),
+    we have
+    \begin{equation}
+      v(t,\lambda) = e^{-A}z^{-c/a}\exp\left(\frac{A}{z}\right).
+    \end{equation}
+    The same manipulation of the inverse Laplace transform as in last section leads to
+    \begin{eqnarray}
+      &&\int e^{\lambda x} \frac{e^{A/z}}{z^{c/a}}d\lambda\nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\int \exp\left(\frac{bxz}{a(e^{bt}-1)}\right)\frac{e^{A/z}}{z^{c/a}}dz \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(\frac{bx}{Aa(e^{bt}-1)}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(2\left(\frac{Abx}{a(e^{bt}-1)}\right)^{1/2}\right) \nonumber\\
+      &=& \frac{b}{a(e^{bt}-1)}\exp\left(-\frac{bx}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right),
+    \end{eqnarray}
+    where we have use the fact that the inverse Laplace transform of $e^{A/z}/z^{1+\nu}$ is $(x/A)^{\nu/2}I_{\nu}(2\sqrt{Ax})$,
+    and the fundamental solution is then given by
+    \begin{equation}
+      u(t,x)=\frac{b}{a(e^{bt}-1)}\exp\left(-\frac{b(x+\xi e^{bt})}{a(e^{bt}-1)}\right)\left(e^{-bt}\frac{x}{\xi}\right)^{\frac{c-a}{2a}}I_{-1+\frac{c}{a}}\left(\frac{2b}{a(1-e^{-bt})}\left(e^{-bt}\xi x\right)^{1/2}\right).
+      \label{reflecting}
+    \end{equation}
+
+
+
+\section{CEV model}
+
+  For the underlying asset price, the CEV model assumes the following stochastic process,
+  \begin{equation}
+    dS_t=\sigma S_t^{\beta}dW_t,
+  \end{equation}
+  where $\sigma>0$ is the volatility, and $\beta>0$. Define \cite{Brecher}
+  \begin{equation}
+    X_t=\frac{S_t^{2(1-\beta)}}{\sigma^2(1-\beta)^2},
+  \end{equation}
+  and apply the Ito's lemma, we have
+  \begin{equation}
+    dX_t = \delta dt + 2\sqrt{X_t}dW_t,
+  \end{equation}
+  where
+  \begin{equation}
+    \delta = \frac{1-2\beta}{1-\beta}.
+  \end{equation}
+  Thus, the CEV model has been reduced to the problem that we have studied in the past few sections, with
+  $a=2$, $b=0$, and $c=\delta$.
+
+  The absorbing boundary condition can be imposed when $c\le a$, or $\delta\le 2$, which is equivalent to
+  $0<\beta\le 1$. The transition density for the transformed state variable $X$ is given by
+  \begin{equation}
+    p_A(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+                    I_{\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right),
+    \label{transition}
+  \end{equation}
+  where
+  \begin{equation}
+    \nu=\frac{1}{2(1-\beta)}.
+  \end{equation}
+  For the underlying, the transition density \cite{Lesniewski} can be obtained from (\ref{transition}),
+  \begin{equation}
+    p_A(S_T,T;S_0)=\frac{\left(S_0S_T^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2T}
+                  \exp\left(-\frac{S_0^{2(1-\beta)}+S_T^{2(1-\beta)}}{2(1-\beta)^2\sigma^2T}\right)
+                    I_{\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
+  \end{equation}
+
+  The reflecting boundary condition can be imposed when $c>0$, which is equivalent to
+  $0<\beta\le \frac{1}{2}$ or $\beta>1$. The transition density for the transformed state variable $X$ is given by
+  \begin{equation}
+    p_R(X_T,T;X_0)=\frac{1}{2T}\exp\left(-\frac{X_T+X_0}{2T}\right)\left(\frac{X_T}{X_0}\right)^{-\nu/2}
+                    I_{-\nu}\left(\frac{\sqrt{X_TX_0}}{T}\right).
+  \end{equation}
+  Similarly, transition density for the underlying is
+  \begin{equation}
+    p_R(S_T,T;S_0)=\frac{\left(S_0S_T^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2T}
+                  \exp\left(-\frac{S_0^{2(1-\beta)}+S_T^{2(1-\beta)}}{2(1-\beta)^2\sigma^2T}\right)
+                    I_{-\nu}\left(\frac{(S_0S_T)^{1-\beta}}{(1-\beta)^2\sigma^2T}\right).
+  \end{equation}
+
+\section{Simulation of the Heston model}
+
+  In this section, we will consider the Monte Carlo simulation of the Heston model,
+  \begin{eqnarray}
+    d\log X_t &=& -\frac{v_t}{2}dt+\sqrt{v_t}dZ_t, \\
+    dv_t &=& \kappa(\theta-v_t)dt + \sigma\sqrt{v_t}dW_t,
+  \end{eqnarray}
+  with $\langle dZ_t,dW_t\rangle = \rho dt$. Here, the parameters have the usual meaning.
+  Alternatively, the forward process can be written as
+  \begin{equation}
+    d\log X_t = -\frac{v_t}{2}dt+\rho\sqrt{v_t}dW_t + \sqrt{1-\rho^2}\sqrt{v_t}dB_t,
+  \end{equation}
+  where $\langle dB_t,dW_t\rangle = 0$.
+
+  For the variance process $v_t$, we normally impose a reflecting boundary condition. Note that,
+  when the {\it Feller condition} is satisfied,
+  \begin{equation}
+    2\kappa\theta >\sigma^2,
+  \end{equation}
+  the lower boundary is unattainable. Nevertheless, when the process is discretized in Monte Carlo
+  simulation, it is still possible to reach the lower boundary. From earlier results, the transition
+  density for the variance is given by
+  \begin{eqnarray}
+    p\left(\left. v_T\right|v_t\right)&=&\frac{1}{2}\frac{n(t,T)}{e^{-\kappa(T-t)}}
+          \exp\left(-\frac{1}{2}\left(\frac{n(t,T)}{e^{-\kappa(T-t)}}v_T+n(t,T)v_t\right)\right)
+          \left(\frac{\displaystyle \frac{n(t,T)}{e^{-\kappa(T-t)}}v_T}{n(t,T)v_t}\right)^{d/4-1/2}\nonumber\\
+          && \quad\quad\times I_{d/2-1}\left(\left(\frac{n(t,T)}{e^{-\kappa(T-t)}}v_T\times n(t,T)v_t\right)^{1/2}\right),
+  \end{eqnarray}
+  where
+  \begin{equation}
+    d=\frac{4\kappa\theta}{\sigma^2},\quad\quad\quad n(t,T) = \frac{4\kappa e^{-\kappa(T-t)}}{\sigma^2\left(1-e^{-\kappa(T-t)}\right)}.
+  \end{equation}
+  Then, the cumulative distribution of $v_T$ conditioning on $v_t$ is given by
+  \begin{equation}
+    \label{condition}
+    P\left(\left. v_T \le z\right|v_t\right) = \Upsilon\left(\frac{n(t,T) z}{e^{-\kappa(T-t)}}; d, n(t,T)v_t\right),
+  \end{equation}
+  where $\Upsilon(z;\nu,\lambda)$ is the cumulative distribution function of the non-central chi-squared distribution
+  with $\nu$ degrees of freedom and noncentrality parameter $\lambda$,
+  \begin{equation}
+    \Upsilon\left(z;\nu,\lambda\right)=\frac{1}{2}\int_0^z e^{-(x+\lambda)/2}\left(\frac{x}{\lambda}\right)^{\nu/4-1/2}
+            I_{\nu/2-1}\left(\sqrt{\lambda x}\right)dx.
+    \label{condition1}
+  \end{equation}
+
+  In the following, we will discuss several efficient simulation methods specific for the Heston model.
+
+  \subsection{Exact simulation of the variance process}
+
+    From the distribution of $v_T$ conditioning on $v_t$, (\ref{condition}), we can sample $v_T$ exactly. However, the exact
+    distribution (\ref{condition}) requires the integration of modified Bessel function. This poses a numerical problem, since
+    we need to perform the integration to invert the distribution function.
+
+    Alternatively, there are other methods to sample from a non-central chi-squared distribution. Notice that, when $d>1$, a
+    non-central chi-squared random variable with $d$ degrees of freedom and noncentrality parameter $\lambda$ can be obtained
+    from a chi-squared random variable by the following relation,
+    \begin{equation}
+      \chi_d^{\prime 2}(\lambda) \stackrel{d}{=} \left(Z+\sqrt{\lambda}\right)^2 + \chi_{d-1}^2,
+    \end{equation}
+    where $Z$ is a standard normal variable, $\stackrel{d}{=}$ denotes equality in distribution. Therefore, by sampling from
+    a standard normal distribution and a chi-squared distribution, we can obtain the desired non-central chi-squared distribution.
+
+    The above method only works when $d>1$. Another sampling method relies on the series expansion of the modified Bessel function.
+    Using Eq. (\ref{modified}), the cumulative distribution function for non-central chi-squared distribution can be written as
+    \begin{equation}
+      \Upsilon\left(z;\nu,\lambda\right) = \sum_{j=0}^{\infty} \frac{e^{-\lambda/2}(\lambda/2)^j}{j!}\frac{1}{2^{\nu/2+j}\Gamma(\nu/2+j)}
+                  \int_0^z x^{\nu/2+j-1}e^{-x/2}dx.
+    \end{equation}
+    It can be seen that the integration part of the above expression is a chi-squared distribution with $\nu+2j$ degrees of freedom,
+    and $j$ follows a Poisson distribution with parameter $\lambda/2$. Therefore, we can sample a non-central chi-squared distribution
+    $\chi_d^{\prime 2}(\lambda)$ as $\chi_{d+2N}^{ 2}$, with $N\sim {\rm Poisson}(\lambda/2)$.
+
+  \subsection{Exact simulation of the Heston model \cite{BK}}
+
+    For the simulation of the forward process, we have
+    \begin{equation}
+      \log X_T = \log X_t - \frac{1}{2}\int_t^Tv_sds + \rho\int_t^T\sqrt{v_s}dW_s
+                  + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
+    \end{equation}
+    From the variance process, we have
+    \begin{equation}
+      \int_t^T\sqrt{v_s}dW_s = \frac{1}{\sigma}\left(v_T-v_t-\kappa\theta(T-t)+\kappa\int_t^Tv_sds\right).
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      \log X_T = \log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right)
+                    + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds
+                    + \sqrt{1-\rho^2}\int_t^T\sqrt{v_s}dB_s.
+      \label{logStock}
+    \end{equation}
+    To sample $\log X_T$ conditioning on $\log X_t$ and $v_t$, we need to sample the following three components:
+    \begin{enumerate}[noitemsep]
+      \item $v_T$. As discussed in the previous section, $v_T$ can be sampled from a non-central chi-squared distribution exactly.
+      \item $\int_t^Tv_sds$. We need to sample $\int_t^Tv_sds$ conditioning on $v_t$ and $v_T$. To this end, we can use the characteristic function,
+        \begin{eqnarray}
+          \varphi(u) &=& {\rm E}\left[\left. \exp\left(iu\int_t^Tv_sds\right) \right|v_t,v_T\right] \nonumber\\
+                     &=& \frac{\gamma(u)e^{-(\gamma(u)-\kappa)(T-t)/2}(1-e^{-\kappa(T-t)})}{\kappa(1-e^{-\gamma(u)(T-t)})}\nonumber\\
+                     && \quad\quad\times
+                          \exp\left\{\frac{v_t+v_T}{\sigma^2}\left[\frac{\kappa(1+e^{-\kappa(T-t)})}{1-e^{-\kappa(T-t)}}
+                                                  -\frac{\gamma(u)(1+e^{-\gamma(u)(T-t)})}{1-e^{-\gamma(u)(T-t)}}\right]\right\} \nonumber\\
+                    && \quad\quad\times
+                    \frac{\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\gamma(u)e^{-\gamma(u)(T-t)/2}}{\sigma^2(1-e^{-\gamma(u)(T-t)})}\right]}
+                         {\displaystyle I_{d/2-1}\left[\sqrt{v_tv_T}\frac{4\kappa e^{-\kappa(T-t)/2}}{\sigma^2(1-e^{-\kappa(T-t)})}\right]},
+        \end{eqnarray}
+        where $\gamma(u)=\sqrt{\kappa^2-2iu\sigma^2}$. Then, for $\int_t^Tv_sds$, its distribution can be inverted from the
+        above characteristic function, and it can be sampled from this distribution.
+      \item $\int_t^T\sqrt{v_s}dB_s$. Since $v_t$ is independent of $B_t$, for each realization of $v_t$, $\int_t^T\sqrt{v_s}dB_s$ is normally distributed
+                with mean 0, and variance $\int_t^Tv_sds$, which has been sampled from the previous step.
+    \end{enumerate}
+
+    Finally, $\log X_T$ is normally distributed, conditioning on $\log X_t$ and one realization of the variance path $v_t$,
+    \begin{equation}
+      \log X_T \sim N\left(\log X_t + \frac{\rho}{\sigma}\left(v_T-v_t-\kappa\theta(T-t) \right)
+                    + \left[\frac{\rho\kappa}{\sigma}- \frac{1}{2}\right]\int_t^Tv_sds, \quad (1-\rho^2)\int_t^Tv_sds\right).
+    \end{equation}
+    The simulation for the forward and the variance is exact, in the price of numerical complexity.
+
+  \subsection{Quadratic exponential scheme for the variance process \cite{Andersen}}
+
+    The variance process can be efficiently simulated with approximation of the non-central chi-squared distribution, depending on the non-centraliy
+    parameter. The approximated distribution can be determined by matching the moments of the conditional mean and variance of the varaince process.
+    To this end, notice that the solution of Eq. (\ref{CIR}) is
+    \begin{equation}
+      v_T=v_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right)+\sigma\int_t^Te^{-\kappa(T-s)}\sqrt{v_s}dW_s.
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      {\rm E}\left[\left. v_T\right|v_t\right] = v_te^{-\kappa(T-t)}+\theta\left(1-e^{-\kappa(T-t)}\right),
+    \end{equation}
+    and, using Ito's isometry,
+    \begin{eqnarray}
+      {\rm Var}\left[\left. v_T\right|v_t\right] &=& \sigma^2\int_t^Te^{-2\kappa(T-s)}{\rm E}\left[\left. v_s\right|v_t\right]ds \nonumber\\
+                &=& \sigma^2\int_t^Te^{-2\kappa(T-s)}\left(v_te^{-\kappa(s-t)}+\theta\left(1-e^{-\kappa(s-t)}\right)\right)ds \nonumber\\
+                &=& \frac{\sigma^2\theta}{2\kappa}\left(1-e^{-\kappa(T-t)}\right)^2 + \frac{\sigma^2v_te^{-\kappa(T-t)}}{\kappa}\left(1-e^{-\kappa(T-t)}\right).
+    \end{eqnarray}
+
+    For large non-centrality parameter, the non-central chi-squared random variable can be approximated by a power function applied to the
+    standard normal variable,
+    \begin{equation}
+      v_T=a\left(b+Z_v\right)^2.
+      \label{Gaussian}
+    \end{equation}
+    Here, a quadratic form is used to ensure positivity of the random variable. It can be easily shown, that the mean and variance of this
+    approximation are given by
+    \begin{equation}
+      {\rm E}[v_T]=a(1+b^2),
+    \end{equation}
+    and
+    \begin{equation}
+      {\rm Var}[v_T]=2a^2(1+2b^2).
+    \end{equation}
+    Now, denote the conditional mean and variance of the real non-central chi-squared random variable as
+    \begin{equation}
+      m={\rm E}\left[\left. v_T\right|v_t\right], \quad\quad s^2 = {\rm Var}\left[\left. v_T\right|v_t\right],
+    \end{equation}
+    then it can be shown that
+    \begin{equation}
+      b=\sqrt{\frac{2}{\psi}-1+\sqrt{\frac{2}{\psi}\left(\frac{2}{\psi}-1\right)}}, \quad\quad a = \frac{m}{1+b^2},
+      \label{QE1}
+    \end{equation}
+    where $\psi=s^2/m^2$. To ensure the existence of solutions for $a$ and $b$, the condition $\psi\le 2$ must be satisfied.
+
+    For small non-centrality parameter, the non-central chi-squared density can be approximated by
+    \begin{equation}
+      P\left(v_T\in[x,x+dx]\right)=\left(p\delta(0)+(1-p)\beta e^{-\beta x}\right)dx,
+    \end{equation}
+    where $\delta(x)$ is the Dirac $\delta$-function. The inverse cumulative distribution function for this approximate density
+    is given by
+    \begin{equation}
+      \label{inverseCDF}
+      \Psi^{-1}(u)=
+      \begin{cases}
+        0 & 0 \le u < p, \\
+        \displaystyle \frac{1}{\beta}\log\left(\frac{1-p}{1-u}\right) & p\le u\le 1.
+      \end{cases}
+    \end{equation}
+    Similarly, the mean and variance of the above approximate distribution are given by
+    \begin{equation}
+      {\rm E}[v_T]=\frac{1-p}{\beta},
+    \end{equation}
+    and
+    \begin{equation}
+      {\rm Var}[v_T]=\frac{1-p^2}{\beta^2}.
+    \end{equation}
+    Mathcing with the real distribution, we have
+    \begin{equation}
+      p=\frac{\psi-1}{\psi+1}, \quad\quad \beta=\frac{1-p}{m},
+      \label{QE2}
+    \end{equation}
+    where $\psi\ge 1$ must be satisfied.
+
+    Therefore, we have the restriction that $1 \le \psi \le 2$, and we can choose a critical value in the range of $[0,2]$,
+    for example, $\psi_c=1.5$, to switch between the two approximations for simulation. The simulation procedure for the variance
+    process is summarised as follows:
+    \begin{enumerate}[noitemsep]
+      \item Given $v_t$, calculate $m$, $s^2$, and $\psi=s^2/m^2$;
+      \item Draw a random number $U_v$ from the uniform distribution on $[0,1]$;
+      \item If $\psi > \psi_c$, compute $p$ and $\beta$ from Eq. (\ref{QE2}). Define $v_T=\Psi^{-1}(U_v)$ as in Eq. (\ref{inverseCDF});
+      \item If $\psi \le \psi_c$, compute $a$ and $b$ from Eq. (\ref{QE1}), and $Z_v=\Phi^{-1}(U_v)$, where $\Phi(x)$ is the cumulative distribution
+            function for the standard normal distrubtion. Define $v_T=a\left(b+Z_v\right)^2$ as in Eq. (\ref{Gaussian});
+    \end{enumerate}
+
+  \subsection{Simulation of the forward price process}
+
+    For the simulation of the forward price process, we can use the equivalent log forward process, Eq. (\ref{logStock}). Since we have
+    obtained $v_T$ from the quadratic exponential scheme, we only need to determine the two integrals in Eq. (\ref{logStock}). Define
+    $\tau=T-t$, approximate the integrals as
+    \begin{equation}
+      \int_t^Tv_sds\simeq\left(\gamma_1v_t+\gamma_2v_T\right)\tau,
+    \end{equation}
+    and
+    \begin{equation}
+      \int_t^T\sqrt{v_s}dB_s\simeq\sqrt{\gamma_1v_t+\gamma_2v_T}\sqrt{\tau}Z_v,
+    \end{equation}
+    where $Z_v$ is a standard normal random variable. Using these approximate results, Eq. (\ref{logStock}) becomes
+    \begin{equation}
+      \log X_T = \log X_t + K_0 + K_1v_t + K_2v_T + \sqrt{K_3v_t + K_4v_T}Z_v,
+      \label{logStock2}
+    \end{equation}
+    where
+    \begin{eqnarray}
+      && K_0 = -\frac{\kappa\rho\theta}{\sigma}\tau,\quad\quad
+         K_1 = \left(\frac{\kappa\rho}{\sigma}-\frac{1}{2}\right)\gamma_1\tau-\frac{\rho}{\sigma}, \quad\quad
+         K_2 = \left(\frac{\kappa\rho}{\sigma}-\frac{1}{2}\right)\gamma_2\tau+\frac{\rho}{\sigma}, \nonumber\\
+      && K_3 = (1-\rho^2)\gamma_1\tau, \quad\quad
+         K_4 = (1-\rho^2)\gamma_2\tau.
+    \end{eqnarray}
+    Here, $\gamma_1$ and $\gamma_2$ can be set to arbitrary numbers as in various numerical integration schemes.
+
+    By exponentiating Eq. (\ref{logStock2}), the forward price is given by
+    \begin{equation}
+      X_T = X_t \exp\left(K_0 + K_1v_t + K_2v_T + \sqrt{K_3v_t + K_4v_T}Z_V\right).
+    \end{equation}
+    Clearly, this discretized forward process is not a martingale, even though the deviation is minor. To fix this
+    issue, we can replace $K_0$ with
+    \begin{equation}
+      K_0^* = -\log M -\left(K_1+\frac{1}{2}K_3\right)v_t.
+    \end{equation}
+    Denote $A=K_2+K_4/2$, the martingale correction term $M$ can be expressed in terms of $A$, depending on the
+    approximate scheme used for sampling $v_T$. If $\psi\le\psi_c$, set
+    \begin{equation}
+      M=\frac{\displaystyle \exp\left(\frac{Ab^2a}{1-2Aa}\right)}{\sqrt{1-2Aa}},
+    \end{equation}
+    as long as $A<(2a)^{-1}$. If $\psi>\psi_c$, we have
+    \begin{equation}
+      M=p + \frac{\beta(1-p)}{\beta-A},
+    \end{equation}
+    for $A<\beta$.
+
+
+\begin{thebibliography}{99}
+  \bibitem{Feller}
+    W. Feller, {\it Two Singular Diffusion Problems}, Annals of Mathematics {\bf 54}, 173 (1951).
+
+  \bibitem{Brecher}
+    See \url{http://www.fincad.com/sites/default/files/wysiwyg/Resources-Wiki/cev-process-working-paper.pdf}.
+
+  \bibitem{Lesniewski}
+    See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
+
+  \bibitem{BK}
+    M. Broadie and \"{O}. Kaya, {\it Exact Simulation of Stochastic Volatility and Other Affine Jump Diffusion Processes},
+    Operations Research {\bf 54} (2), 217 (2006).
+
+  \bibitem{Andersen}
+    L. Andersen, {\it Efficient Simulation of the Heston Stochastic Volatility Model}, \url{https://ssrn.com/abstract=946405}.
+
+\end{thebibliography}
+
+
+\end{document}

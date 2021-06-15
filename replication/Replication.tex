@@ -1,0 +1,652 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[hscale=.8,vscale=.8]{geometry}
+\usepackage{hyperref}
+
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\allowdisplaybreaks
+
+\begin{document}
+
+\title{Notes on Replication}
+\date{Dec. 32, 2999}
+
+\maketitle
+
+\section{Replication of a European Payoff}
+
+  For a vanilla European call option with spot price $S_t$, strike $K$, expiration $T$, its value at $t$ can be determined by
+  \begin{equation}
+    C(K) = e^{-r\tau}\int_{0}^{+\infty}(S_T-K)^+p(t,S_t;T,S_T)dS_T = e^{-r\tau}\int_{K}^{+\infty}(S_T-K)p(t,S_t;T,S_T)dS_T,
+  \end{equation}
+  where $r$ is the risk free rate, $p(t,S_t;T,S_T)$ is the transition density for the asset price starting from $S_t$ at $t$ and
+  ending with $S_T$ at $T$, and $\tau=T-t$. In the Black-Scholes world, the underlying process is
+  \begin{equation}
+    \frac{dS_t}{S_t}=(r-q)dt+\sigma dW_t,
+    \label{BS}
+  \end{equation}
+  where $q$ is the dividend rate. The corresponding transition density is given by
+  \begin{equation}
+    p(t,S_t;T,S_T)=\frac{1}{S_T\sqrt{2\pi\sigma^2\tau}}
+    \exp\left(-\frac{\displaystyle \left(\log\left(\frac{S_T}{S_t}\right)-\left(r-q-\frac{\sigma^2}{2}\right)\tau\right)^2}{2\sigma^2\tau}\right).
+    \label{density}
+  \end{equation}
+
+  On the other hand, if we have the call option prices for a continuum of strikes, the transition density can be recovered by
+  differentiating the call option price twice,
+  \begin{equation}
+    \frac{\partial^2C(K)}{\partial K^2}=e^{-r\tau}p(t,S_t;T,K).
+    \label{call}
+  \end{equation}
+  We can obtain the same result from put option prices, {\it i.e.},
+  \begin{equation}
+    \frac{\partial^2P(K)}{\partial K^2}=e^{-r\tau}p(t,S_t;T,K).
+    \label{put}
+  \end{equation}
+
+  Given the transition density, the price of a European contract with arbitrary payoff $f(S_T)$ at maturity is given by
+  \begin{equation}
+    V = e^{-r\tau}\int_{0}^{+\infty}f(K)p(t,S_t;T,K)dK.
+    \label{euro}
+  \end{equation}
+  Using Eqs. (\ref{call}) and (\ref{put}), Eq. (\ref{euro}) can be represented in terms of out-of-the-money (OTM) option prices,
+  \begin{equation}
+    V = \int_{0}^{F}f(K)\frac{\partial^2P(K)}{\partial K^2}dK + \int_{F}^{+\infty}f(K)\frac{\partial^2C(K)}{\partial K^2}dK,
+  \end{equation}
+  where $F$ is an arbitrary positive number. Integrating the above equation by parts twice, we have
+  \begin{equation}
+    V = e^{-r\tau}f(F) + f^{\prime}(F)\big[e^{-q\tau}S_t-e^{-r\tau}F\big] +
+           \int_{0}^{F}f^{\prime\prime}(K)P(K)dK + \int_{F}^{+\infty}f^{\prime\prime}(K)C(K)dK.
+    \label{replication}
+  \end{equation}
+  Here, we have used the call-put parity,
+  \begin{equation}
+    C(K) - P(K) = e^{-q\tau}S_t-e^{-r\tau}K.
+  \end{equation}
+  Therefore, if $F$ is chosen to be the forward price $F_T=S_te^{(r-q)\tau}$, the linear term will drop out,
+  \begin{equation}
+    V = e^{-r\tau}f(F_T) +
+           \int_{0}^{F_T}f^{\prime\prime}(K)P(K)dK + \int_{F_T}^{+\infty}f^{\prime\prime}(K)C(K)dK.
+  \end{equation}
+  This means that we can replicate a European contract with arbitry payoff with plain vanilla options.
+
+  Another useful representation of the static replication is given by
+  \begin{eqnarray}
+    f(S_T)&=&f(F)+f^{\prime}(F)\left[\left(S_T-F\right)^+-\left(F-S_T\right)^+\right]\nonumber\\
+            &&\ \ \ \ \ +\int_0^Ff^{\prime\prime}(K)\left(F-S_T\right)^+dK+\int_F^{\infty}f^{\prime\prime}(K)\left(S_T-F\right)^+dK.
+    \label{replication2}
+  \end{eqnarray}
+  This can be viewed as the forward version of Eq. (\ref{replication}).
+
+  \subsection{An Exmaple: Libor-in-arrears}
+
+    For a Libor rate with a start date $T$ and an end date $M$, the forward Libor rate is given by
+    \begin{equation}
+      L(t)\equiv L(t,T,M)=\frac{1}{\tau}\left(\frac{P(t,T)}{P(t,M)}-1\right),
+    \end{equation}
+    where $P(t,T)$ is the time $t$ price of a zero-coupon bond maturing at $T$, and $\tau=M-T$. A standard Libor payment
+    will be on the end date of the related Libor rate, and the discounted cash flow is
+    \begin{eqnarray}
+       &&E^Q\left[\frac{B(0)}{B(M)}L(T)\right]=E^M\left[\frac{P(0,M)}{P(M,M)}L(T)\right]\nonumber\\
+      =&&P(0,M)E^M\left[L(T)\right]=P(0,M)L(0).
+      \label{Libor}
+    \end{eqnarray}
+    Here, $Q$ and $M$ stand for the risk neutral and $M$-forward measures, respectively. We have also used the fact that $L(t)$
+    is a martingale in the $M$-forward measure.
+
+    This relation does not hold any more for a Libor-in-arrears (LIA) payment, which pays immediately after the Libor rate
+    is fixed, {\it i.e.}, the discounted cash flow is
+    \begin{equation}
+      V_{LIA}(0)=E^Q\left[\frac{B(0)}{B(T)}L(T)\right],
+    \end{equation}
+    where the payment is on the start date $T$, rather than the end date $M$ as in Eq. (\ref{Libor}). If we apply the same
+    change-of-numeraire technique as before, and use $M$-forward measure for convenience, we will have
+    \begin{eqnarray}
+      V_{LIA}(0)&=&E^M\left[\frac{P(0,M)}{P(T,M)}L(T)\right]=P(0,M)E^M\left[\left(1+\tau L(T)\right)L(T)\right]\nonumber\\
+                &=&P(0,M)\left(L(0)+\tau E^M\left[L(T)^2\right]\right).
+    \end{eqnarray}
+    The $E^M\left[L(T)^2\right]$ term can be replicated with call and put options on the Libor rate, known as caplets and floorlets,
+    which leads to
+    \begin{equation}
+      E^M\left[L(T)^2\right] = L(0)^2 + 2\int_{-\infty}^{L(0)}p(0,L(0);T,K)dK + 2\int_{L(0)}^{+\infty}c(0,L(0);T,K)dK,
+    \end{equation}
+    where $c(0,L(0);T,K)$ and $p(0,L(0);T,K)$ are the undiscounted caplet and floorlet prices with maturity $T$ and strike $K$.
+
+
+\section{Static Replication of Barrier Options}
+
+  Consider a down-and-in barrier option with barrier level $H < S_t$ with terminal payoff $f(S_T)$, the option price is given by
+  \begin{equation}
+    V_{DI} = e^{-r\tau}\int_{0}^{+\infty}f(K)p(t,S_t;T,K; H)dK,
+  \end{equation}
+  where $p(t,S_t;T,K; H)$ is the transition density from $S_t$ at $t$ to $K$ at $T$, while the underlying process has hit barrier $H$ at
+  least once in this time frame. The option price can be decomposed
+  into two parts,
+  \begin{equation}
+    V_{DI} = e^{-r\tau}\int_{0}^{H}f(K)p(t,S_t;T,K)dK + e^{-r\tau}\int_{H}^{+\infty}f(K)p(t,S_t;T,K;H)dK.
+    \label{decomp}
+  \end{equation}
+  The first term is identical to its European counterpart, since the terminal underlying price is below the barrier level, and the underlying
+  process must have cross the barrier level at least once. Therefore, the transition density reduces to a plain vanilla one. For the second term,
+  assume the density for the first passage time to the barrier $H$ starting from $S_t$ at $t$ is given by $\phi(t,S_t;\delta,H)$, then
+  \begin{equation}
+    p(t,S_t;T,K;H) = \int_t^T \phi(t,S_t;\delta,H)p(\delta,H;T,K)d\delta.
+  \end{equation}
+  The second term of Eq. (\ref{decomp}) becomes
+  \begin{eqnarray}
+      &&e^{-r\tau}\int_{H}^{+\infty}f(K)p(t,S_t;T,K;H)dK \nonumber\\
+    = &&e^{-r\tau}\int_t^Td\delta \phi(t,S_t;\delta,H)\int_{H}^{+\infty}dKf(K)p(\delta,H;T,K) \nonumber\\
+    = &&e^{-r\tau}\int_t^Td\delta \phi(t,S_t;\delta,H)\int_0^HdK \left(\frac{H}{K}\right)^2f\left(\frac{H^2}{K}\right)p\left(\delta,H;T,\frac{H^2}{K}\right).
+  \end{eqnarray}
+  From Eq. (\ref{density}), we have
+  \begin{eqnarray}
+      && \left(\frac{H}{K}\right)^2p\left(\delta,H;T,\frac{H^2}{K}\right) \nonumber\\
+    = && \left(\frac{H}{K}\right)^2\frac{1}{\displaystyle \frac{H^2}{K}\sqrt{2\pi\sigma^2\left(T-\delta\right)}}
+    \exp\left(-\frac{\displaystyle \left(\log\left(\frac{H}{K}\right)-\left(r-q-\frac{\sigma^2}{2}\right)(T-\delta)\right)^2}{2\sigma^2(T-\delta)}\right) \nonumber\\
+    = && \left(\frac{K}{H}\right)^k\frac{1}{\displaystyle K\sqrt{2\pi\sigma^2\left(T-\delta\right)}}
+    \exp\left(-\frac{\displaystyle \left(\log\left(\frac{K}{H}\right)-\left(r-q-\frac{\sigma^2}{2}\right)(T-\delta)\right)^2}{2\sigma^2(T-\delta)}\right) \nonumber\\
+    = && \left(\frac{K}{H}\right)^kp\left(\delta,H;T,K\right),
+  \end{eqnarray}
+  and the second term of Eq. (\ref{decomp}) becomes
+  \begin{eqnarray}
+      &&e^{-r\tau}\int_t^Td\delta \phi(t,S_t;\delta,H)\int_0^HdK f\left(\frac{H^2}{K}\right)\left(\frac{K}{H}\right)^kp\left(\delta,H;T,K\right)\nonumber\\
+    = &&e^{-r\tau}\int_0^H \left(\frac{K}{H}\right)^kf\left(\frac{H^2}{K}\right)p\left(t, S_t;T,K\right)dK,
+  \end{eqnarray}
+  where $k=1-2(r-q)/\sigma^2$. Now, the down-and-in option price becomes
+  \begin{equation}
+    V_{DI} = e^{-r\tau}\int_0^{\infty} \hat{f}(K)p\left(t, S_t;T,K\right)dK,
+  \end{equation}
+  which means that the down-and-in option with final payoff $f(S)$ at maturity can be statically replicated with
+  a European contract with terminal payoff \cite{CarrChou}
+  \begin{equation}
+    \hat{f}(S) = \left[f(S) + \left(\frac{S}{H}\right)^kf\left(\frac{H^2}{S}\right)\right]\mathcal{I}_{S<H}
+  \end{equation}
+  at maturity. It can be shown that this terminal payoff will lead to exactly the same expression for the
+  down-and-in call option price. In this case, set $f(S)=\max(S-K_c,0)$, and assume $K_c>H$, we can recover
+  the down-and-in price through Eq. (\ref{euro}), with the transition density (\ref{density}), {\it i.e.},
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-r\tau}\int_0^{H^2/K_C}\left(\frac{H^2}{K}\right)^k\left(\frac{H^2}{K}-K_c\right)\nonumber\\
+              &&\ \ \ \ \ \ \ \ \ \ \ \ \times\frac{1}{K\sqrt{2\pi\sigma^2\tau}}
+    \exp\left(-\frac{\displaystyle \left(\log\left(\frac{K}{S_t}\right)-\left(r-q-\frac{\sigma^2}{2}\right)\tau\right)^2}{2\sigma^2\tau}\right)dK.
+  \end{eqnarray}
+  By change of variable, $K=H^2/e^v$, the above integration can be transformed to
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-r\tau}H\int_{\log K_c}^{+\infty}e^{-ku}\left(e^u-K_c\right)\nonumber\\
+              &&\ \ \ \ \ \ \ \ \ \ \ \ \times\frac{1}{\sqrt{2\pi\sigma^2\tau}}
+    \exp\left(-\frac{\displaystyle \left(u-\log\left(\frac{H^2}{S_t}\right)+\left(r-q-\frac{\sigma^2}{2}\right)\tau\right)^2}{2\sigma^2\tau}\right)du.
+  \end{eqnarray}
+  Completing the squares, it can be shown that the down-and-in call price is
+  \begin{eqnarray}
+    V_{DIC} &=& e^{-q\tau}S_t\left(\frac{S_t}{H}\right)^{k-2}
+              N\left(\frac{\displaystyle \log\left(\frac{H^2}{S_tK_c}\right)+\left(r-q+\frac{\sigma^2}{2}\right)\tau}{\sigma\sqrt{\tau}}\right)\nonumber\\
+            &&\ \ \ \ - e^{-r\tau}K_c\left(\frac{S_t}{H}\right)^{k}
+              N\left(\frac{\displaystyle \log\left(\frac{H^2}{S_tK_c}\right)+\left(r-q-\frac{\sigma^2}{2}\right)\tau}{\sigma\sqrt{\tau}}\right).
+  \end{eqnarray}
+
+
+\section{Variance swap}
+
+  A variance swap is a forward contract on future realized variance. At maturity, the floating leg pays
+  \begin{equation}
+    A\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right),
+    \label{VarSwapPayoff}
+  \end{equation}
+  where $A$ is the notional amount of the variance swap, $N$ is an annualization factor and is usually set to
+  252, $n$ is the number of monitor dates, and $S$ is the stock price at market close. The fixed leg payment is
+  so determined that the variance swap has zero value at inception. In this section, we will discuss the valuation
+  and replication of the variance swap, for both continuously and discretely monitored cases. Let us start with
+  a very general result.
+
+  \subsection{Profit and loss of a delta-hedged position}
+
+    Consider the price of a European payoff $\phi(S)$ maturing at $T$, $V_{BS}(t,S_t;\sigma_{BS})$, where a constant volatility
+    is assumed throughout the life time of the contract.
+    For the discounted price, $f(t)=e^{-rt}V_{BS}(t,S_t;\sigma_{BS})$, we have
+    \begin{equation}
+      f(T)=f(0)+\int_0^Tdf(t)=f(0)+\int_0^Te^{-rt}\left[\left(-rV_{BS}+\frac{\partial V_{BS}}{\partial t}\right)dt+\frac{\partial V_{BS}}{\partial S}dS_t
+              +\frac{1}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(dS_t\right)^2\right].
+    \end{equation}
+    Assume that the underlying follows a geometric Brownian motion,
+    \begin{equation}
+      dS_t = \left(r-q\right)S_tdt + \sigma_tS_tdW_t,
+    \end{equation}
+    then
+    \begin{eqnarray}
+      f(T)&=&f(0)+\int_0^Te^{-rt}\left(-rV_{BS}+\frac{\partial V_{BS}}{\partial t}+\left(r-q\right)S_t\frac{\partial V_{BS}}{\partial S}
+                                +\frac{1}{2}\sigma_t^2S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}\right)dt\nonumber\\
+          &&\quad\quad\quad+\int_0^Te^{-rt}\sigma_tS_t\frac{\partial V_{BS}}{\partial S}dW_t.
+    \end{eqnarray}
+    Notice that  $V(t,S_t;\sigma_{BS})$ satisfies the Black-Scholes PDE,
+    \begin{equation}
+      \frac{\partial V_{BS}}{\partial t}+\left(r-q\right)S\frac{\partial V_{BS}}{\partial S}+\frac{1}{2}\sigma_{BS}^2S^2\frac{\partial^2 V_{BS}}{\partial S^2}
+      =rV_{BS},
+    \end{equation}
+    and finally, we have
+    \begin{equation}
+      f(T)=f(0)+\int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(\sigma_t^2-\sigma_{BS}^2\right)dt+\int_0^Te^{-rt}\sigma_tS_t\frac{\partial V_{BS}}{\partial S}dW_t.
+      \label{average}
+    \end{equation}
+    The expected value of the hedged position is then given by
+    \begin{equation}
+      E\left[f(T)\right]=f(0)+E\left[\int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\left(\sigma_t^2-\sigma_{BS}^2\right)dt\right].
+    \end{equation}
+    From this, it is clear that, a delta-hedged option is sensitive to the difference between realized and implied variances.
+    However, if one wants to trade
+    the realized variance, the delta-hedged option is not a good choice, since the dollar gamma is peaked at the strike price.
+    It can be shown, for a portfolio
+    of options weighted by their inversed strike squared, $1/K^2$, the portfolio will be insensitive to the stock price move.
+
+    As a side result, notice that, in an arbitrage free world, we have
+    \begin{equation}
+      E\left[f(T)\right]=f(0),
+    \end{equation}
+    which leads to
+    \begin{equation}
+      \sigma_{BS}^2=\frac{\displaystyle E\left[\int_0^Te^{-rt}\sigma_t^2S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}dt\right]}
+                         {\displaystyle E\left[\int_0^Te^{-rt}S_t^2\frac{\partial^2 V_{BS}}{\partial S^2}dt\right]}.
+    \end{equation}
+    This result implies that, the implied variance is the average of realized variance,
+    weighted by dollar gamma. It can lead to interesting approximation for the implied
+    volatility, for example, the so called ``most likely path" method. However, in practice, the approximation is rather crude.
+
+  \subsection{Replication of a continuously monitored variance swap}
+
+    In the limit of continuous monitoring, the floating leg payment of a variance swap becomes the integrated instantaneous
+    variance, $\int_0^T\sigma_u^2du$. We can use the result from previous section to determine the replication of a
+    continuously monitored variance swap.
+    Suppose we risk manage our position with zero implied volatility, {\it i.e.}, $\sigma_{BS}=0$ in Eq. (\ref{average}). Then,
+    Eq. (\ref{average}) can be written as
+    \begin{equation}
+      \int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\sigma_t^2dt
+      =f(T)-f(0)-\int_0^Te^{-rt}\sigma_tS_t\frac{\partial V_{BS}}{\partial S}dW_t.
+    \end{equation}
+    If we assume the underlying follows the stochastic process
+    \begin{equation}
+      dS_t=(r-q)S_tdt+\sigma_tS_tdW_t,
+    \end{equation}
+    the last term becomes
+    \begin{equation}
+      \int_0^Te^{-rt}\frac{S_t^2}{2}\frac{\partial^2 V_{BS}}{\partial S^2}\sigma_t^2dt
+      =f(T)-f(0)-\int_0^Te^{-rt}\frac{\partial V_{BS}}{\partial S}\left(dS_t-(r-q)S_tdt\right).
+      \label{rep1}
+    \end{equation}
+
+    Now, choose
+    \begin{equation}
+      \phi(S) = 2\left[\log\left(\frac{F}{S}\right)+\frac{S}{F}-1\right],
+    \end{equation}
+    then its price at time $t$ with spot $S_t$ is
+    \begin{equation}
+      V_{BS}(t,S_t;\sigma_{BS} = 0) = 2e^{-r(T-t)}\left[\log\left(\frac{F}{S_t}\right)-(r-q)(T-t)+\frac{S_te^{(r-q)(T-t)}}{F}-1\right].
+    \end{equation}
+    The first and second order derivatives are
+    \begin{equation}
+      \frac{\partial V_{BS}}{\partial S}=2e^{-r(T-t)}\left[\frac{e^{(r-q)(T-t)}}{F}-\frac{1}{S_t}\right],
+    \end{equation}
+    and
+    \begin{equation}
+      \frac{\partial^2 V_{BS}}{\partial S^2}=\frac{2e^{-r(T-t)}}{S_t^2},
+    \end{equation}
+    repectively. With these derivatives, Eq. (\ref{rep1}) becomes
+    \begin{eqnarray}
+      \int_0^T\sigma_t^2dt &=& 2\left[\log\left(\frac{F}{S_T}\right)+\frac{S_T}{F}-1\right]\nonumber\\
+                            && \ \ \ - 2\left[\log\left(\frac{F}{S_0}\right)-(r-q)T+\frac{S_0e^{(r-q)T}}{F}-1\right]\nonumber\\
+                            && \ \ \ - 2\int_0^T\left[\frac{e^{(r-q)(T-t)}}{F}-\frac{1}{S_t}\right]\left(dS_t-(r-q)S_tdt\right).
+    \end{eqnarray}
+    Expand the last line, we have
+    \begin{eqnarray}
+      &&\int_0^T\left[\frac{e^{(r-q)(T-t)}}{F}-\frac{1}{S_t}\right]\left(dS_t-(r-q)S_tdt\right)\nonumber\\
+      &=& \int_0^T\left[\frac{e^{(r-q)(T-t)}}{F}dS_t-\frac{dS_t}{S_t}-(r-q)S_t\frac{e^{(r-q)(T-t)}}{F}dt+(r-q)dt\right]\nonumber\\
+      &=& \frac{S_T}{F} - \frac{S_0e^{(r-q)T}}{F} + \int_0^T\frac{dS_t}{S_t} + (r-q)T,
+    \end{eqnarray}
+    where we have performed integration by parts for the third term on the second line in the above equations.
+    Finally, we have
+    \begin{eqnarray}
+      \int_0^T\sigma_t^2dt &=& 2\left[\log\left(\frac{F}{S_T}\right)+\frac{S_T}{F}-1\right]
+                                     - 2\left[\log\left(\frac{F}{S_0}\right)+\frac{S_0}{F}-1\right]\nonumber\\
+                            && \ \ \ - 2\int_0^T\left[\frac{1}{F}-\frac{1}{S_t}\right]dS_t\nonumber\\
+                           &=& 2\left[\log\left(\frac{S_0}{S_T}\right)+\int_0^T\frac{dS_t}{S_t}\right].
+    \end{eqnarray}
+    This means that a continuously monitored variance swap can be replicated by a static position of a log contract,
+    and a dynamically traded underlying position.
+
+    Now, write $\log(S_0/S_T)$ as $\log(S_0/S_*)+\log(S_*/S_T)$, and notice that the fair strike of the variance swap is
+    the risk neutral expectation of time averaged realized variance, we have
+    \begin{eqnarray}
+      K_{var} &=& E\left[\frac{1}{T}\int_0^T\sigma_t^2dt\right]\nonumber\\
+              &=& \frac{2}{T}\Bigg[(r-q)T-\frac{S_0}{S_*}e^{(r-q)T}+1-\log\left(\frac{S_*}{S_0}\right)\nonumber\\
+              &&\ \ \ \ +e^{rT}\int_0^{S_*}P(K)\frac{dK}{K^2}+e^{rT}\int_{S_*}^{+\infty}C(K)\frac{dK}{K^2}\Bigg].
+      \label{VarSwapRate}
+    \end{eqnarray}
+
+  \subsection{VIX}
+
+    In Eq. (\ref{VarSwapRate}), if we set the separator $S_*$ with the forward price of the underlying, {\it i.e.},
+    \begin{equation}
+      S_*=F_T=S_0e^{(r-q)T},
+    \end{equation}
+    the fair strike $K_{var}$ will become
+    \begin{eqnarray}
+      K_{var} &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{F_T}P(K)\frac{dK}{K^2}+\int_{F_T}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}
+                                        +\int_{K_0}^{F_T}\bigg(P(K)-C(K)\bigg)\frac{dK}{K^2}\Bigg]\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]
+                              +\frac{2}{T}\int_{K_0}^{F_T}\bigg(K-F_T\bigg)\frac{dK}{K^2}\nonumber\\
+              &=& \frac{2e^{rT}}{T}\Bigg[\int_0^{K_0}P(K)\frac{dK}{K^2}+\int_{K_0}^{+\infty}C(K)\frac{dK}{K^2}\Bigg]
+                              -\frac{1}{T}\bigg(\frac{F_T}{K_0}-1\bigg)^2.
+    \end{eqnarray}
+    After discretization, the fair strike is
+    \begin{equation}
+       K_{var} = \frac{2e^{rT}}{T}\sum_i\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{T}\bigg(\frac{F_T}{K_0}-1\bigg)^2.
+    \end{equation}
+    Here, $F_T$ is the forward index value derived from option prices. Specifically, from a strip of option prices,
+    we determine the forward index value by identifying the strike price $K_c$ at which the absolute difference between
+    call and put option prices are the smallest. Here, the call and put option prices are taken to be the average of
+    the corresponding bid and ask values. Then, the forward can be determined by
+    \begin{equation}
+      F_T = K_c + e^{rT}\left(C(K_c)-P(K_c)\right),
+    \end{equation}
+    where $r$ is the prevailing risk-free rate for option expiry $T$, which is usually taken to be the corresponding
+    US treasury yield. $K_0$ will be set to the strike level immediately below the forward value, and $\Delta K_i$ is
+    half the difference between the two adjacent strikes below and above $K_i$, {\it i.e.}, $\Delta K_i=(K_{i+1}-K_{i-1})/2$.
+    For the highest and lowest strike to be used in the option strip, $\Delta K_i$ is calculated from only one side.
+    Now, for $K_i$ greater than $K_0$, $Q(K_i)$ will be set to the out-of-money call price with strike $K_i$. For $K_i$
+    less than $K_0$, the out-of-money put price is used. For $K_0$, it is the average of the call and put option prices.
+
+    This is the basic component for the VIX index. For more details, see the VIX White Paper. \cite{VIX}
+
+  \subsection{Discretely monitored variance swap}
+
+    Now, let us consider the floating leg payment of a discretely monitored variance swap \cite{CarrLee}
+    \begin{equation}
+      V = \frac{N}{n}\sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right).
+    \end{equation}
+    Define the simple return as
+    \begin{equation}
+      R_i=\frac{S_i-S_{i-1}}{S_i},
+    \end{equation}
+    the log return can be Taylor expanded to third order in terms of the simple return,
+    \begin{equation}
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}R_i^2+\frac{1}{3}R_i^3.
+      \label{Taylor}
+    \end{equation}
+    Squaring both sides, we have
+    \begin{equation}
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=R_i^2-R_i^3.
+    \end{equation}
+    Solving for $R_i^2$ and plug back into Eq. (\ref{Taylor}),
+    \begin{equation}
+      \log\left(\frac{S_i}{S_{i-1}}\right)=R_i-\frac{1}{2}\log^2\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{6}R_i^3,
+    \end{equation}
+    which finally leads to
+    \begin{equation}
+      \log^2\left(\frac{S_i}{S_{i-1}}\right)=2R_i-2\log\left(\frac{S_i}{S_{i-1}}\right)-\frac{1}{3}R_i^3.
+    \end{equation}
+    Therefore, the floating leg payment becomes
+    \begin{equation}
+      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)=\sum_{i=1}^n\frac{2}{S_{i-1}}(S_i-S_{i-1})-2\log\left(\frac{S_n}{S_0}\right)-\frac{1}{3}\sum_{i=1}^nR_i^3.
+    \end{equation}
+    Using Eq. (\ref{replication2}), $\log S_n$ can be expanded around $S_0$,
+    \begin{equation}
+      \log S_n = \log S_0 +\frac{1}{S_0}\left(S_n-S_0\right)-\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}-\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2},
+    \end{equation}
+    we can obtain the desired decomposition,
+    \begin{eqnarray}
+      \sum_{i=1}^n\log^2\left(\frac{S_i}{S_{i-1}}\right)&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]-\frac{1}{3}\sum_{i=1}^nR_i^3
+    \end{eqnarray}
+    If the third order term sums to a negative number, the variance swap will be mispriced when only the first two terms are
+    taken into account for replication.
+
+    If we use the simple return in the variance swap floating leg payment, instead of the log return, we can obtain a similar decomposition,
+    \begin{eqnarray}
+      \sum_{i=1}^n\left(\frac{S_i}{S_{i-1}}\right)^2&=&2\sum_{i=1}^n\left(\frac{1}{S_{i-1}}-\frac{1}{S_0}\right)(S_i-S_{i-1})\nonumber\\
+          && + 2\left[\int_0^{S_0}\left(K-S_n\right)^+\frac{dK}{K^2}+\int_{S_0}^{\infty}\left(S_n-K\right)^+\frac{dK}{K^2}\right]+\frac{2}{3}\sum_{i=1}^nR_i^3,
+    \end{eqnarray}
+    which differs only by the third order term. We can see that, if the cubed simple return sums to a negative number and the variance swap is priced and risk
+    managed with static positions in options, then the variance swap with log return is preferred from a buyer's perspective.
+
+
+\section{Weighted variance swap}
+
+  The method developed in the previous section can be applied to other types of variance swap. We will show a few examples in
+  this section.
+
+  \subsection{Corridor variance swap}
+
+    The floating leg payment of the corridor variance swap is
+    \begin{equation}
+      A\times\frac{N}{n}\sum_{i=1}^{n}\mathcal{I}_{L\leq S_i \leq H}\log^2\left(\frac{S_i}{S_{i-1}}\right),
+    \end{equation}
+    {\it i.e.}, the contribution to the realized variance is only taken into account if the stock price falls
+    in the corridor $[L,H]$.
+
+    Take \cite{CarrMadan}
+    \begin{equation}
+      \phi(S) = 2\left[\log\left(\frac{F}{S^{\prime}}\right)+S\left(\frac{1}{F}-\frac{1}{S^{\prime}}\right)\right],
+    \end{equation}
+    where
+    \begin{equation}
+      S^{\prime} = {\rm max}\left[L, {\rm min}\left(S,H\right)\right]
+    \end{equation}
+    is floored at $L$ and capped at $H$, {\it i.e.}, the value of $S^{\prime}$ is restricted in the corridor $[L,H]$.
+    Following the same argument as for the variance swap, we have
+    \begin{eqnarray}
+      \int_0^T\sigma_t^2\mathcal{I}_{L\leq S \leq H}dt &=& 2\left[\log\left(\frac{F}{S_T^{\prime}}\right)+\frac{S_T^{\prime}}{F}-1\right]
+                                     - 2\left[\log\left(\frac{F}{S_0}\right)+\frac{S_0}{F}-1\right]\nonumber\\
+                            && \ \ \ - 2\int_0^T\left[\frac{1}{F}-\frac{1}{S_t^{\prime}}\right]dS_t.
+    \end{eqnarray}
+
+  \subsection{Gamma swap}
+
+    The floating leg payment of the gamma swap is
+    \begin{equation}
+      A\times\frac{N}{n}\sum_{i=1}^{n}\frac{S_i}{S_0}\log^2\left(\frac{S_i}{S_{i-1}}\right).
+    \end{equation}
+
+    Take
+    \begin{equation}
+      \phi(S) = \frac{2}{S_0}\left[S\log\left(\frac{S}{F}\right)-S+F\right],
+    \end{equation}
+    then
+    \begin{eqnarray}
+      \int_0^T\frac{S}{S_0}\sigma_t^2dt &=& \frac{2}{S_0}\left[S_T\log\left(\frac{S_T}{F}\right)-S_T+F\right]
+                                     - \frac{2}{S_0}\left[S_0\log\left(\frac{S_0}{F}\right)-S_0+F\right]\nonumber\\
+                            && \ \ \ - \frac{2}{S_0}\int_0^T\log\left(\frac{S_t}{F}\right)dS_t.
+    \end{eqnarray}
+
+
+\section{Volatility swap}
+
+  A volatility swap is a forward contract on future realized volatility.  The volatility swap payoff lies closely
+  to the variance swap, and the floating leg payment is
+  \begin{equation}
+    A\sqrt{\times\frac{N}{n}\sum_{i=1}^{n}\log^2\left(\frac{S_i}{S_{i-1}}\right)},
+  \end{equation}
+  {\it i.e.}, the square root of Eq. (\ref{VarSwapPayoff}). Due to the square root, volatility swap is more complicated
+  than variance swap in valuation and hedging. The valuation of a volatility swap generally requires a stochastic volatility
+  model, and depends on the correlation between the underlying and the stochastic volatility processes. However, as shown by
+  Carr and Lee \cite{CarrLee2}, there exists model-free replication strategies for the volatility swaps, insensitive to the correlation in
+  the first oder.
+
+  \subsection{Valuation under stoachstic volatility}
+    For a European payoff $F(S,\omega)$, where $\omega$ represents other stochastic factors that affect the payoff,
+    define
+    \begin{equation}
+      F^{BS}\left(S, \sigma, \omega\right) = \int_0^{+\infty}F(Sy,\omega)
+                          \frac{1}{y\sqrt{2\pi\sigma^2}}\exp\left(-\frac{\left(y+\sigma^2/2\right)^2}{2\sigma^2}\right)dy.
+    \end{equation}
+    This gives the Black-Scholes result if there is no $\omega$ dependence.
+
+    Consider the following stochastic process for an underlying,
+    \begin{equation}
+      dS_t=\sqrt{1-\rho^2}\sigma_tS_tdW_{1t}+\rho\sigma_tS_tdW_{2t},
+      \label{BS1}
+    \end{equation}
+    where the volatility process $\sigma_t$ is independent on the Brownian motion $W_1$, and the underlying is correlated
+    with the volatility with correlation $\rho$. Let $X_t\equiv\log(S_t/S_0)$, then
+    \begin{equation}
+      dX_t=-\frac{1-\rho^2}{2}\sigma_t^2dt+\sqrt{1-\rho^2}\sigma_tdW_{1t}-\frac{\rho^2}{2}\sigma_t^2dt+\rho\sigma_tS_tdW_{2t}.
+    \end{equation}
+    Conditioning on $W_1$, $X_t$ is normally distributed,
+    \begin{equation}
+      X_T\sim N\left(X_t+\log M_{t,T}(\rho)-\frac{1-\rho^2}{2}\bar\sigma_{t,T}^2dt, \sqrt{1-\rho^2}\bar\sigma_{t,T}\right),
+    \end{equation}
+    where
+    \begin{equation}
+      M_{t,T}(\rho) = \exp\left(-\frac{\rho^2}{2}\int_t^T\sigma_u^2du+\rho\int_t^T\sigma_udW_u\right),
+    \end{equation}
+    and
+    \begin{equation}
+      \bar\sigma_{t,T}^2=\int_t^T\sigma_u^2du.
+    \end{equation}
+    Now, apply repeated expectation, we have
+    \begin{equation}
+      E_t\left[F(S_T)\right]=E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right].
+    \end{equation}
+    Clearly, this result depends on the correlation $\rho$. If we can find a payoff $F(S)$ which can render a correlation-insensitive
+    result, or at least correlation-insensitive locally around $\rho=0$, then we can have (nearly) model-free valuation for the volatility
+    swap. This can be achieved by expanding the above result around $\rho=0$,
+    \begin{eqnarray}
+             E_t\left[F(S_T)\right]
+      &=&E_t\left[F^{BS}\left(S_tM_{t,T}(\rho),\bar\sigma_{t,T}\sqrt{1-\rho^2}\right)\right]\nonumber\\
+      &=&E_t\left[F^{BS}(S_t,\bar\sigma_{t,T})\right]
+              + \rho S_tE_t\left[\frac{\partial F^{BS}(S_t,\bar\sigma_{t,T})}{\partial S}
+                              \int_t^T\sigma_udW_u\right].
+      \label{immune}
+    \end{eqnarray}
+    If $\partial F^{BS}/\partial S$ does not depend on $\bar\sigma_{t,T}$, then the expectation in the last line will be zero,
+    and the above result will be correlation-insensitive, with an error of order $O(\rho^2)$.
+
+    \subsection{Characteristic function of realized variance}
+    Define
+    \begin{equation}
+      X_t\equiv\log\frac{S_t}{S_0},
+    \end{equation}
+    and
+    \begin{equation}
+      \langle X \rangle_t\equiv\int_0^t\sigma_u^2du.
+    \end{equation}
+    Assuming the underlying process Eq. (\ref{BS1}), these are related by
+    \begin{equation}
+      \langle X \rangle_t=-2X_t+\int_0^t\frac{2}{S_u}dS_u.
+    \end{equation}
+    Consider the realized variance from $t$ to $T$,
+    \begin{equation}
+      X_T-X_t=-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right) + \int_t^T\sigma_udW_u,
+    \end{equation}
+    which means that $X_T-X_t$ is normally distributed, {\it i.e.},
+    \begin{equation}
+      X_T-X_t\sim N\left(-\frac{1}{2}\left(\langle X \rangle_T - \langle X \rangle_t\right), \langle X \rangle_T - \langle X \rangle_t\right).
+    \end{equation}
+    Therefore,
+    \begin{equation}
+      E_t\left[\exp\left\{p\left(X_T-X_t\right)\right\}\right] =
+      E_t\left[\exp\left\{\frac{1}{2}\left(p^2-p\right)\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right].
+    \end{equation}
+    Denote $\lambda=(p^2-p)/2$, we can solve $p$ for $\lambda$, and get
+    \begin{equation}
+      p=\frac{1}{2}\pm\sqrt{\frac{1}{4}+2\lambda}.
+    \end{equation}
+    So, the characteristic function for the realized variance is
+    \begin{equation}
+    E_t\left[\exp\left\{\lambda\left(\langle X \rangle_T - \langle X \rangle_t\right)\right\}\right]
+       = E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right].
+    \end{equation}
+
+    \subsection{Correlation-insensitive replication of a volatility swap}
+      Now, let us consider the replication and valuation of the volatility swap. Use the following identity,
+      \begin{equation}
+        \sqrt{q} = \frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\frac{1-2^{-zq}}{z^{3/2}}dz,
+      \end{equation}
+      the floating leg payment of the volatility swap can be expressed as
+      \begin{equation}
+        E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
+          =\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}
+          \left(1-\exp\left\{-z\left(\langle X \rangle_T - \langle X \rangle_t+q\right)\right\}\right)\right]
+          \frac{dz}{z^{3/2}}.
+      \end{equation}
+      Here, we have considered a very general scenario, so that we can handle both a newly issued volatility
+      swap and a seasoned one.
+
+      The integration and the expectation in the above equation can be exchanged, then
+      \begin{eqnarray}
+                          E_t\left[\sqrt{\langle X \rangle_T - \langle X \rangle_t+q}\right]
+        &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}E_t\left[\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right]\right)\frac{dz}{z^{3/2}}\nonumber\\
+        &=&\frac{1}{2\sqrt{\pi}}E_t\left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\exp\left\{p_{\pm}\left(X_T-X_t\right)\right\}\right)\frac{dz}{z^{3/2}}\right].
+      \end{eqnarray}
+      Here,
+      \begin{equation}
+        p_{\pm}=\frac{1}{2}\pm\sqrt{\frac{1}{4}-2z},
+      \end{equation}
+      and $\theta_++\theta_-=1$. We can use the freedom in choosing $\theta_{\pm}$ to achieve the correlation immunity. With zero correlation, $\rho=0$,
+      $S_T$ is lognormally distributed. The expectation in the above equation can be transform into an integration with respect to a lognormal density with
+      parameters $(-v/2, v)$. Then, the derivative in Eq. (\ref{immune}) becomes
+      \begin{eqnarray}
+        \frac{\partial F^{BS}(S_t)}{\partial s} &=& \frac{1}{2\sqrt{\pi}}\left.\frac{\partial}{\partial s}\right|_{s=S_t}\int_0^{+\infty}
+                    \left[\int_0^{+\infty}\sum_{\pm}\theta_{\pm}\left(1-e^{-zq}\left(sy/S_t\right)^{p_{\pm}}\right)\frac{dz}{z^{3/2}}\right]\phi_v(y)dy\nonumber\\
+                    &=&\frac{1}{2\sqrt{\pi}}\int_0^{+\infty}\int_0^{+\infty}\frac{-e^{-zq}\left(\theta_+ p_+ y^{p_+}+\theta_- p_- y^{p_-}\right)}{S_tz^{3/2}}\phi_v(y)dzdy.
+      \end{eqnarray}
+      Since
+      \begin{equation}
+        \int_0^{+\infty}y^{p_+}\phi_v(y)dy = \int_0^{+\infty}y^{p_-}\phi_v(y)dy,
+      \end{equation}
+      the correlation immunity can be achieved by
+      \begin{equation}
+        \theta_+ p_+ + \theta_- p_- = 0,
+      \end{equation}
+      which leads to
+      \begin{equation}
+        \theta_{\pm}=\frac{1}{2}\mp\frac{1}{2\sqrt{1-8z}}.
+      \end{equation}
+
+      Finally, the correlation-immune price of a volatility swap is given by
+      \begin{equation}
+        E_t\left[\sqrt{\langle X \rangle_T}\right] = E_t\left[G_{SVS}\left(S_T,S_t,\langle X \rangle_t\right)\right],
+      \end{equation}
+      where
+      \begin{equation}
+        G_{SVS}\left(S_T,S_t,q\right) = \frac{1}{2\sqrt{\pi}}\int_t^{+\infty}\left(\theta_+\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_+}\right]
+                                                                                + \theta_-\left[1-e^{-zq}\left(\frac{S_T}{S_t}\right)^{p_-}\right]\right)\frac{dz}{z^{3/2}}.
+      \end{equation}
+
+      At inception, the above expression can be simplified,
+      \begin{equation}
+        E_0\left[\sqrt{\langle X \rangle_T}\right] = E_0\left[\psi(S_T)\right],
+      \end{equation}
+      where $\psi(S)=\phi(\log(S/S_0))$, and
+      \begin{equation}
+        \phi(x)=\sqrt{\frac{\pi}{2}}e^{x/2}\left|xI_0\left(\frac{x}{2}\right)-xI_1\left(\frac{x}{2}\right)\right|.
+      \end{equation}
+      Here, $I_{\nu}$ is the modified Bessel function of order $\nu$.
+
+  \section{Realized variance and volatility options}
+
+
+\begin{thebibliography}{99}
+  \bibitem{CarrChou}
+    Peter Carr and Andrew Chou, {\it Breaking Barriers}, Risk {\bf 10}(9), 139 (1997).
+
+  \bibitem{CarrLee}
+    Peter Carr and Roger Lee, {\it Volatility Derivatives}, Annu. Rev. Financ. Econ. {\bf 1}, 319 (2009).
+
+  \bibitem{CarrMadan}
+    Peter Carr and Dilip Madan, {\it Towards a Theory of Volatility Trading}.
+
+  \bibitem{VIX}
+    {\it VIX White Paper}, \url{https://www.cboe.com/micro/vix/vixwhite.pdf}.
+
+  \bibitem{CarrLee2}
+    Peter Carr and Roger Lee, {\it Robust Replication of Volatility Derivatives}, \url{https://math.uchicago.edu/~rl/rrvd.pdf}.
+
+\end{thebibliography}
+
+
+\end{document}

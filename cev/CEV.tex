@@ -1,0 +1,682 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage[hscale=.8,vscale=.8]{geometry}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Notes on CEV Model}
+\date{Dec. 32, 2999}
+
+\maketitle
+
+\section{Fokker-Planck Equation}
+
+  Assume the forward process follows the CEV process,
+  \begin{equation}
+    dS_t=\sigma S_t^{\beta}dW_t,
+    \label{CEV}
+  \end{equation}
+  with $\beta < 1$, the corresponding Fokker-Planck equation is given by
+  \begin{equation}
+    -\frac{\partial p(0,s_0;t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
+    \left(s^{2\beta}p(0,s_0;t,s)\right) = 0,
+    \label{FP}
+  \end{equation}
+  with the initial condition
+  \begin{equation}
+    p(0,s_0;0,s) = \delta(s-s_0),
+    \label{initial}
+  \end{equation}
+  where $\delta(x)$ is the Dirac delta function. Since the CEV process is time homogeneous, we do not need
+  to make the initial time explicit, and we will write $p(t,s)\equiv p(0,s_0;t,s)$.
+
+  Define the Laplace transform of the forward transition density $p(t,s)$ as \cite{Lesniewski}
+  \begin{equation}
+    p(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda, s)d\lambda,
+    \label{Laplace}
+  \end{equation}
+  the Fokker-Planck equation (\ref{FP}) becomes
+  \begin{equation}
+    \frac{\partial^2g(\lambda,s)}{\partial s^2}+\frac{4\beta}{s}\frac{\partial g(\lambda,s)}{\partial s}
+    + \left(\frac{2\lambda}{\sigma^2 s^{2\beta}}+\frac{2\beta(2\beta-1)}{s^2}\right)g(\lambda, s) = 0.
+    \label{FP2}
+  \end{equation}
+
+  Following \cite{Bessel}, if $u(x)$ satisfies the Bessel equation of order $\nu$,
+  \begin{equation}
+    u^{\prime\prime}+\frac{1}{x}u^{\prime}+\left(1-\frac{\nu^2}{x^2}\right)u=0,
+  \end{equation}
+  and let $y(x)=x^au(bx^c)$, then $y(x)$ satisfies
+  \begin{equation}
+    y^{\prime\prime}+\frac{1-2a}{x}y^{\prime}+\left(b^2c^2x^{2c-2}+\frac{a^2-\nu^2c^2}{x^2}\right)y=0.
+  \end{equation}
+  Comparing the coefficients with Eq. (\ref{FP2}), we have
+  \begin{equation}
+    a=\frac{1}{2}\left(1-4\beta\right),\quad\quad
+    b=\frac{2\nu\sqrt{2\lambda}}{\sigma}=\frac{\sqrt{2\lambda}}{\sigma(1-\beta)},\quad\quad
+    c=\frac{1}{2\nu}=1-\beta,\quad\quad
+    \nu=\frac{1}{2(1-\beta)}.
+  \end{equation}
+  Then, the general solution to Eq. (\ref{FP2}) is given by
+  \begin{equation}
+    g(\lambda, s)=s^{(1-4\beta)/2}\left[A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
+                                       +B_{\nu}(\lambda)Y_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\right],
+    \label{solution}
+  \end{equation}
+  where $J_{\nu}(x)$ and $Y_{\nu}(x)$ are the Bessel functions of the first and second kind, respectively. To determine the
+  coefficients $A_{\nu}(\lambda)$ and $B_{\nu}(\lambda)$, and subsequently the forward transition density $p(t,s)$, boundary condition
+  at $s=0$ is needed. To this end, we can write down the asymptotic expansion of Eq. (\ref{solution}),
+  \begin{eqnarray}
+    s^{2\beta}g(\lambda,s)&\sim& \left(\left(A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)\right)
+                  \left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{\nu}s\right)\left[\frac{1}{\Gamma(1+\nu)}
+              -\frac{1}{\Gamma(2+\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right]\nonumber\\
+              &&-\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{-\nu}
+              \left[\frac{1}{\Gamma(1-\nu)}
+              -\frac{1}{\Gamma(2-\nu)}\left(\frac{\nu\sqrt{2\lambda}}{\sigma}\right)^{2}s^{\frac{1}{\nu}}\right].
+  \end{eqnarray}
+  Here, we have used the series representation of the Bessel function of the first and second kind
+  \begin{equation}
+    J_{\nu}(x)=\sum_{m=0}^{+\infty}\frac{(-1)^m}{m!\Gamma(m+\nu+1)}\left(\frac{x}{2}\right)^{2m+\nu},
+  \end{equation}
+  and
+  \begin{equation}
+    Y_{\nu}(x)=\frac{J_{\nu}(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)}.
+  \end{equation}
+
+  The asysmptotics of $p(t,s)$ for small $s$ have the form of $p_A(t,s)\sim s^{1-2\beta}$ and $p_R(t,s)\sim s^{-2\beta}$.
+  The latter exists only $\beta < 1/2$. Otherwise, the norm will diverge around 0.
+  Consider the Fokker-Planck equation (\ref{FP}), it can be expressed in the following current conservation form,
+  \begin{equation}
+    \frac{\partial p(t,s)}{\partial t} + \frac{\partial j(t,s)}{\partial s} = 0,
+  \end{equation}
+  with the current given by
+  \begin{equation}
+    j(t,s) = -\frac{1}{2}\sigma^2\frac{\partial }{\partial s}\left(s^{2\beta}p(t,s)\right).
+  \end{equation}
+  With the asymptotics of $p(t,s)$, we can see that the current is a constant for $p_A(t,s)$, and vanishes for $p_R(t,s)$.
+  These correspond to an absorbing boundary condition for $p_A(t,s)$, and a reflecting boundary condition for $p_R(t,s)$.
+
+  Now, consider an arbitrary function $f(s)$. From the Fokker-Planck equation (\ref{FP}), we
+  have
+  \begin{equation}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2\int f(s)\frac{\partial^2}{\partial s^2}
+    \left(s^{2\beta}p(t,s)\right)ds.
+  \end{equation}
+  Integrating the right hand side by parts twice, we have
+  \begin{eqnarray}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) &=& \frac{1}{2}\sigma^2\int f^{\prime\prime}(s)s^{2\beta}p(t,s)ds\nonumber \\
+          && + \left . \frac{1}{2}\sigma^2\left[f^{\prime}(s)s^{2\beta}p(t,s) - f(s)\frac{\partial}{\partial s}
+                \left(s^{2\beta}p(t,s)\right)\right]\right|_{s=0}.
+    \label{conservation}
+  \end{eqnarray}
+  Let $f(s)\equiv 1$, it can be seen that the right hand side of Eq. (\ref{conservation}) does not vanish for absorbing
+  boundary condition, and is zero for reflecting boundary condition. Therefore, the total probability is not conserved for
+  the absorbing boundary condition, and is conserved for the reflecting boundary condition.
+
+  Now consider $f(s)\equiv s$. The right hand side of Eq. (\ref{conservation}) will vanish for absorbing
+  boundary condition, implying that $S_t$ is a martingale under the absorbing boundary condition, but not for reflecting
+  boundary condition.
+
+  Finally, let us consider the call payoff, $f(s)=(s-K)^+$. Then, Eq. (\ref{conservation}) becomes
+  \begin{equation}
+    \frac{\partial}{\partial t}\left(\int f(s)p(t,s)ds\right) = \frac{1}{2}\sigma^2K^{2\beta}p(t,K),
+  \end{equation}
+  irrespective of the boundary condition, which gives the call option price as
+  \begin{equation}
+    C(t,S_t,T,K) = \int (s-K)^+p(T,s)ds = (S_t-K)^++\frac{1}{2}\sigma^2\int_t^T K^{2\beta}p(u,K)du.
+    \label{TimeValue}
+  \end{equation}
+  However, for the put payoff, there will be an additional boundary term for the reflecting boundary condition.
+
+
+
+\section{Absorbing boundary condition}
+
+  The absorbing boundary condition implies that $B_{\nu}(\lambda)=0$, which leads to
+  \begin{equation}
+    g(\lambda, s)=s^{(1-4\beta)/2}A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
+  \end{equation}
+  To determine the coefficient $A_{\nu}(\lambda)$, initial condition will be needed. From Eq. (\ref{Laplace}), the transition
+  density is given by
+  \begin{equation}
+    p_A(t,s)=\int_0^{+\infty}e^{-\lambda t}g(\lambda,s)d\lambda
+          =s^{(1-4\beta)/2}\int_0^{+\infty}e^{-\lambda t}
+          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
+  \end{equation}
+  Take into account of the initial condition (\ref{initial}), we have
+  \begin{equation}
+    \delta(s-s_0)=s^{(1-4\beta)/2}\int_0^{+\infty}
+          A_{\nu}(\lambda)J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)d\lambda.
+  \end{equation}
+  Now, multiply both sides by
+  $$
+    \sqrt{s}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right),
+  $$
+  and integrate over $s$, we will have
+  \begin{eqnarray}
+      \sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)
+    &=&  \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+         \int_0^{+\infty}ds s^{1-2\beta}
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}s^{\frac{1}{2\nu}}\right)
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)\nonumber\\
+    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+         \int_0^{+\infty}du u
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}u\right)
+         J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}u\right) \nonumber\\
+    &=& 2\nu \int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+          \frac{\displaystyle \delta\left(\frac{2\nu\sqrt{2\lambda}}{\sigma} - \frac{2\nu\sqrt{2\lambda^{\prime}}}{\sigma}\right)}
+            {\displaystyle \frac{2\nu\sqrt{2\lambda}}{\sigma}}\nonumber\\
+    &=& \frac{\sigma^2}{2\nu}\int_0^{+\infty}d\lambda^{\prime} A_{\nu}(\lambda^{\prime})
+          \delta(\lambda - \lambda^{\prime})\nonumber\\
+    &=& \frac{\sigma^2}{2\nu}A_{\nu}(\lambda).
+  \end{eqnarray}
+  Here, we have used the Hankel transform
+  \begin{equation}
+    \int_0^{+\infty}rJ_{\nu}(kr)J_{\nu}(k^{\prime}r)=\frac{\delta(k-k^{\prime})}{k},
+  \end{equation}
+  and the property of delta function,
+  \begin{equation}
+    \delta\left(f(x)\right)=\frac{\delta(x)}{|f^{\prime}(0)|}.
+  \end{equation}
+  Now, we have
+  $$
+    A_{\nu}(\lambda)=\frac{2\nu}{\sigma^2}\sqrt{s_0}J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right),
+  $$
+  the transition density can be calculated,
+  \begin{eqnarray}
+    p_A(t,s) &=& \frac{2\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-\lambda t}
+                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right)
+                J_{\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s_0^{\frac{1}{2\nu}}\right)d\lambda\nonumber\\
+           &=& \frac{4\nu}{\sigma^2}\left(s_0s^{1-4\beta}\right)^{1/2}\int_0^{+\infty}e^{-tu^2} u
+                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s^{\frac{1}{2\nu}}u\right)
+                J_{\nu}\left(\frac{\sqrt{8}\nu}{\sigma}s_0^{\frac{1}{2\nu}}u\right)du\nonumber\\
+           &=& \frac{2\nu}{\sigma^2t}\left(s_0s^{1-4\beta}\right)^{1/2}
+               \exp\left(-\frac{2\nu^2}{\sigma^2t}\left(s_0^{\frac{1}{\nu}}+s^{\frac{1}{\nu}}\right)\right)
+               I_{\nu}\left(\frac{4\nu^2}{\sigma^2t}\left(s_0s\right)^{\frac{1}{2\nu}}\right),
+    \label{density1}
+  \end{eqnarray}
+  where we have used the result \cite{DLMF1}
+  \begin{equation}
+    \int_0^{+\infty}e^{-tu^2}uJ_{\nu}(au)J_{\nu}(bu)du=\frac{1}{2t}\exp\left(-\frac{a^2+b^2}{4t}\right)I_{\nu}\left(\frac{ab}{2t}\right),
+  \end{equation}
+  and $I_{\nu}(x)$ is the modified Bessel function of the first kind.
+
+  Finally, the transition density is given by
+  \begin{equation}
+    p_A(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+    I_{\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
+    \label{pA}
+  \end{equation}
+
+
+
+\section{Reflecting boundary condition}
+
+  Consider the reflecting boundary condition. It can be shown, to impose this boundary condition, we must have
+  \begin{equation}
+    A_{\nu}(\lambda)+B_{\nu}(\lambda)\cot(\nu\pi)=0,
+  \end{equation}
+  and
+  \begin{equation}
+    \frac{1}{\nu}-1\geq 0,
+  \end{equation}
+  which is equivalent to
+  \begin{equation}
+    \beta \leq \frac{1}{2}.
+  \end{equation}
+  Now, we have
+  \begin{equation}
+    g(\lambda,x)=-s^{(1-4\beta)/2}\frac{B_{\nu}(\lambda)}{\sin(\nu\pi)}J_{-\nu}\left(\frac{2\nu\sqrt{2\lambda}}{\sigma}s^{\frac{1}{2\nu}}\right).
+  \end{equation}
+  Proceed in the same way as the absorbing boundary condition, the transition density is then given by
+  \begin{equation}
+    p_R(t,s)=\frac{\left(s_0s^{1-4\beta}\right)^{1/2}}{(1-\beta)\sigma^2t}
+    \exp\left(-\frac{s_0^{2(1-\beta)}+s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+    I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right).
+    \label{pR}
+  \end{equation}
+
+\section{Normalization}
+
+  Given the transition densities, (\ref{pA}) and (\ref{pR}), the normalization can be obtained by a simple integration with respect to $s$.
+  To see that the total density is preserved for the reflecting boundary condition, introduce the following variables,
+  \begin{equation}
+    \alpha = \frac{2\nu}{\sigma\sqrt{t}},\quad b = \alpha s_0^{{\frac{1}{2\nu}}}, \quad c = \alpha s^{{\frac{1}{2\nu}}}.
+  \end{equation}
+  Notice that
+  \begin{equation}
+    ds=\frac{2\nu}{\alpha^{2\nu}}c^{2\nu-1}dc,
+  \end{equation}
+  integration of (\ref{pR}) becomes
+  \begin{eqnarray}
+      \int_0^{+\infty}p_R(t,s)ds
+    &=&  \frac{s_0^{1/2}}{(1-\beta)\sigma^2t}
+         \exp\left(-\frac{s_0^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right) \nonumber\\
+      && \quad\times \int_0^{+\infty}s^{1-4\beta}\exp\left(-\frac{s^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right)
+         I_{-\nu}\left(\frac{\left(s_0s\right)^{1-\beta}}{(1-\beta)^2\sigma^2t}\right)ds \nonumber\\
+    &=&  \frac{\alpha^2}{2\nu}\left(\frac{b}{\alpha}\right)^{\nu}e^{-b^2/2}\int_0^{+\infty}\left(\frac{c}{\alpha}\right)^{2-3\nu}
+         e^{-c^2/2}I_{-\nu}\bigg(bc\bigg)\cdot \frac{2\nu}{\alpha^{2\nu}}c^{2\nu-1}dc \nonumber\\
+    &=&  b^{\nu}e^{-b^2/2}\int_0^{+\infty}c^{1-\nu}
+         e^{-c^2/2}I_{-\nu}\bigg(bc\bigg)dc.
+  \end{eqnarray}
+  From the identity,
+  \begin{equation}
+    \int_0^{+\infty}t^{\nu+1}e^{-p^2t^2}I_{\nu}\bigg(bt\bigg)dt = \frac{b^v}{\left(2p^2\right)^{\nu+1}}\exp\left(\frac{b^2}{4p^2}\right),
+  \end{equation}
+  it can be easily verified that the transition density under the reflecting boundary condition is indeed normalized to 1.
+
+  Similarly, for (\ref{pA}), we have
+  \begin{equation}
+    \int_0^{+\infty}p_A(t,s)ds = b^{\nu}e^{-b^2/2}\int_0^{+\infty}c^{1-\nu}e^{-c^2/2}I_{\nu}\bigg(bc\bigg)dc.
+  \end{equation}
+  The only difference is the sign of the order of the modified Bessel function, which prevents us from applying the above identity.
+  To this end, we can expand $I_{\nu}(x)$ into a series,
+  \begin{equation}
+    I_{\nu}\bigg(bc\bigg)=\sum_{k=0}^{\infty}\frac{1}{k!\Gamma\left(k+\nu+1\right)}\left(\frac{bc}{2}\right)^{2k+\nu},
+  \end{equation}
+  and the integral becomes
+  \begin{eqnarray}
+    \int_0^{+\infty}p_A(t,s)ds &=& b^{\nu}e^{-b^2/2}\sum_{k=0}^{\infty}\frac{1}{k!\Gamma\left(k+\nu+1\right)}\left(\frac{b}{2}\right)^{2k+\nu}
+                                   \int_0^{+\infty}c^{2k+1}e^{-c^2/2}dc \nonumber\\
+                               &=& e^{-b^2/2}\sum_{k=0}^{\infty}\frac{1}{\Gamma\left(k+\nu+1\right)}\left(\frac{b^2}{2}\right)^{k+\nu}\nonumber\\
+                               &=& \frac{1}{\Gamma(\nu)}\gamma\left(\nu, \frac{b^2}{2}\right)\nonumber\\
+                               &=& 1 - \frac{1}{\Gamma(\nu)}\Gamma\left(\nu, \frac{s_0^{2(1-\beta)}}{2(1-\beta)^2\sigma^2t}\right).
+  \end{eqnarray}
+  Here, the lower incomplete gamma function is defined as
+  \begin{equation}
+    \gamma(\nu,x) = \Gamma(\nu)e^{-x}\sum_{k=0}^{\infty}\frac{x^{k+\nu}}{\Gamma(k+\nu+1)},
+  \end{equation}
+  and is related to the upper incomplete gamma function by
+  \begin{equation}
+    \gamma(\nu,x) + \Gamma(\nu, x) = \Gamma(\nu).
+  \end{equation}
+  Therefore, under the absorbing boundary condition, the transition density is not normalized to 1, and there is a finite probability of
+  absorption at 0.
+
+
+\section{European option pricing}
+
+  The forward, or undiscounted, European option prices can be obtained from the transition
+  densities at the option epxiry by integrating with respect to the
+  option payoff. For example, for a call option under absorbing boundary condition, we have
+  \begin{equation}
+    C_A(T,K)=\int_0^{+\infty}p_A(T,S)(S-K)^+dS = \int_K^{+\infty}Sp_A(T,S)dS - K\int_K^{+\infty}p_A(T,S)dS.
+  \end{equation}
+  Notice that the probability density function of a non-central $\chi^2$ distribution with $r$ degrees of freedom and the non-centrality
+  parameter $\lambda$ is given by
+  \begin{equation}
+    f(x;r,\lambda) = \frac{1}{2}\left(\frac{x}{\lambda}\right)^{(r-2)/4}\exp\left(-\frac{x+\lambda}{2}\right)I_{(r-2)/2}\left(\sqrt{\lambda x}\right),
+  \end{equation}
+  and the transition density can be written as
+  \begin{equation}
+    p_A(T,S) = \frac{4\nu s_0 S^{1/\nu-2}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
+  With this, the first term in the above integral can be easily calculated by a change of variable
+  \begin{eqnarray}
+      && \int_K^{+\infty}\frac{4\nu s_0 S^{1/\nu-1}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)dS\nonumber\\
+    = && s_0\int_K^{+\infty}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)d\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T}\right)\nonumber\\
+    = && s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right),
+  \end{eqnarray}
+  where $F(x;r,\lambda)$ is the cumulative density function of the non-central $\chi^2$ distribution.
+  For the second term, we can use the following symmetry property of the non-central $\chi^2$ distribution
+  \begin{equation}
+    \int_x^{+\infty}f(y;r-2,\lambda)dy + \int_{\lambda}^{+\infty}f(x;r,\mu)d\mu = 1,
+  \end{equation}
+  to show that
+  \begin{eqnarray}
+      && \int_K^{+\infty}\frac{4\nu s_0 S^{1/\nu-2}}{\sigma^2T}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)dS\nonumber\\
+    = && \int_K^{+\infty}\frac{s_0}{S}f\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)d\left(\frac{4\nu^2S^{1/\nu}}{\sigma^2T}\right)\nonumber\\
+    = && \int_q^{+\infty}\left(\frac{\lambda}{z}\right)^{\nu}f\left(z;2\nu+2,\lambda\right)dz \nonumber\\
+    = && \int_q^{+\infty}f\left(\lambda;2\nu+2,z\right)dz \nonumber\\
+    = && 1 - \int_{\lambda}^{+\infty}f\left(z;2\nu,q\right)dz \nonumber\\
+    = && F(\lambda; 2\nu, q),
+  \end{eqnarray}
+  where we have defined
+  \begin{equation}
+    \lambda = \frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}, \quad\quad q = \frac{4\nu^2K^{1/\nu}}{\sigma^2T}.
+  \end{equation}
+  Finally, the call option price under the absorbing boundary condition is given by
+  \begin{equation}
+    C_A(T,K)=s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right)
+             - KF\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};2\nu,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
+  The put option can be simply obtained by call-put parity
+  \begin{equation}
+    P_A(T,K)=s_0F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};2\nu+2,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)
+             - K\left(1-F\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};2\nu,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right)\right).
+  \end{equation}
+
+  The option prices under the reflecting boundary condition can be calculated in a similar fashion. With repeating, they are given by
+  \begin{equation}
+    C_R(T,K)=s_0F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};-2\nu,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)
+             - K\left(1-F\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};-2\nu+2,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right)\right),
+  \end{equation}
+  and
+  \begin{equation}
+    P_R(T,K)=s_0\left(1 - F\left(\frac{4\nu^2K^{1/\nu}}{\sigma^2T};-2\nu,\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T}\right)\right)
+             - KF\left(\frac{4\nu^2s_0^{1/\nu}}{\sigma^2T};-2\nu+2,\frac{4\nu^2K^{1/\nu}}{\sigma^2T}\right).
+  \end{equation}
+
+
+\section{Integral representation of European call option price}
+
+  To preclude arbitrage opportunity, we are going to consider the European call option price under the absorbing boundary condition.
+  The price for a European call option with expiry $T$, forward $S$, and strike $K$ is given by
+  \begin{equation}
+    C_A(T,S,K) = (S-K)^+ + \frac{\sigma^2}{2}K^{2\beta}\int_0^Tp_A(0,S;\tau,K)d\tau,
+    \label{callprice}
+  \end{equation}
+  with the density $p(0,S;t,K)$ given by Eq. (\ref{density1}). To this end, we can use the integral representation of the modified
+  Bessel function \cite{DLMF2},
+  \begin{equation}
+    I_{\nu}(z) = \frac{1}{\pi}\int_0^{\pi}e^{z\cos\phi}\cos(\nu\phi)d\phi
+                - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}e^{-z\cosh \psi - \nu \psi}d\psi
+  \end{equation}
+  Define
+  \begin{equation}
+    q_S=\frac{S^{1-\beta}}{1-\beta}, \quad q_K=\frac{K^{1-\beta}}{1-\beta},
+  \end{equation}
+  the integration term of Eq. (\ref{callprice}) becomes
+  \begin{eqnarray}
+    && \nu\sqrt{SK}\int_0^T\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\sigma^2\tau}\right)
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\sigma^2\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
+    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\sigma^2\tau}\right)e^{-\nu \psi}d\psi\Bigg)\nonumber\\
+    = && \nu\sqrt{SK}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
+    \Bigg(\frac{1}{\pi}\int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
+    && \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
+            - \frac{\sin(\nu\pi)}{\pi}\int_0^{+\infty}\exp\left(-\frac{q_Kq_S\cosh \psi}{\tau}\right)e^{-\nu \psi}d\psi\Bigg).
+  \end{eqnarray}
+  Now, consider the first integration of the above expression. Change the variable $y=q_Kq_S/\tau$, define
+  $b=(q_K^2+q_S^2)/2q_Kq_S$, and integrate by parts, we have
+  \begin{eqnarray}
+    && \frac{\nu\sqrt{SK}}{\pi}\int_0^{\sigma^2 T}\frac{d\tau}{\tau}\exp\left(-\frac{q_K^2+q_S^2}{2\tau}\right)
+       \int_0^{\pi}\exp\left(\frac{q_Kq_S\cos\phi}{\tau}\right)\cos(\nu\phi)d\phi\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{dy}{y}
+       \int_0^{\pi}e^{-(b-\cos\phi)y}d\sin(\nu\phi)\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}dy
+         \left[\left.\frac{\sin(\nu\phi)}{y}e^{-(b-\cos\phi)y}\right|_0^{\pi}
+              +\int_0^{\pi}\sin\phi\sin(\nu\phi)e^{-(b-\cos\phi)y}d\phi\right]\nonumber\\
+    = && \frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}}{\pi}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi.
+  \end{eqnarray}
+  Similarly, the second integration can be manipulated to give
+  \begin{eqnarray}
+    && -\frac{\sqrt{SK}}{\pi}\int_{\frac{q_Kq_S}{\sigma^2 T}}^{+\infty}\frac{\sin(\nu\pi)}{y}e^{-(b+1)y}dy\nonumber\\
+      && \quad\quad\quad\quad+ \frac{\sqrt{SK}\sin(\nu\pi)}{\pi}\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi.
+  \end{eqnarray}
+  Finally, the call option price is
+  \begin{eqnarray}
+    C_A(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{-\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
+    \label{CEVAbsorbingCall}
+  \end{eqnarray}
+
+  For completeness, we also record the result for reflecting boundary condition as
+  \begin{eqnarray}
+    C_R(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{SK}}{\pi}\Bigg(\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b-\cos\phi\right)\right)d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}\frac{e^{\nu \psi}\sinh \psi}{b+\cosh \psi}
+       \exp\left(-\frac{q_Kq_S}{\sigma^2T}\left(b+\cosh \psi\right)\right)d\psi\Bigg).
+  \end{eqnarray}
+
+\section{Free boundary CEV}
+
+  The CEV process (\ref{CEV}) can be modified to allow negative forward in the following way,
+  \begin{equation}
+    dS_t=\sigma \left|S_t\right|^{\beta}dW_t,
+    \label{FreeBoundaryCEV}
+  \end{equation}
+  with $0<\beta<1/2$. The corresponding Fokker-Planck equation is then given by
+  \begin{equation}
+    -\frac{\partial p(t,s)}{\partial t}+\frac{1}{2}\sigma^2\frac{\partial^2}{\partial s^2}
+    \left(\left|s\right|^{2\beta}p(t,s)\right) = 0,
+    \label{FBCEVFP}
+  \end{equation}
+  with initial condition (\ref{initial}). The solution to the Fokker-Planck equation (\ref{FBCEVFP})
+  can be constructed as
+  \begin{equation}
+    p(t,s)=\frac{1}{2}\bigg(p_R\left(t,\left|s\right|\right)+{\rm sgn}(s)p_A\left(t,\left|s\right|\right)\bigg),
+  \end{equation}
+  where $p_A(t,s)$ and $p_R(t,s)$ are the solution to the Fokker-Plack equation (\ref{FP}) under
+  the absorbing and reflecting boundary conditions, repectively. Following the time value of the option (\ref{TimeValue}),
+  it can be shown that the call option price in the free boundary CEV model is
+  \begin{eqnarray}
+    C(T,S,K) &=& (S-K)^+ \nonumber\\
+             &+&\frac{\sqrt{\left|SK\right|}}{\pi}\Bigg({\bf 1}_{K\geq 0}\int_0^{\pi}\frac{\sin\phi\sin(\nu\phi)}{b-\cos\phi}
+                        \exp\left(-\frac{\bar{q}\left(b-\cos\phi\right)}{\sigma^2T}\right)d\phi\nonumber\\
+             &&\quad\quad\quad\quad\quad + \sin(\nu\pi)\int_0^{+\infty}
+                \frac{d\psi}{b+\cosh \psi}
+       \exp\left(-\frac{\bar{q}\left(b+\cosh \psi\right)}{\sigma^2T}\right)\nonumber\\
+             &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \times
+                  \bigg({\bf 1}_{K\geq 0}\cosh(\nu \psi)+{\bf 1}_{K< 0}\sinh(\nu \psi)\bigg)\sinh \psi\Bigg),
+  \end{eqnarray}
+  where
+  \begin{equation}
+    \bar{q}=q_Kq_S,\quad b=\frac{q_K^2+q_S^2}{2q_Kq_S},\quad q_K=\frac{|K|^{1-\beta}}{1-\beta},
+    \quad q_S=\frac{|S|^{1-\beta}}{1-\beta}.
+  \end{equation}
+
+\section{Implied volatility expansion}
+
+  In this section, we will consider two expansion results for the implied volatilities of local volatility models,
+  whose local volatility functions do not explicitly contain time dependence, {\it i.e.},
+  \begin{equation}
+    dS_t=\sigma\varphi(S_t)dW_t.
+    \label{expansion1}
+  \end{equation}
+  The Black-Scholes equation for the forward call option price under this local volatility model is given by
+  \begin{equation}
+    \frac{\partial C}{\partial t} +\frac{\sigma^2}{2}S^2\frac{\partial^2C}{\partial S^2} = 0,
+  \end{equation}
+  where $C(t,S;T,K)$ is the forward value of a call option with terminal payoff of $f(S)=(S-K)^+$ at $T$. Write
+  $C(t,S;T,K)$ as $g(\tau,S)$, with $\tau=\sigma^2(T-t)$, then the Black-Scholes equation becomes
+  \begin{equation}
+    \frac{\partial g}{\partial \tau} -\frac{1}{2}S^2\frac{\partial^2g}{\partial S^2} = 0.
+    \label{expansion2}
+  \end{equation}
+  This will be the starting point for our expansion of the implied volatility.
+
+
+  \subsection{Small expiry expansion}
+
+    Let us expand around a shifted lognormal model,
+    \begin{equation}
+      dS_t=\lambda(\beta+\zeta S_t)dW_t,
+    \end{equation}
+    with $\lambda, \zeta\neq 0$. The forward call option price under this model is given by
+    \begin{equation}
+      C(t,S;T,K)=\left(S+\frac{\beta}{\zeta}\right)N(d_+) - \left(K+\frac{\beta}{\zeta}\right)N(d_-),
+    \end{equation}
+    where
+    \begin{equation}
+      d_{\pm} = \frac{\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\pm \frac{1}{2}\lambda^2\zeta^2(T-t)}
+                     {|\lambda\zeta|\sqrt{T-t}},
+    \end{equation}
+    and $N(x)$ is the cumulative density function of the standard normal distribution, which is related to the probability
+    density function,
+    \begin{equation}
+      n(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}},
+    \end{equation}
+    by $N(x)=\int_{-\infty}^xn(u)du$.
+
+    For the local volatility model (\ref{expansion1}), we can guess the forward call option price to be given by the
+    following form,
+    \begin{equation}
+      g(\tau,S)=\left(S+\frac{\beta}{\zeta}\right)N(z_+) - \left(K+\frac{\beta}{\zeta}\right)N(z_-),
+    \end{equation}
+    where
+    \begin{equation}
+      z_{\pm} = \frac{\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\pm \frac{1}{2}\Omega(\tau,S)^2}
+                     {\Omega(\tau,S)}.
+      \label{expansion3}
+    \end{equation}
+    Notice that
+    \begin{eqnarray}
+      \frac{\partial g}{\partial \tau}
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial z_+}{\partial\tau}
+        - \left(K+\frac{\beta}{\zeta}\right)n(z_-)\frac{\partial z_-}{\partial\tau} \nonumber\\
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\left(\frac{\partial z_+}{\partial\tau}
+                                                     - \frac{\partial z_-}{\partial\tau}\right) \nonumber\\
+      &=& \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial \Omega}{\partial\tau},
+    \end{eqnarray}
+    \begin{eqnarray}
+      \frac{\partial g}{\partial S}
+      &=& N(z_+) + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial z_+}{\partial S}
+        - \left(K+\frac{\beta}{\zeta}\right)n(z_-)\frac{\partial z_-}{\partial S} \nonumber\\
+      &=& N(z_+) + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial \Omega}{\partial S},
+    \end{eqnarray}
+    and
+    \begin{eqnarray}
+      \frac{\partial^2 g}{\partial S^2}
+      &=& n(z_+)\frac{\partial z_+}{\partial S} + n(z_+)\frac{\partial \Omega}{\partial S}
+        + \left(S+\frac{\beta}{\zeta}\right)n(z_+)\frac{\partial^2 \Omega}{\partial S^2}
+        - \left(S+\frac{\beta}{\zeta}\right)n(z_+)z_+\frac{\partial z_+}{\partial S}\frac{\partial \Omega}{\partial S}\nonumber\\
+      &=& n(z_+)\left(\frac{\partial z_+}{\partial S} + \frac{\partial \Omega}{\partial S}
+        + \left(S+\frac{\beta}{\zeta}\right)\frac{\partial^2 \Omega}{\partial S^2}
+        - \left(S+\frac{\beta}{\zeta}\right)z_+\frac{\partial z_+}{\partial S}\frac{\partial \Omega}{\partial S}\right),
+    \end{eqnarray}
+    where we have used the fact that
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)n(z_+) = \left(K+\frac{\beta}{\zeta}\right)n(z_-).
+    \end{equation}
+    Also, we have
+    \begin{equation}
+      \frac{\partial z_+}{\partial S} = \frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}\frac{\partial\Omega}{\partial S},
+    \end{equation}
+    therefore
+    \begin{eqnarray}
+      \frac{\partial^2 g}{\partial S^2}
+      &=& n(z_+)\Bigg(\frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}\frac{\partial\Omega}{\partial S} + \frac{\partial \Omega}{\partial S}
+          + \left(S+\frac{\beta}{\zeta}\right)\frac{\partial^2 \Omega}{\partial S^2}\nonumber\\
+      &&  \quad\quad\quad - \left(S+\frac{\beta}{\zeta}\right)z_+\left(\frac{1}{\Omega(S+\beta/\zeta)}-\frac{z_-}{\Omega}
+                            \frac{\partial\Omega}{\partial S}\right) \frac{\partial \Omega}{\partial S}\Bigg).
+    \end{eqnarray}
+    Substituting (\ref{expansion3}) into (\ref{expansion2}), and taking into account of the derivatives above, we have
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)^2\Omega\frac{\partial \Omega}{\partial\tau} =
+      \frac{1}{2}\varphi(S)^2\left[\left(S+\frac{\beta}{\zeta}\right)^2\Omega\frac{\partial^2 \Omega}{\partial S^2}
+                                   +(1-h_{-3})-h_1(1-h_{-1})\right],
+      \label{expansion4}
+    \end{equation}
+    where
+    \begin{equation}
+      h_i=\left(S+\frac{\beta}{\zeta}\right)\frac{\partial \Omega}{\partial S}
+          \left[\frac{1}{\Omega}\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)+\frac{1}{2}i\Omega\right],\quad
+          i=-3,-1,1.
+    \end{equation}
+    Now, we seek a small expiry expansion in the form of
+    \begin{equation}
+      \Omega(\tau,S)=\sum_{i=0}^{\infty}\tau^{i+1/2}\Omega_i(S).
+    \end{equation}
+    Expanding to $O(\tau^2)$, we have
+    \begin{eqnarray}
+      \Omega\frac{\partial \Omega}{\partial\tau} &=& \left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)
+                                                     \left(\frac{1}{2}\Omega_0\tau^{-1/2}+\frac{3}{2}\Omega_1\tau^{1/2}+\cdots\right)\nonumber\\
+                                                 &=& \frac{1}{2}\Omega_0^2 + 2\Omega_0\Omega_1\tau + O(\tau^2),
+    \end{eqnarray}
+    \begin{eqnarray}
+      \Omega\frac{\partial^2 \Omega}{\partial S^2} &=& \left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)
+                                                     \left(\Omega_0^{\prime\prime}\tau^{1/2}
+                                                     +\Omega_1^{\prime\prime}\tau^{3/2}+\cdots\right)\nonumber\\
+                                                 &=& \Omega_0\Omega_0^{\prime\prime}\tau + O(\tau^2),
+    \end{eqnarray}
+    \begin{eqnarray}
+      h_i &=& \left(S+\frac{\beta}{\zeta}\right)\left(\Omega_0^{\prime}\tau^{1/2}+\Omega_1^{\prime}\tau^{3/2}+\cdots\right) \nonumber\\
+          && \times\left[\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                         \left(\frac{1}{\Omega_0}\tau^{-1/2}-\frac{\Omega_1}{\Omega_0^2}\tau^{1/2}+\cdots\right)
+                         +\frac{1}{2}i\left(\Omega_0\tau^{1/2}+\Omega_1\tau^{3/2}+\cdots\right)\right] \nonumber\\
+          &=& \left(S+\frac{\beta}{\zeta}\right)\Bigg[\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                                                      \frac{\Omega_0^{\prime}}{\Omega_0}\nonumber\\
+          && \quad\quad\quad\quad\quad\quad +\left(\frac{1}{2}i\Omega_0\Omega_0^{\prime}
+                                   +\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                                    \left(\frac{\Omega_1^{\prime}}{\Omega_0}-\frac{\Omega_1\Omega_0^{\prime}}{\Omega_0^2}\right)\right)\tau
+                                   +O(\tau^2)\Bigg]
+    \end{eqnarray}
+    and
+    \begin{equation}
+      h_1h_{-1} =
+    \end{equation}
+    Matching terms of order $O(1)$, we have
+    \begin{equation}
+      \left(S+\frac{\beta}{\zeta}\right)^2\Omega_0^2 =
+      \varphi(S)^2\left(1-\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+      \frac{\Omega_0^{\prime}}{\Omega_0}\right)^2.
+    \end{equation}
+    Taking square root, and retain only the positive solution, the above ODE will become a Bernoulli one,
+    \begin{equation}
+      \Omega_0^{\prime} = \frac{\Omega_0}{\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)}
+                        - \frac{\Omega_0^2}{\varphi(S)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)}.
+    \end{equation}
+    Define $\psi=\Omega_0^{-1}$, the above ODE will be reduced to
+    \begin{equation}
+      \left(\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\psi\right)^{\prime} = \frac{1}{\varphi(S)},
+    \end{equation}
+    which can be directly integrated,
+    \begin{equation}
+      \psi(S) = \left(\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\right)^{-1}\int_K^S\frac{du}{\varphi(u)}.
+    \end{equation}
+    Thus, the leading order in the implied volatility expansion is given by
+    \begin{equation}
+      \Omega_0(S) = \log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)\left(\int_K^S\frac{du}{\varphi(u)}\right)^{-1}.
+    \end{equation}
+
+    For the $O(\tau)$ term, we have the following ODE,
+    \begin{eqnarray}
+      2\left(S+\frac{\beta}{\zeta}\right)\Omega_1 &=&
+      \frac{1}{2}\varphi(S)^2\left(\left(S+\frac{\beta}{\zeta}\right)\Omega_0^{\prime\prime}+\Omega_0^{\prime}\right) \nonumber\\
+      &&\quad\quad\quad\quad - \varphi(S)\left(S+\frac{\beta}{\zeta}\right)\log\left(\frac{S+\beta / \zeta}{K+\beta / \zeta}\right)
+                       \left(\frac{\Omega_1^{\prime}}{\Omega_0}-\frac{\Omega_1\Omega_0^{\prime}}{\Omega_0^2}\right),
+    \end{eqnarray}
+    whose solution is given by
+    \begin{equation}
+      \Omega_1(S) = -\frac{\Omega_0(S)}{\left(\int_K^S\frac{du}{\varphi(u)}\right)^2}\log\left(\Omega_0(S)
+                    \left(\frac{(S+\beta / \zeta)(K+\beta / \zeta)}{\varphi(S)\varphi(K)}\right)^{1/2}\right).
+    \end{equation}
+
+    Up to $O\left(\tau^{5/2}\right)$, the small expiry expansion of the implied volatility is
+    \begin{equation}
+      \Omega(\tau,S)=\Omega_0(S)\tau^{1/2}+\Omega_1(S)\tau^{3/2}+O\left(\tau^{5/2}\right),
+    \end{equation}
+    where $\Omega_0(S)$ and $\Omega_1(S)$ are given above.
+
+
+
+
+  \subsection{Singular perturbation expansion}
+
+
+
+\section{A final remark}
+
+  For all the above results, if we make the volatility parameter $\sigma$ time dependent, we can simply replace $\sigma^2(T-t)$
+  by $\int_t^T\sigma(u)^2du$. This can be verified by checking the effect of this change of variable in the Black-Scholes equation.
+  However, this is only valid when the local volatility function is seperable.
+
+
+
+
+\begin{thebibliography}{99}
+  \bibitem{Lesniewski}
+    See \url{http://www.lesniewski.us/papers/working/NotesOnCEV.pdf}.
+
+  \bibitem{Bessel}
+    See \url{http://mathworld.wolfram.com/BesselDifferentialEquation.html}.
+
+  \bibitem{DLMF1}
+    See \url{http://dlmf.nist.gov/10.22.E67}.
+
+  \bibitem{DLMF2}
+    See \url{http://dlmf.nist.gov/10.32.E4}.
+\end{thebibliography}
+
+
+\end{document}

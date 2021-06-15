@@ -1,0 +1,260 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage[hscale=.8,vscale=.8]{geometry}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Notes on Skew Stickiness Ratio}
+\date{Dec. 32, 2999}
+
+\maketitle
+
+\section{Power payoff}
+
+  Consider the power payoff, $S(T)^p$, for maturity $T$. Under the Black-Scholes (BS) dynamics,
+  \begin{equation}
+    dS(t) = (r-q)S(t)dt+\sigma S(t)dW(t),
+  \end{equation}
+  where $r$ and $q$ are the constant risk free rate and repo rate, and $\sigma$ is the lognormal volatility of the
+  underlying, we have
+  \begin{equation}
+    d\left(\log\left(S(t)^p\right)\right) = p\left(r-q-\frac{\sigma ^2}{2}\right)dt + p\sigma dW(t).
+  \end{equation}
+  This can be integrated to give
+  \begin{equation}
+    \log\left(\frac{S(T)}{S(t)}\right)^p = p\left(r-q-\frac{\sigma ^2}{2}\right)(T-t) + p\sigma\left(W(T)-W(t)\right),
+  \end{equation}
+  and the discounted price of the power payoff, is
+  \begin{equation}
+    Q_p(t,T)=e^{-r(T-t)}{\mathrm E}\left[S(T)^p\right]=e^{-r(T-t)}F(t,T)^p\exp\left(\frac{p(p-1)}{2}\sigma^2(T-t)\right),
+    \label{power1}
+  \end{equation}
+  where we have defined the forward $F(t,T)=S(t)e^{(r-q)(T-t)}$.
+
+  Given the market price of a power payoff, its implied volatility $\sigma_p(t,T)$ can be obtained by inverting
+  Eq. (\ref{power1}). This quantity is well-defined for $p\in (0,1)$ when the power payoff is concave, or
+  $p\in (-\infty, 0)\cup (1,+\infty)$ when the power payoff is convex. As long as $p\neq 0$ or 1, the implied volatility
+  can always be obtained.
+
+  \subsection{Implied volatility}
+
+    The power payoff is European. According to the static replication method, it can be replicated by call and/or
+    put options with the same maturity but a continuum of strikes. For $p\in (0,1)$, the price $Q_p(t,T)$ of a power payoff
+    is always finite, and there exists an explicit formula which expresses the implied volatility as a weighted average of
+    vanilla implied volatilities.
+
+    Define the characteristic function for $S(t)$ as
+    \begin{equation}
+      L(p)={\mathrm E}[e^{px}],
+    \end{equation}
+    with $x=\log(S(T)/F(t,T))$, and the undiscounted price of a power payoff is related to this characteristic function by the
+    following,
+    \begin{equation}
+      L(p)={\mathrm E}\left[\left(\frac{S(T)}{F(t,T)}\right)^p\right]=e^{r(T-t)}\frac{Q_p(t,T)}{F(t,T)^p}
+          =\exp\left(\frac{p(p-1)}{2}\sigma_p(t,T)^2(T-t)\right).
+    \end{equation}
+    Using the terminal distribution of the underlying, the characteristic function can be expressed as an integral,
+    \begin{equation}
+      L(p)=\int_0^{+\infty}\rho(K)\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK.
+    \end{equation}
+    Denote the time $t$ price of a call option with maturity $T$ and strike $K$ as $C_{{\rm BS}}(T,K)$,
+    then the terminal distribution is given by the second derivative of the option price with respect to the strike, {\it i.e.},
+    \begin{equation}
+      \rho(K)=\frac{\partial^2V(T,K)}{\partial K^2},
+    \end{equation}
+    where $V(T,K) = e^{r(T-t)}C_{{\rm BS}}(T,K)$ is the undiscounted, or forward, option price. Now, the characteristic function becomes
+    \begin{eqnarray}
+      L(p) &=& \int_0^{+\infty}\frac{\partial^2V(T,K)}{\partial K^2}\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK \nonumber \\
+           &=& - \int_0^{+\infty}\frac{\partial V(T,K)}{\partial K }\frac{p}{K}\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK,
+    \end{eqnarray}
+    by intgration by parts. Define
+    \begin{equation}
+      z(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}-\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2},
+    \end{equation}
+    where $\sigma_{{\rm BS}}(T,K)$ is the implied BS volatility of the vanilla option. This is a monotonic function, and allows an
+    inverse for $K$ as a function of $z$. The vanilla option price and the greeks can be expressed with $z(K)$. In particular, for undiscounted
+    call option price,
+    \begin{equation}
+      V(T,K) =  F(t,T)N\left(z(K)+\sigma_{{\rm BS}}(T,K)\sqrt{T}\right) - KN(z(K)),
+    \end{equation}
+    we have
+    \begin{equation}
+      \frac{\partial V(T,K)}{\partial K} = Kn(z(K))\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}-N(z(K)),
+    \end{equation}
+    where $n(x)$ and $N(x)$ are the Gaussian distribution and the cumulated Gaussian distribution, respectively. The characteristic function
+    becomes
+    \begin{eqnarray}
+      L(p) &=& \int_0^{+\infty}\left[N(z(K))-Kn(z(K))\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}\right]\frac{p}{K}
+                     \exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)dK \nonumber\\
+           &=& -\int_0^{+\infty}n(z(K))\exp\left(p\log\left(\frac{K}{F(t,T)}\right)\right)\left[\frac{dz}{dK}
+                                   + p\frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T}\right]dK,
+    \end{eqnarray}
+    where we have again performed the integration by parts for the first term. Define $w(z)=\sigma_{{\rm BS}}(T,z(K))\sqrt{T}$, and notice that
+    \begin{equation}
+      \log\left(\frac{K}{F(t,T)}\right)=-\left(\frac{w^2}{2}+wz\right),
+    \end{equation}
+    and
+    \begin{equation}
+      \frac{\partial\sigma_{{\rm BS}}(T,K)}{\partial K}\sqrt{T} = \frac{\partial w}{\partial z}\frac{dz}{dK},
+    \end{equation}
+    the characteristic function can be finally written as
+    \begin{equation}
+      L(p) = \int_{-\infty}^{+\infty}\frac{e^{-z^2/2}}{\sqrt{2\pi}}e^{-p(w^2/2+wz)}\left(1+p\frac{\partial w}{\partial z}\right)dz.
+    \end{equation}
+    Introduce another variable
+    \begin{equation}
+      y = z + pw(z),
+    \end{equation}
+    the characteristic function can be transformed to a simpler form,
+    \begin{equation}
+      L(p) = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}\exp\left(\frac{p(p-1)}{2}\sigma_{{\rm BS}}(T,K(y))^2(T-t)\right)dy.
+    \end{equation}
+    Finally, the relation between the vanilla and the power payoff implied volatilities is
+    \begin{equation}
+      \exp\left(\frac{p(p-1)}{2}\sigma_p(t,T)^2(T-t)\right)
+      = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+        \exp\left(\frac{p(p-1)}{2}\sigma_{{\rm BS}}(T,K(y,p))^2(T-t)\right)dy.
+      \label{implied}
+    \end{equation}
+
+    \subsubsection{Limiting cases}
+
+      Now, let us consider two limiting cases of the above result.
+
+      {\it i) p=0.} For $p\rightarrow 0$, we have $S^p\rightarrow 1 + p\log S$, and $\sigma_p(t,T)$ becomes the implied volatility of the log contract.
+      Expanding both sides of Eq. (\ref{implied}), we have
+      \begin{equation}
+        1 + \frac{p}{2}\sigma_0(t,T)^2(T-t)
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \left(1 + \frac{p}{2}\sigma_{{\rm BS}}(T,K(y,0))^2(T-t)\right)dy.
+      \end{equation}
+      Thus, the implied volatility of a log contract is given by
+      \begin{equation}
+        \sigma_{\log}(t,T)^2
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \sigma_{{\rm BS}}(T,K(y))^2dy,
+      \end{equation}
+      with
+      \begin{equation}
+        y(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}-\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2}.
+      \end{equation}
+
+      {\it ii) p=1.} For $p\rightarrow 1$, set $p=1-\epsilon$, with $\epsilon\rightarrow 0$. Then, we have $S^p\rightarrow S - \epsilon S\log S$,
+      and $\sigma_p(t,T)$ becomes the implied volatility of a $S\log S$ contract. Expanding both sides of Eq. (\ref{implied}), we have
+      \begin{equation}
+        1 - \frac{\epsilon}{2}\sigma_0(t,T)^2(T-t)
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \left(1 - \frac{\epsilon}{2}\sigma_{{\rm BS}}(T,K(y,0))^2(T-t)\right)dy.
+      \end{equation}
+      Thus, the implied volatility of a $S\log S$ contract is given by
+      \begin{equation}
+        \sigma_{S\log S}(t,T)^2
+        = \int_{-\infty}^{+\infty}\frac{e^{-y^2/2}}{\sqrt{2\pi}}
+          \sigma_{{\rm BS}}(T,K(y))^2dy,
+      \end{equation}
+      with
+      \begin{equation}
+        y(K)=\frac{\log\left(F(t,T)/K\right)}{\sigma_{{\rm BS}}(T,K)\sqrt{T}}+\frac{\sigma_{{\rm BS}}(T,K)\sqrt{T}}{2}.
+      \end{equation}
+
+
+
+  \subsection{Forward variance and its dynamics}
+
+    For power payoffs with $p\neq 0$ or 1, the implied volatilities can always be solved from market prices, and satisfy the convex order
+    condition (see appendix or reference), {\it i.e.},
+    \begin{equation}
+      \sigma_p(t,T_1)^2\left(T_1-t\right) \leq \sigma_p(t,T_2)^2\left(T_2-t\right),\quad\quad {\rm for} \quad T_1 \leq T_2.
+    \end{equation}
+    Therefore, we can define the continuous forward variance,
+    \begin{equation}
+      \xi_p(t,T) = \frac{d}{dT}\left(\sigma_p(t,T)^2\left(T-t\right)\right),
+    \end{equation}
+    which is positive by the convex order condition.
+
+    In the following, we will consider the joint dynamics of the underlying and the forward variance. For simplicity, we will assume zero
+    risk free rate and repo rate. In this case, the drift of the price of power payoffs will vanish. We can use this condition
+    to determine the drift and diffusion of the forward variance.
+
+    Let us assume the SDE for the underlying and the forward variance is given by
+    \begin{eqnarray}
+      dS(t) &=& \sigma(t)S(t)dW^S(t),\nonumber\\
+      d\xi_p(t,T) &=& \mu_p(t,T)dt + \lambda_p(t,T)dW^T(t),\nonumber
+    \end{eqnarray}
+    with the correlations between the underlying and the forward variance and between different forward variances given by
+    \begin{equation}
+      \rho^{ST} = \frac{\langle dW^S(t)dW^T(t)\rangle}{dt}, \quad\quad \rho^{uv} = \frac{\langle dW^u(t)dW^v(t)\rangle}{dt},
+    \end{equation}
+    respectively.
+
+    The price of a power payoff is
+    \begin{equation}
+      Q_p(t,T)=S(t)^p\exp\left(\frac{p(p-1)}{2}\int_t^T\xi_p(t,\tau)d\tau\right).
+    \end{equation}
+    Applying the Ito lemma,
+    \begin{eqnarray}
+      dQ_p(t,T) &=& \frac{Q_p(t,T)}{S(t)}\cdot pdS(t) + \frac{Q_p(t,T)}{S(t)^2}\cdot\frac{p(p-1)}{2}dS(t)dS(t)\nonumber\\
+                &+& Q_p(t,T)\cdot \frac{p(p-1)}{2} d\left(\int_t^T\xi_p(t,\tau)d\tau\right)\nonumber\\
+                &+& Q_p(t,T)\cdot \frac{p^2(p-1)^2}{8} d\left(\int_t^T\xi_p(t,u)du\right)d\left(\int_t^T\xi_p(t,v)dv\right) \nonumber\\
+                &+& \frac{Q_p(t,T)}{S(t)}\cdot pdS(t) \cdot \frac{p(p-1)}{2} d\left(\int_t^T\xi_p(t,\tau)d\tau\right),
+    \end{eqnarray}
+    which is equivalent to
+    \begin{eqnarray}
+      \frac{dQ_p(t,T)}{Q_p(t,T)}
+                &=& p\sigma(t)dW^S(t) + \frac{p(p-1)}{2}\sigma(t)^2dt\nonumber\\
+                &+& \frac{p(p-1)}{2}\left(-\xi_p(t,t) + \int_t^T\left(d\xi_p(t,\tau)\right)d\tau\right)\nonumber\\
+                &+& \frac{p^2(p-1)^2}{8} \int_t^Tdu\int_t^Tdvd\xi_p(t,u)d\xi_p(t,v) \nonumber\\
+                &+& \frac{p^2(p-1)}{2}\int_t^TdS(t)d\xi_p(t,\tau)d\tau \nonumber\\
+                &=& \Bigg[\frac{p(p-1)}{2}\left(\sigma(t)^2 - \xi_p(t,t)\right) + \frac{p(p-1)}{2}\int_t^T \mu_p(t,\tau)d\tau \nonumber\\
+                && \quad + \quad \frac{p^2(p-1)}{2}\sigma(t)\int_t^T\rho^{S\tau}\lambda_p(t,\tau)d\tau \nonumber\\
+                && \quad + \quad \frac{p^2(p-1)^2}{8} \int_t^Tdu\int_t^Tdv\rho^{uv}\lambda_p(t,u)\lambda_p(t,v)\Bigg]dt\nonumber\\
+                &+& \left[p\sigma(t)dW^S(t) + \frac{p(p-1)}{2}\left(\int_t^T\lambda_p(t,\tau)d\tau\right)dW^{\tau}(t)\right].
+    \end{eqnarray}
+    Since the drift term needs to vanish for all $T$, we can take the derivative of the drift term with respect to $T$, which leads to
+    \begin{equation}
+      \frac{p(p-1)}{2}\mu_p(t,T) + \frac{p^2(p-1)}{2}\rho^{ST}\sigma(t)\lambda_p(t,T)
+           + \frac{p^2(p-1)^2}{4} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv = 0,
+    \end{equation}
+    or,
+    \begin{equation}
+      \mu_p(t,T) = -\left(p\rho^{ST}\sigma(t)\lambda_p(t,T) + \frac{p(p-1)}{2} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv\right).
+    \end{equation}
+    Also, in the limit of $T\rightarrow t$, we are left with a term proportional to $\sigma(t)^2 - \xi_p(t,t)$. Therefore, the diffusion of
+    the underlying must satisfy an extra condition,
+    \begin{equation}
+      \sigma(t) = \sqrt{\xi_p(t,t)},
+    \end{equation}
+    for all values of $p$.
+
+    The final joint dynamics of the underlying and the forward variance is now given by
+    \begin{eqnarray}
+      dS(t) &=& \sqrt{\xi_p(t,t)}S(t)dW^S(t),\\
+      d\xi_p(t,T) &=& -\left(p\rho^{ST}\sqrt{\xi_p(t,t)}\lambda_p(t,T) + \frac{p(p-1)}{2} \int_t^T\rho^{Tv}\lambda_p(t,T)\lambda_p(t,v)dv\right)dt \nonumber\\
+                  &&  + \quad\lambda_p(t,T)dW^T(t).
+    \end{eqnarray}
+
+
+  \section{Variance swap}
+
+
+
+
+  \section{Heston model}
+
+
+
+
+
+  \section{Forward variance model}
+
+
+
+
+\begin{thebibliography}{99}
+  \bibitem{Bergomi}
+    Lorenzo Bergomi, {\it Stochastic Volatility Modeling}, Chapman Hall/CRC Press, 2016.
+\end{thebibliography}
+
+
+\end{document}
